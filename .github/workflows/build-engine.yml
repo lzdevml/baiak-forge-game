@@ -1,7 +1,11 @@
 name: build-engine
 on:
   push: { branches: [ main, master ] }
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      u32:
+        description: "Aplicar patch u32 (level/hp/mana 32-bit)? so p/ cliente u32/mehah"
+        default: "false"
 
 jobs:
   compile:
@@ -23,7 +27,8 @@ jobs:
             libsqlite3-dev \
             libunwind-dev libgoogle-perftools-dev
 
-      - name: Apply u32 patch
+      - name: Apply u32 patch (opcional)
+        if: ${{ github.event.inputs.u32 == 'true' }}
         run: python3 infra/u32-patch.py src/protocolgame.cpp
 
       - name: Compile (make)
