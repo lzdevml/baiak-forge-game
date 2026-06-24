@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Points Styller Bet" script="data/npc/scripts/dicer.lua" walkinterval="0" floorchange="0">
+<health now="100" max="100"/>
+<look type="2848" head="12" body="120" legs="150" feet="150" addons="2"/>
+<voices>
+<voice text="Salve meus amigos.Aqui você pode apostar com Styller Points falando {H} ou {L}. Aposta mínima: 03 unidades. Máxima: 60 unidades. Receba 50% de Cashback." interval2="300" margin="1" yell="no"/>
+</voices>
+</npc>

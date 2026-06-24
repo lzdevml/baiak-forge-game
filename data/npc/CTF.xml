@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="CTF" script="default.lua" walkinterval="3000" floorchange="6000">
+	<health now="100" max="100"/>
+	<look type="335" head="94" body="94" legs="94" feet="94" addons="3"/>
+	<voices>
+<voice text="Venha participar agora mesmo do CTF Event, estamos esperando players!" interval2="10" margin="1" yell="no"/>
+<voice text="Pegue a bandeira e leve ate sua base consiga pontos pra sua equipe !" interval2="30" margin="1" yell="no"/>
+<voice text="Venha participar do CTF event" interval2="50" margin="1" yell="no"/>
+<voice text="O teleport vai fechar, venha Participar do Evento!" interval2="70" margin="1" yell="no"/>
+<voice text="Bora galrela vamos participar do CTF Event!" interval2="90" margin="1" yell="no"/>
+</voices>
+</npc>

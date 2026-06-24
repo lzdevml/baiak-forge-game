@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Extreme Furyosa" nameDescription="a extreme furyosa" race="blood" experience="28500" speed="470" manacost="0">
+	<health now="250000" max="250000"/>
+	<look type="359" corpse="6081"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag staticattack="70" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="-100" max="-650" />
+		<attack name="death" interval="2000" chance="20" target="0" radius="6" min="-500" max="-1250">
+			<attribute key="areaEffect" value="mortarea" />
+		</attack>
+		<attack name="manadrain" interval="2000" chance="10" length="8" spread="0" min="-500" max="-1200">
+			<attribute key="areaEffect" value="yellowspark" />
+		</attack>
+		<attack name="fire" interval="2000" chance="10" length="8" spread="3" min="-200" max="-1400">
+			<attribute key="areaEffect" value="explosionarea" />
+		</attack>
+		<attack name="death" interval="2000" chance="5" length="8" spread="0" min="-300" max="-1050">
+			<attribute key="areaEffect" value="redspark" />
+		</attack>
+		<attack name="physical" interval="3000" chance="18" radius="5" target="1" min="-100" max="-910">
+			<attribute key="areaEffect" value="groundshaker" />
+		</attack>
+	</attacks>
+	<defenses armor="25" defense="25">
+		<defense name="invisible" interval="2000" chance="10" duration="8000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+		<defense name="healing" interval="7000" chance="20" min="2000" max="10000">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<elements>
+		<element icePercent="20" />
+		<element holyPercent="20" />
+		<element deathPercent="10" />
+		<element energyPercent="10" />
+		<element physicalPercent="10" />
+	</elements>
+	<immunities>
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+		<immunity fire="1" />
+	</immunities>
+	<summons maxSummons="2">
+		<summon name="Furyosa" interval="2000" chance="10" max="2"/>
+	</summons>
+	<voices interval="2000" chance="7">
+		<voice sentence="It will not happen!" />
+		<voice sentence="SHUT UP!" />
+		<voice sentence="Dumb insolent!" />
+		<voice sentence="Diiieee!" />
+	</voices>
+	<loot>
+		<item id="2148" countmax="100" chance="60000" /><!-- gold coin -->
+		<item id="2148" countmax="100" chance="60000" /><!-- gold coin -->
+		<item id="8844" countmax="5" chance="40000" /><!-- jalapeño peppers -->
+		<item id="2152" countmax="12" chance="35000" /><!-- platinum coin -->
+		<item id="2124" chance="15000" /><!-- crystal ring -->
+		<item id="2146" countmax="25" chance="14100" /><!-- small sapphire -->
+		<item id="5944" chance="19200" /><!-- soul orb -->
+		<item id="7368" countmax="35" chance="20000" /><!-- assassin star -->
+		<item id="9971" chance="3500" /><!-- gold ingot -->
+		<item id="8472" countmax="5" chance="10200" /><!-- great spirit potion -->
+		<item id="5911" chance="5000" /><!-- red piece of cloth -->
+		<item id="8473" countmax="5" chance="12500" /><!-- ultimate health potion -->
+		<item id="5909" chance="15000" /><!-- white piece of cloth -->
+		<item id="6558" chance="6000" /><!-- concentrated demonic blood -->
+		<item id="6300" chance="14250" /><!-- death ring -->
+		<item id="6500" chance="20000" /><!-- demonic essence -->
+		<item id="7899" chance="15720" /><!-- magma coat -->
+		<item id="2145" countmax="5" chance="6200" /><!-- small diamond -->
+		<item id="2147" countmax="5" chance="6200" /><!-- small ruby -->
+		<item id="9970" countmax="5" chance="6200" /><!-- small topaz -->
+		<item id="5914" chance="15000" /><!-- yellow piece of cloth -->
+		<item id="12630" chance="10650" /><!-- cobra crown -->
+	</loot>
+</monster>

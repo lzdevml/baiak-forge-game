@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Halvar" script="data/npc/scripts/default.lua" walkinterval="2000" floorchange="0">
+<health now="100" max="100"/>
+<look type="143" head="3" body="77" legs="78" feet="39" addons="1"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Ola |PLAYERNAME|. A pandemia ficou feia, e fui obrigado a fechar a arena e vender os itens para poder sobreviver. Se tiver interesse diga {trade}."/>
+		<parameter key="shop_buyable" value="orcish maul,7392,50000;headchopper,7380,50000;blacksteel sword,7406,50000;cranial basher,7415,50000;heroic axe,7389,50000;mystic blade,7384,50000;justice seeker,7390,50000;royal axe,7434,50000;blessed sceptre,7429,50000"/>
+	</parameters>
+</npc>

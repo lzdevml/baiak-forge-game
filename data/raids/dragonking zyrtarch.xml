@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+    <!-- 
+  // Raid System by 5mok3
+  // DO NOT CHANGE INTERVAL UNLESS YOU ARE SURE WHAT YOU ARE DOING!!
+  -->
+
+  <!--Announcements-->
+  <announce delay="1000" type="Event" message="Boss DRAGONKING has come to throw fire in your face. Get ready." />
+  <announce delay="50000" type="Event" message="The DRAGONKING Boss will invade Pharaot through the city of Carlin. Protect the residents of Carlin." />
+  <announce delay="60000" type="Event" message="Boss DRAGONKING showed up and there's no use calling Mom. Go to Carlin and be a man." />
+  <!--Single Spawns-->
+  <singlespawn delay="60000" name="Dragonking Zyrtarch" x="2144" y="5492" z="7" />
+</raid>

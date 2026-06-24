@@ -1,0 +1,31 @@
+{
+  "name": "otx-new-styller",
+  "version-string": "1.0.0",
+  "dependencies": [
+    "boost-asio",
+    "boost-filesystem",
+    "boost-iostreams",
+    "boost-lockfree",
+    "boost-system",
+    "boost-variant",
+    "boost-thread",
+    "boost-foreach",
+    "boost-any",
+    "fmt",
+    "luajit",
+    "libxml2",
+    "pugixml",
+    {
+      "name": "libmariadb"
+    },
+    {
+      "name": "gmp",
+      "platform": "linux"
+    },
+    {
+      "name": "mpir",
+      "platform": "windows"
+    }
+  ],
+  "builtin-baseline": "095ee06e7f60dceef7d713e3f8b1c2eb10d650d7"
+}

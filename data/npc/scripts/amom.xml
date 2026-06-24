@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <npc name="Amom" script="data/npc/scripts/default.lua" access="5" lookdir="1">
+    <health now="1000" max="1000"/>
+	<look type="229" corpse="6078"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="message_greet" value="Ola |PLAYERNAME|. Eu vendo porções revigorantes, cuidado! Pois o preço não é para todos."/>
+		<parameter key="shop_buyable" value="sgrong mana potion,7589,150;sgrong health potion,7588,150;great mana potion,7590,260;great health potion,7591,270;great spirit potion,8472,350;ultimate health potion,8473,400;mana potion,7620,100"/>
+		<parameter key="shop_sellable" value="wand of inferno,2187,15000;wand of voodoo,8922,10000;hailstorm rod,2183,10000;underworld rod,8910,10000;springsprout rod,8912,10000;terra rod,2181,5000;northwind rod,8911,5000;necrotic rod,2185,2000;moonlight rod,2186,500;snakebite rod,2182,500;wand of starstorm,8920,10000;wand of cosmic energy,2189,5000;wand of draconia,8921,5000;wand of decay,2188,2000;wand of dragonbreath,2191,500;wand of vortex,2190,400"/>
+		<parameter key="message_decline" value="Is |TOTALCOST| gold coins too much for you? Get out of here!"/>
+	</parameters>
+</npc>

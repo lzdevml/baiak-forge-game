@@ -1,0 +1,96 @@
+[24 January 2015 20:01:12 ] >> [DBCLEANUP] 3547 inactive players have been deleted from the database.
+[!] --> Dropped: 0 from `player_viplist` table
+[!] --> Dropped: 23752 from `player_storage` table
+[!] --> Dropped: 0 from `player_spells` table
+[!] --> Dropped: 24829 from `player_skills` table
+[!] --> Dropped: 0 from `player_namelocks` table
+[!] --> Dropped: 77226 from `player_items` table
+[!] --> Dropped: 17805 from `player_depotitems` table
+[!] --> Dropped: 80 from `houses` table
+[!] --> Dropped: 0 from `house_auctions` table
+[!] --> Dropped: 3547 from `players` table
+
+[28 February 2015 10:30:04 ] >> [DBCLEANUP] 2455 inactive players have been deleted from the database.
+[!] --> Dropped: 0 from `player_viplist` table
+[!] --> Dropped: 89717 from `player_storage` table
+[!] --> Dropped: 0 from `player_spells` table
+[!] --> Dropped: 17178 from `player_skills` table
+[!] --> Dropped: 0 from `player_namelocks` table
+[!] --> Dropped: 51483 from `player_items` table
+[!] --> Dropped: 9666 from `player_depotitems` table
+[!] --> Dropped: 83 from `houses` table
+[!] --> Dropped: 0 from `guilds` table
+[!] --> Dropped: 0 from `house_auctions` table
+[!] --> Dropped: 0 from `lottery` table
+[!] --> Dropped: 0 from `z_shop_history_item` table
+[!] --> Dropped: 0 from `z_shop_history_pacc` table
+[!] --> Dropped: 0 from `bans` table
+[!] --> Dropped: 2455 from `players` table
+
+[13 March 2015 17:27:14 ] >> [DBCLEANUP] 1046 inactive players have been deleted from the database.
+[!] --> Dropped: 0 from `player_viplist` table
+[!] --> Dropped: 38242 from `player_storage` table
+[!] --> Dropped: 0 from `player_spells` table
+[!] --> Dropped: 7322 from `player_skills` table
+[!] --> Dropped: 0 from `player_namelocks` table
+[!] --> Dropped: 23468 from `player_items` table
+[!] --> Dropped: 4112 from `player_depotitems` table
+[!] --> Dropped: 61 from `houses` table
+[!] --> Dropped: 0 from `guilds` table
+[!] --> Dropped: 0 from `house_auctions` table
+[!] --> Dropped: 0 from `lottery` table
+[!] --> Dropped: 0 from `z_shop_history_item` table
+[!] --> Dropped: 0 from `z_shop_history_pacc` table
+[!] --> Dropped: 0 from `bans` table
+[!] --> Dropped: 1046 from `players` table
+
+[13 June 2015 21:07:04 ] >> [DBCLEANUP] 511 inactive players and 0 empty accounts have been deleted from the database.
+[!] --> Dropped: 0 from `player_viplist` table
+[!] --> Dropped: 18082 from `player_storage` table
+[!] --> Dropped: 0 from `player_spells` table
+[!] --> Dropped: 3577 from `player_skills` table
+[!] --> Dropped: 0 from `player_namelocks` table
+[!] --> Dropped: 10190 from `player_items` table
+[!] --> Dropped: 1606 from `player_depotitems` table
+[!] --> Dropped: 12 from `houses` table
+[!] --> Dropped: 0 from `guilds` table
+[!] --> Dropped: 0 from `house_auctions` table
+[!] --> Dropped: 0 from `lottery` table
+[!] --> Dropped: 0 from `z_shop_history_item` table
+[!] --> Dropped: 0 from `z_shop_history_pacc` table
+[!] --> Dropped: 0 from `bans` table
+[!] --> Dropped: 511 from `players` table
+[!] --> Dropped: 0 from `account_viplist` table
+
+[13 June 2015 21:46:47 ] >> [DBCLEANUP] 5 inactive players and 0 empty accounts have been deleted from the database.
+[!] --> Dropped: 0 from `player_viplist` table
+[!] --> Dropped: 0 from `player_storage` table
+[!] --> Dropped: 0 from `player_spells` table
+[!] --> Dropped: 35 from `player_skills` table
+[!] --> Dropped: 0 from `player_namelocks` table
+[!] --> Dropped: 0 from `player_items` table
+[!] --> Dropped: 0 from `player_depotitems` table
+[!] --> Dropped: 0 from `houses` table
+[!] --> Dropped: 0 from `guilds` table
+[!] --> Dropped: 0 from `house_auctions` table
+[!] --> Dropped: 0 from `lottery` table
+[!] --> Dropped: 0 from `z_shop_history_item` table
+[!] --> Dropped: 0 from `z_shop_history_pacc` table
+[!] --> Dropped: 0 from `bans` table
+[!] --> Dropped: 5 from `players` table
+[!] --> Dropped: 0 from `account_viplist` table
+
+[23 June 2015 17:26:28 ] >> [DBCLEANUP] 88 inactive players and 49 empty accounts have been deleted from the database.
+[!] --> Dropped: 0 from `player_viplist` table
+[!] --> Dropped: 0 from `player_storage` table
+[!] --> Dropped: 0 from `player_spells` table
+[!] --> Dropped: 616 from `player_skills` table
+[!] --> Dropped: 0 from `player_namelocks` table
+[!] --> Dropped: 0 from `player_items` table
+[!] --> Dropped: 0 from `player_depotitems` table
+[!] --> Dropped: 0 from `houses` table
+[!] --> Dropped: 0 from `house_auctions` table
+[!] --> Dropped: 88 from `players` table
+[!] --> Dropped: 49 from `accounts` table
+[!] --> Dropped: 0 from `account_viplist` table
+

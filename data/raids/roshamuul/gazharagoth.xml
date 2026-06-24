@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<!--Announcements-->
+	  <announce delay="1000" type="Event" message="O [Gaz'Haragoth] sera invocado nas profundezas das Rotworm." />
+  <announce delay="50000" type="Event" message="Dirija-se as profundezas das Rotworm, O Poderoso [Gaz'Haragoth] sera invocado." />
+  <announce delay="60000" type="Event" message="Parabens a todos jogadores do New-Styller amanha tem mais [Gaz'Haragoth] com varias recompensas!" />
+	<announce delay="80000" type="Event" message="Saiam agora, mortais, cuidado Gaz'Haragoth." />
+
+	<!--Single Spawns-->
+	<singlespawn delay="80000" name="Gaz'Haragoth" x="33538" y="32381" z="12"/>
+</raid>

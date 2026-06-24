@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+    <!-- 
+  // Raid System by 5mok3
+  // DO NOT CHANGE INTERVAL UNLESS YOU ARE SURE WHAT YOU ARE DOING!!
+  -->
+
+  <!--Announcements-->
+  <announce delay="1000" type="Event" message="The local wizard is going to ruin your Thursday night. Get ready for King Zelos." />
+  <announce delay="50000" type="Event" message="King Zelos will devour your soul. He will spawn in the Prison in a few moments. Get ready bastard." />
+  <announce delay="60000" type="Event" message="King Zelos was born and there's no use calling mom. Take a boat to Prison with Osiris." />
+  <!--Single Spawns-->
+  <singlespawn delay="60000" name="Goshnar's Greed" x="33007" y="31717" z="4" />
+</raid>

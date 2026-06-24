@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Melkrapo" script="data/npc/scripts/Melkrapo.lua" walkinterval="0" floorchange="0">
+<health now="100" max="100"/>
+<look type="297"/>
+<parameters>
+    <parameter key="message_greet" value="Sou Melkrapo, o atual guardiao dos portais do Guild Battle! Quer tentar {entrar} no castelo ou preferes {saber mais} sobre ele antes?"/>
+    <parameter key="message_farewell" value="Adeus mais, nobre |PLAYERNAME|."/>
+	<parameter key="message_walkaway" value="Adeus mais, nobre." />
+</parameters>
+</npc>

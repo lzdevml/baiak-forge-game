@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Tentacles" nameDescription="a tentacles" race="venom" experience="0" speed="310" manacost="0">
+	<health now="1500" max="1500"/>
+	<look type="353" corpse="0"/>
+	<targetchange interval="2000" chance="5"/>
+	<strategy attack="100" defense="5"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="1500" skill="40" attack="80"/>
+	</attacks>
+	<defenses armor="20" defense="20">
+	</defenses>
+	<elements>
+		<element icePercent="15"/>
+		<element firePercent="-10"/>
+		<element energyPercent="-10"/>
+	</elements>
+	<immunities>
+		<immunity earth="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+</monster>

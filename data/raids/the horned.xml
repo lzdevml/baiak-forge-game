@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+    <!-- 
+	// Raid System by 5mok3
+	// DO NOT CHANGE INTERVAL UNLESS YOU ARE SURE WHAT YOU ARE DOING!!
+	-->
+
+<singlespawn delay="2000" name="Minotaur mage" x="1076" y="2293" z="7" /> 
+<singlespawn delay="20000" name="the Horned Fox" x="1074" y="2293" z="7" /> 
+</raid>

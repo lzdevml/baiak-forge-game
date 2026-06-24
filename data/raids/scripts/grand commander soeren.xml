@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+    <!-- 
+  // Raid System by 5mok3
+  // DO NOT CHANGE INTERVAL UNLESS YOU ARE SURE WHAT YOU ARE DOING!!
+  -->
+
+  <!--Announcements-->
+  <announce delay="1000" type="Event" message="Boss Grand Commander Soeren has just been born in an Edron cave. This cave is west of Edron." />
+  <announce delay="50000" type="Event" message="Secure your falcon item and count on your luck. The boss Grand Commander Soeren has just spawned in a cave west of Edron.." />
+  <announce delay="60000" type="Event" message="The Grand Commander Soeren was born. Prepare for War. Fight for your falcon item.. Summoning location: Edron Hunt." />
+  <!--Single Spawns-->
+  <singlespawn delay="60000" name="Grand Commander Soeren" x="33072" y="31667" z="9" />  
+</raid>

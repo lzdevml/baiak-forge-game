@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+  <!--Announcements-->
+  <announce delay="1000" type="Event" message="The mating season of the giant spiders is at hand. Leave the invocation room as fast as you can." />
+  <announce delay="180000" type="Event" message="Giant spiders have gathered on the invocation room for their mating season. Beware!" />
+  <!--Single Spawns-->
+  <singlespawn delay="180000" name="the old widow" x="1075" y="2293" z="7" />
+  <!--Area Spawns-->
+  <areaspawn delay="170000" fromx="1075" fromy="2293" fromz="7" tox="1076" toy="2094" toz="7">
+    <monster name="Giant Spider" amount="10" />
+  </areaspawn>
+</raid>

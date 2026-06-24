@@ -1,0 +1,22 @@
+<raid>
+<announce delay="1000" type="event" message="Sightings of undead, west of Invocation Room! Imminent invasion is suspected!" />
+<announce delay="10000" type="event" message="The undead are attacking Invocation Room!" />
+
+  <!--Area Spawns-->
+  <areaspawn delay="10000" fromx="1051" fromy="2284" fromz="7" tox="1074" toy="2301" toz="7"> 
+    <monster name="Vampire" amount="2" />
+    <monster name="Stalker" amount="2" />
+    <monster name="Skeleton" amount="2" />
+    <monster name="demon skeleton" amount="2" />
+    <monster name="beholder" amount="2" />
+    <monster name="necromancer" amount="2" />
+    <monster name="bone beast" amount="2" />
+    <monster name="tibia bug" amount="2" />
+    <monster name="hacker" amount="2" />
+  </areaspawn>
+
+
+
+
+
+</raid>

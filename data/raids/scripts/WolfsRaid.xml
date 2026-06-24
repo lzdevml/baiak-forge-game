@@ -1,0 +1,14 @@
+<raid>
+<announce delay="1000" type="event" message="Many aggressive beasts are roaming south of InvOcation Room! Take care!" />
+
+  <!--Area Spawns-->
+  <areaspawn delay="1300" fromx="1075" fromy="2293" fromz="7" tox="1076" toy="2094" toz="7">
+    <monster name="wolf" amount="55" />
+    <monster name="war wolf" amount="70" />
+  </areaspawn>
+
+
+
+
+
+</raid>

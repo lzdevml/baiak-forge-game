@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Blaze Silver" script="data/npc/scripts/dicer_ritual.lua" walkinterval="0" floorchange="0">
+<health now="100" max="100"/>
+<look type="572" head="7" body="15" legs="29" feet="55" addons="3"/>
+<voices>
+<voice text="Salve meus amigos.Aqui você pode apostar falando {H} ou {L}. Aposta mínima: 03 unidades. Máxima: 60 unidades. Receba 50% de Cashback." interval2="300" margin="1" yell="no"/>
+</voices>
+</npc>

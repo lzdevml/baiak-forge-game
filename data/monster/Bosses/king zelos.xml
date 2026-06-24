@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="King Zelos" nameDescription="king zelos" race="fire" experience="48000" speed="640" manacost="0">
+	<health now="480000" max="480000"/>
+	<look type="2412" corpse="6080"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="70" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="2500"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="3000" min="-210" max="-280"/>
+		<attack name="death" interval="2000" chance="13" range="7" min="-1150" max="-1400"/>
+		<attack name="manadrain" interval="2000" chance="6" radius="7" target="0" min="-115" max="-1250">
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+		<attack name="effect" interval="1000" chance="8" radius="5" target="0">
+			<attribute key="areaEffect" value="fire"/>
+		</attack>
+		<attack name="energy" interval="3000" chance="80" range="7" radius="7" target="4" min="-100" max="-1480">
+			<attribute key="shootEffect" value="THROWINGKNIFE"/>
+			<attribute key="areaEffect" value="purpleenergy"/>
+		</attack>
+		<attack name="ice" interval="1000" chance="10" range="7" radius="4" target="1">
+			<attribute key="shootEffect" value="THROWINGKNIFE"/>
+		</attack>
+	</attacks>
+	<defenses armor="90" defense="111">
+		<defense name="healing" interval="1000" chance="9" min="400" max="1550">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="healing" interval="1000" chance="17" min="600" max="1000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="speed" interval="1000" chance="5" speedchange="191" duration="700">
+			<attribute key="areaEffect" value="redshimmer"/>
+		</defense>
+		<defense name="outfit" interval="5000" chance="20" monster="lingua" duration="600">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+		<defense name="outfit" interval="5000" chance="20" monster="gosma" duration="600">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="40"/>
+		<element earthPercent="80"/>
+		<element deathPercent="40"/>
+		<element icePercent="20"/>
+		<element holyPercent="70"/>
+	</elements>
+	<immunities>
+		<immunity lifedrain="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="3000" chance="30">
+		<voice sentence="Feel the power of death unleashed!" yell="0"/>
+           <voice sentence="I will rule again and my realm of death will span the world!" yell="0"/>
+		<voice sentence="My lich-knights will conquer this world for me!" yell="0"/>
+	</voices>
+	<script>
+<event name="zelostp"/>
+<event name="RewardChestDeath"/>
+<event name="RewardChestMonster"/>
+</script>
+</monster>

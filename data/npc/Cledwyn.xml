@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Cledwyn" script="data/npc/scripts/cledwyn.lua" walkinterval="3000" floorchange="0">
+    <health now="100" max="100"/>
+    <look type="128" head="114" body="0" legs="76" feet="94" addons="3" />
+    <parameters>
+		<parameter key="message_greet" value="Ola |PLAYERNAME| Eu troco {silver tokens} por items destructions, para fazer a troca é necessário ter dinheiro na bp. diga {trade}." />
+        <parameter key="module_keywords" value="1" />
+    </parameters>
+</npc>

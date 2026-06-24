@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+    <!-- 
+	// Raid System by 5mok3
+	// DO NOT CHANGE INTERVAL UNLESS YOU ARE SURE WHAT YOU ARE DOING!!
+	-->
+
+<announce delay="1000" type="event" message="Piratas estao fazendo um ataque surpresa em Blood City! Tome cuidado, eles parecem estar em toda parte." />
+<announce delay="10000" type="event" message="Piratas invadiram a cidade." />
+
+  <!--Area Spawns-->
+  <areaspawn delay="11000" fromx="130" fromy="34" fromz="7" tox="200" toy="75" toz="7">
+    <monster name="Pirate Corsair" amount="25" />
+    <monster name="Pirate Buccaneer" amount="25" />
+    <monster name="Pirate Cutthroat" amount="25" />
+    <monster name="Pirate Marauder" amount="25" />
+    <monster name="Smuggler" amount="25" />
+  </areaspawn>
+
+<!--Single Spawns-->
+  <singlespawn delay="11000" name="Deadeye Devious" x="150" y="39" z="7" />
+
+<!--Single Spawns-->
+  <singlespawn delay="1000" name="Ron the Ripper" x="184" y="48" z="7" />
+
+<!--Single Spawns-->
+  <singlespawn delay="1000" name="Brutus Bloodbeard" x="200" y="56" z="7" />
+
+<!--Single Spawns-->
+  <singlespawn delay="1000" name="Lethal Lissy" x="173" y="75" z="7" />
+  </raid>

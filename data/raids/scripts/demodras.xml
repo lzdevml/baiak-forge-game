@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+    <!--Announcements-->
+    <announce delay="1000" type="event" message="Beware of Demodras!" />
+	<!--Single Spawns-->
+	<singlespawn delay="1000" name="Demodras" x="79" y="188" z="9" />
+	<!--Area Spawns-->
+  <areaspawn delay="1000" fromx="73" fromy="160" fromz="9" tox="89" toy="174" toz="9">
+    <monster name="Dragon Lord" amount="3" />
+  </areaspawn>
+</raid>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Imbuiment Seller" script="data/npc/scripts/default.lua" walkinterval="0" floorchange="0">
+<health now="100" max="100"/>
+<look type="2897" head="58" body="68" legs="109" feet="131" addons="3"/>
+	<parameters>
+		<parameter key="module_shop" value="1" />
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I sell all imbuiment items, say {trade} to see what I got to offer!" />
+		<parameter key="shop_buyable" value="
+			item,12400,100000;item,11223,100000;item,12638,100000;item,10601,100000;item,10549,100000;item,10579,100000;item,12409,100000;item,12637,100000;item,12639,100000;item,10573,100000;item,2151,100000;item,11322,100000;item,10557,100000;item,12659,100000;item,2157,100000;item,11113,100000;item,12403,100000;item,2111,100000;item,10551,100000;item,12408,100000;item,11220,100000;item,10607,100000;item,3956,100000;item,10570,100000;item,12420,100000;item,2802,100000;item,11209,100000;item,12418,100000;item,11213,100000;item,12416,100000;item,10560,100000;item,5883,100000;item,10581,100000;item,10555,100000;item,10554,100000;item,11215,100000;item,5877,100000;item,5886,100000;item,12614,100000;item,5887,100000;item,10576,100000;item,11206,100000;item,11218,100000;item,5889,100000;item,5925,100000;item,10610,100000;item,12658,100000;item,4838,100000;item,5467,100000;item,5879,100000;item,10577,100000;item,5880,100000;item,12401,100000;item,10563,100000;item,11331,100000;item,10552,100000;item,5920,100000;item,5954,100000;item,10602,100000;item,10556,100000;item,5881,100000;item,12417,100000;item,12543,100000;item,2802,100000;polar bear paw,10566,100000; gear wheel,9690,100000;wolf paw,5897,100000;" />
+	</parameters>
+</npc>

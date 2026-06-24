@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Novo Torneio PVP" script="data/npc/scripts/tourney_guild.lua" walkinterval="0" floorchange="0" access="5" >
+<health now="150" max="150"/>
+<look type="289" head="114" body="114" legs="114" feet="114" addons="3" corpse="2212"/>
+
+<parameters>
+<parameter key="message_greet" value="Welcome |PLAYERNAME|! Here, you can {enter}, {register}, {leave} or {help} from Tourney Guild."/>
+<parameter key="message_alreadyfocused" value="You are drunked ? I'm talk with you, modafoca."/>
+<parameter key="message_farewell" value="Goodbye. I wanna see you in the Tourney... oh yeah, I wanna."/>
+</parameters>
+</npc>

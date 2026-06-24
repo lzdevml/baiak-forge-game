@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Grand Canon Dominus" nameDescription="Grand Canon Dominus" race="blood" experience="11000" speed="210" script="rewardboss.lua">
+	<health now="30000" max="30000" />
+	 <look type="584" head="57" body="77" legs="77" feet="86" addons="0" corpse="6080" />
+	<targetchange interval="4000" chance="10" />
+	<flags>
+		<flag rewardboss="1" />
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag staticattack="70" />
+		<flag runonhealth="0" />
+		<flag canwalkonenergy="0" />
+		<flag canwalkonfire="0" />
+		<flag canwalkonpoison="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="-150" max="-700" />
+		<attack name="physical" interval="2000" chance="20" range="7" min="-100" max="-720">
+			<attribute key="shootEffect" value="etherealspear" />
+		</attack>
+		<attack name="holy" interval="2000" chance="14" length="8" spread="0" min="-100" max="-1000">
+			<attribute key="areaEffect" value="energy"/>
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="15" range="5" radius="3"   min="-200" max="-700">
+			<attribute key="areaEffect" value="holyarea" />
+		</attack>
+		<attack name="lifedrain" interval="1000" chance="15" range="5" radius="3"   min="-200" max="-700">
+			<attribute key="areaEffect" value="smallclouds" />
+		</attack>
+	</attacks>
+	<defenses armor="82" defense="50">
+		<defense name="healing" interval="2000" chance="20" min="200" max="550">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+			<defense name="speed" interval="1000" chance="10" speedchange="220" duration="5000">
+			<attribute key="areaEffect" value="poff" />
+		</defense>
+	</defenses>
+	<elements>
+		<element physicalPercent="50" />
+		<element deathPercent="55" />
+	</elements>
+	<immunities>
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+	</immunities>
+	<loot>
+		<item id="2149" countmax="3" chance="100000" /> <!-- Small Emerald -->
+		<item id="2150" countmax="3" chance="100000" /> <!--  -->
+		<item id="2152" countmax="3" chance="100000" /> <!--  -->
+		<item id="7368" countmax="5" chance="100000" /> <!--  -->
+		<item id="8472" countmax="3" chance="100000" /> <!--  -->
+		<item id="2148" countmax="60" chance="100000" /> <!--  -->
+		<item id="2148" countmax="40" chance="100000" /> <!--  -->
+		<item id="2147" countmax="3" chance="700" /> <!--  -->
+		<item id="2156" countmax="3" chance="700" /> <!--  -->
+		<item id="7365" countmax="3" chance="700" /> <!--  -->
+		<item id="9970" countmax="3" chance="700" /> <!--  -->
+		<item id="7633" chance="3300" /> <!--  -->
+		<item id="2153" chance="250" /> <!--  -->
+		<item id="2155" chance="250" /> <!--  -->
+		<!--<item name="Damaged Armor Plates" countmax="3" chance="320" />  Damaged Armor Plates -->
+		<item id="7413" chance="320" /> <!--  -->
+		<item id="2466" chance="650" /> <!-- Golden Armor -->
+		<item id="2514" chance="550" /> <!-- Mastermind Shield -->
+
+		<item id="13082" chance="320"/> <!-- Falcon Bow -->
+		<item id="13081" chance="280" /> <!-- Falcon Wand -->
+		<item id="13083" chance="300" /> <!-- Falcon Plate  -->
+	</loot>
+</monster>

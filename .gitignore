@@ -1,0 +1,5 @@
+src/objects/
+src/theotxserver
+*.o
+logs/*.log
+restart.log

@@ -1,0 +1,40 @@
+name: build-engine
+on:
+  push: { branches: [ main, master ] }
+  workflow_dispatch: {}
+
+jobs:
+  compile:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends \
+            g++ make \
+            liblua5.1-0-dev \
+            libxml2-dev \
+            libboost-system-dev libboost-thread-dev libboost-filesystem-dev libboost-regex-dev \
+            libgmp-dev \
+            libmysqlclient-dev \
+            libssl-dev \
+            libsqlite3-dev \
+            libgoogle-perftools-dev
+
+      - name: Apply u32 patch
+        run: python3 infra/u32-patch.py src/protocolgame.cpp
+
+      - name: Compile (make)
+        working-directory: src
+        run: |
+          make -j$(nproc) 2>&1 | tee /tmp/build.log
+          test -f theotxserver && echo "BINARY OK" || (echo "BUILD FAILED"; tail -40 /tmp/build.log; exit 1)
+
+      - name: Upload binary
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theotxserver-linux
+          path: src/theotxserver

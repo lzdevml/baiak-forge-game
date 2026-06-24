@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mod name="Rush Event" version="1.0.0" author="VirrageS" enabled="yes">
+    <config name="config_rush_event">
+		<![CDATA[
+			configRushEvent = {
+				storages = {
+					main = '854774', -- set free storage
+					player = '854773', -- set free storage
+					joining = '854772', -- set free storage
+					b_score = '854771', -- set free storage
+					r_score = '854770', -- set free storage
+					exhaust = '854775',
+					countEvent = '854776'
+				},
+
+				position = {
+					blue = {x=4165, y=2271, z=6}, -- posiotion to which player is teleporting
+					red = {x=4150, y=2325, z=6} -- posiotion to which player is teleporting
+				},
+
+				room = {
+					from = {x=4116,y=2255,z=6}, -- left top corner of event room
+					to = {x=4227,y=2354,z=7} -- right bottom corner of event room
+				},
+
+				rewards = {6527}, -- reward id which player can win (reward is random)
+				players = {
+					max = 20,
+					min = 5,
+					minLevel = 100
+				},
+
+				days = {
+					['Monday'] = {'02:00:00'}, 
+					['Monday'] = {'06:00:00'}, 
+					['Monday'] = {'10:00:00'}, 
+					['Monday'] = {'14:00:00'}, 
+					['Monday'] = {'18:00:00'}, 
+					['Monday'] = {'23:00:00'}, 
+
+					['Tuesday'] = {'02:00:00'}, 
+					['Tuesday'] = {'06:00:00'}, 
+					['Tuesday'] = {'10:00:00'}, 
+					['Tuesday'] = {'14:00:00'}, 
+					['Tuesday'] = {'18:00:00'}, 
+					['Tuesday'] = {'23:00:00'}, 
+					
+					['Wednesday'] = {'02:00:00'}, 
+					['Wednesday'] = {'06:00:00'}, 
+					['Wednesday'] = {'10:00:00'}, 
+					['Wednesday'] = {'14:00:00'}, 
+					['Wednesday'] = {'18:00:00'}, 
+					['Wednesday'] = {'23:00:00'},
+					
+					['Thursday'] = {'02:00:00'},
+					['Thursday'] = {'06:00:00'},
+					['Thursday'] = {'10:00:00'},
+					['Thursday'] = {'14:00:00'},
+					['Thursday'] = {'18:00:00'},
+					['Thursday'] = {'23:00:00'},
+					
+					['Friday'] = {'02:00:00'},
+					['Friday'] = {'06:00:00'},
+					['Friday'] = {'10:00:00'},
+					['Friday'] = {'14:00:00'},
+					['Friday'] = {'18:00:00'},
+					['Friday'] = {'23:00:00'},
+					
+					['Saturday'] = {'02:00:00'},
+					['Saturday'] = {'06:00:00'},
+					['Saturday'] = {'10:00:00'},
+					['Saturday'] = {'14:00:00'},
+					['Saturday'] = {'18:00:00'},
+					['Saturday'] = {'23:00:00'},
+					
+					['Sunday'] = {'02:00:00'},
+					['Sunday'] = {'06:00:00'},
+					['Sunday'] = {'10:00:00'},
+					['Sunday'] = {'14:00:00'},
+					['Sunday'] = {'18:00:00'},
+					['Sunday'] = {'23:00:00'}
+				},
+				
+
+				fragLimit = 40, -- frag limit
+				
+				waitTime = 20, -- sekundy [ile gracz ma czekac jak padnie]
+
+				delayTime = 5.0, -- time in which players who joined to event are teleporting to teleport position [miuntes]
+				startEvent = 1, -- time from teleport to start event [seconds]
+				stopEvent = 1800, -- [seconds]
+				text = 'O time que completar 40 Frags sera o vencedor !.'
+			}
+
+		]]>
+	</config>
+
+	<lib name="lib_rush_event">
+		<![CDATA[
+		
+			domodlib('config_rush_event')
+
+			local conditionBlue = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionBlue, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionBlue, {lookType = 130, lookHead = 87, lookBody = 87, lookLegs = 87, lookFeet = 87, lookAddons = 3})
+
+			local conditionRed = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionRed, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionRed, {lookType = 128, lookHead = 94, lookBody = 94, lookLegs = 94, lookFeet = 94, lookAddons = 3})
+
+			function doStartRushEvent()
+				doSetStorage(configRushEvent.storages.joining, -1)
+
+				if configRushEvent.players.min <= doCountPlayersRushEvent()[1] then
+					for _, cid in ipairs(getPlayersOnline()) do
+						local p = tostring(getCreatureStorage(cid, configRushEvent.storages.player))
+						if p ~= '' then
+							doTeleportThing(cid, p ~= 'blue' and configRushEvent.position.red or configRushEvent.position.blue)
+							doCreatureSetNoMove(cid, false)
+							-- doRemoveCondition(cid, CONDITION_INFIGHT)
+							doAddCondition(cid, p ~= 'blue' and conditionRed or conditionBlue)
+							doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, 'Prepare-se. Evento Rush começa em '..configRushEvent.startEvent..' segundos.')
+						end
+					end
+
+					addEvent(doSetStorage, configRushEvent.startEvent * 1000, configRushEvent.storages.main, 1)
+					addEvent(doStopRushEvent, configRushEvent.stopEvent * 1000)
+					doBroadcastMessage('O Rush Event foi iniciado. VAMOS!')
+				else
+					for _, cid in ipairs(getPlayersOnline()) do
+						if tostring(getCreatureStorage(cid, configRushEvent.storages.player)) ~= '' then
+							doCreatureSetNoMove(cid, false)
+							-- doRemoveCondition(cid, CONDITION_INFIGHT)
+							doCreatureSetStorage(cid, configRushEvent.storages.player, '')
+							doTeleportThing(cid, getTownTemplePosition(getPlayerTown(cid)), true)
+						end
+					end
+
+					doBroadcastMessage('[Rush Event]\n\nEvento não foi iniciado por falta de Players!', MESSAGE_INFO_DESCR)
+				end
+			end
+		
+		
+function doCreateRush()
+		doCreateNpc("Rush War", {x = 162, y = 54, z = 7})
+		                        
+		return true             
+end		                        
+                                
+function doCreateRush2()        
+		doCreateNpc("Rush War", {x = 147, y = 52, z = 7}) 
+		
+		return true
+end
+
+
+local cfg = {
+	time = configRushEvent.delayTime*60, 
+	cor = TEXTCOLOR_RED,
+	to = {x = 0, y = 0, z = 0},
+	pos = {x = 166, y = 53, z = 7}
+}
+
+function deleteTeleport()
+	local teleport = getTileItemById(cfg.pos, 1387).uid
+	if(teleport > 0) then
+		doRemoveItem(teleport)
+		doSendMagicEffect(cfg.pos, CONST_ME_POFF)
+		doSendAnimatedText(cfg.pos, "Closed", TEXTCOLOR_RED)
+		
+	end
+	return false
+end
+		
+function doCreateTeleportRush()
+	if countDown(cfg.pos, cfg.time, cfg.cor) then
+		local teleport1 = doCreateTeleport(1387, cfg.to, cfg.pos)
+		doItemSetAttribute(teleport1, "uid", 51201)
+		doSendMagicEffect(cfg.pos, CONST_ME_ENERGYAREA)
+		addEvent(deleteTeleport, cfg.time * 1000)	
+		-- addEvent(doRemoveNPC, cfg.time * 1000)	
+		-- addEvent(doRemoveNPC2, cfg.time * 1000)	
+-- doRemoveNPC()		
+	end
+	return false
+end		
+			function doStopRushEvent()
+				if getStorage(configRushEvent.storages.main) > 0 then
+					local team = nil
+					if getStorage(configRushEvent.storages.b_score) == configRushEvent.fragLimit then
+						team = 'blue'
+					elseif getStorage(configRushEvent.storages.r_score) == configRushEvent.fragLimit then
+						team = 'red'
+					else
+						if getStorage(configRushEvent.storages.r_score) >= getStorage(configRushEvent.storages.b_score) then
+							team = 'red'
+						else
+							team = 'blue'
+						end
+					end
+
+					local prize = math.random(#configRushEvent.rewards)
+					for _, cid in ipairs(getPlayersOnline()) do
+						if isInRange(getThingPos(cid), configRushEvent.room.from, configRushEvent.room.to) then
+							if team == tostring(getCreatureStorage(cid, configRushEvent.storages.player)) then
+								doPlayerAddItem(cid, configRushEvent.rewards[prize], 10)
+								doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, 'Seu time venceu! Você recebeu '.. getItemNameById(configRushEvent.rewards[prize]) ..'')
+							end
+
+							doCreatureAddHealth(cid, getCreatureMaxHealth(cid) - getCreatureHealth(cid))
+							doCreatureAddMana(cid, getCreatureMaxMana(cid) - getCreatureMana(cid))
+							doTeleportThing(cid, getTownTemplePosition(getPlayerTown(cid)))
+							doCreatureSetStorage(cid, configRushEvent.storages.player, '')
+							doRemoveCondition(cid, CONDITION_OUTFIT)
+							-- doRemoveCondition(cid, CONDITION_INFIGHT)
+						end
+					end
+
+					doBroadcastMessage('Rush Event terminou. O vencedor é '..team..' TEAM ('..getStorage(configRushEvent.storages.r_score)..':'..getStorage(configRushEvent.storages.b_score)..'). Parabéns!')
+					db.query("INSERT INTO `events` (`event_name`, `winner_name`, `won_item`, `time_win`) VALUES (\"Rush\", \""..team.."\", \""..prize.."\", "..getStorage(configRushEvent.storages.countEvent)..");")
+					doSetStorage(configRushEvent.storages.main, -1)
+					doSetStorage(configRushEvent.storages.countEvent, getStorage(configRushEvent.storages.countEvent) + 1)
+					doSetStorage(configRushEvent.storages.r_score, 0)
+					doSetStorage(configRushEvent.storages.b_score, 0)
+					-- doRemoveCondition(cid, CONDITION_INFIGHT)
+				end
+			end
+
+			function doCountPlayersRushEvent()
+				local x, blue, red = 0,0,0
+				for _, cid in ipairs(getPlayersOnline()) do
+					local p = tostring(getCreatureStorage(cid, configRushEvent.storages.player))
+					if p ~= '' then
+						if p ~= 'blue' then
+							red = red + 1
+						else
+							blue = blue + 1
+						end
+						x = x + 1
+					end
+				end
+				return {x, blue, red}
+			end
+
+function doRemoveNpcByWes()
+    local from = {x = 103, y = 22, z = 7}
+    local to = {x = 213, y = 93, z = 7}
+    local monster = "Rush War"
+    for x = from.x, to.x do
+        for y = from.y, to.y do
+            for z = from.z, to.z do
+                pos = {x = x, y = y, z = z, stackpos = 253}
+                v = getThingfromPos(pos).uid
+                if isNpc(v) and getCreatureName(v):lower() == monster:lower() then
+                   doRemoveCreature(v)
+                end
+            end
+        end
+    end
+return true
+end
+
+function doStartCountingRushEvent()
+				if configRushEvent.delayTime > 0 then					
+			    doCreateTeleportRush()
+				doCreateRush()
+				doCreateRush2()
+				
+			    doBroadcastMessage("[Rush War]\n\nO Rush War evento vai começar em 5 minutos\n\n Premio de 10 Event Coins.")
+				addEvent(doBroadcastMessage, 60000, "[Rush War]\n\nO Rush War evento vai começar em 4 minutos\n\n Premio de 10 Event Coins.")
+				addEvent(doBroadcastMessage, 120000, "[Rush War]\n\nO Rush War evento vai começar em 3 minutos\n\n Premio de 10 Event Coins.")
+				addEvent(doBroadcastMessage, 180000, "[Rush War]\n\nO Rush War evento vai começar em 2 minutos\n\n Premio de 10 Event Coins.")
+				addEvent(doBroadcastMessage, 240000, "[Rush War]\n\nO Rush War evento vai começar em 1 minuto\n\n Premio de 10 Event Coins.")
+				addEvent(doStartRushEvent, 300000)	                 
+				addEvent(doRemoveNpcByWes, 300000)	                 
+
+				-- doBroadcastMessage("[Rush War]\n\nO Rush War evento vai começar em 5 minutos\n\n Premio de 10 Event Coins.")
+				-- addEvent(doBroadcastMessage, 5000, "[Rush War]\n\nO Rush War evento vai começar em 4 minutos\n\n Premio de 10 Event Coins.")
+				-- addEvent(doBroadcastMessage, 10000, "[Rush War]\n\nO Rush War evento vai começar em 3 minutos\n\n Premio de 10 Event Coins.")
+				-- addEvent(doBroadcastMessage, 15000, "[Rush War]\n\nO Rush War evento vai começar em 2 minutos\n\n Premio de 10 Event Coins.")
+				-- addEvent(doBroadcastMessage, 20000, "[Rush War]\n\nO Rush War evento vai começar em 1 minuto\n\n Premio de 10 Event Coins.")
+				-- addEvent(doStartRushEvent, 25000)
+				-- addEvent(doRemoveNpcByWes, 25000)
+				end
+			end
+		]]>
+	</lib>
+
+	<talkaction words="!stoprush" access="5" event="script">
+		<![CDATA[
+			domodlib("lib_rush_event")
+
+			function onSay(cid, words, param)
+				if getStorage(configRushEvent.storages.main) < 1 then
+					return doPlayerSendCancel(cid, 'Você não pode fazer isso se o Rush Event não estiver ativado.')
+				end
+				
+				doStopRushEvent()
+				return true
+			end
+		]]>
+	</talkaction>
+
+	<talkaction words="!startrush" access="5" event="script">
+		<![CDATA[
+			domodlib("lib_rush_event")
+
+			function onSay(cid, words, param)
+				if getStorage(configRushEvent.storages.main) > 0 then
+					return doPlayerSendCancel(cid, 'Evento Rush já está sendo executado.')
+				end
+
+				for _, pid in ipairs(getPlayersOnline()) do
+					if tostring(getCreatureStorage(pid, configRushEvent.storages.player)) ~= '' then
+						doCreatureSetStorage(pid, configRushEvent.storages.player, '')
+						doTeleportThing(pid, getTownTemplePosition(getPlayerTown(pid)), true)
+						doRemoveCondition(pid, CONDITION_OUTFIT)
+					end
+				end
+
+				doStartCountingRushEvent(0)
+				doSetStorage(configRushEvent.storages.joining, 1)
+				addEvent(doStartRushEvent, configRushEvent.delayTime * 60 * 1000)
+				return true
+			end
+		]]>
+	</talkaction>
+
+	<movement type='StepIn' uniqueid='51201' event='script'>
+		<![CDATA[
+			domodlib("lib_rush_event")
+
+			function onStepIn(cid, item, position, fromPosition)
+				if getStorage(configRushEvent.storages.joining) ~= 1 then
+				    doTeleportThing(cid, fromPosition, true)
+					return doPlayerSendCancel(cid, 'Volte quando o evento começar.')
+				elseif getPlayerLevel(cid) < configRushEvent.players.minLevel then
+				    doTeleportThing(cid, fromPosition, true)
+					return doPlayerSendCancel(cid, 'Voce nao tem '..configRushEvent.players.minLevel..' level.')
+				elseif exhaustion.check(cid, configRushEvent.storages.exhaust) ~= false then
+				    doTeleportThing(cid, fromPosition, true)
+					return doPlayerSendCancel(cid, 'Você deve esperar '..exhaustion.get(cid, configRushEvent.storages.exhaust)..' segundos para entrar.')
+				end
+                    if doCountPlayersRushEvent()[1] == configRushEvent.players.max then
+					    doTeleportThing(cid, fromPosition, true)
+						return doPlayerSendCancel(cid, 'Evento Lotado.')
+					end				
+                    doTeleportThing(cid, {x = 4037, y = 2243, z = 7})
+					doCreatureSetNoMove(cid, false)
+					if configRushEvent.text ~= '' then
+					doPlayerPopupFYI(cid, configRushEvent.text)
+					doCreatureSetStorage(cid, configRushEvent.storages.player, doCountPlayersRushEvent()[3] >= doCountPlayersRushEvent()[2] and 'blue' or 'red')
+					doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, 'Voce se juntou ao Rush Event. Aguarde pacientemente o inicio.')
+				end
+
+				exhaustion.set(cid, configRushEvent.storages.exhaust, 5)
+				return true
+			end
+		]]>
+	</movement>
+
+
+	<globalevent name="Rush_Event_Days" interval="1000" event="script">
+		<![CDATA[
+			domodlib("lib_rush_event")
+
+			local daysOpen = {}
+			for k, v in pairs(configRushEvent.days) do
+				table.insert(daysOpen, k)
+			end
+
+			function onThink(cid, interval)
+				if isInArray(daysOpen, os.date('%A')) then
+					if isInArray(configRushEvent.days[os.date('%A')], os.date('%X', os.time())) then
+						if getStorage(configRushEvent.storages.joining) ~= 1 then
+							doStartCountingRushEvent(0)
+
+							for _, pid in ipairs(getPlayersOnline()) do
+								if tostring(getCreatureStorage(pid, configRushEvent.storages.player)) ~= '' then
+									doCreatureSetStorage(pid, configRushEvent.storages.player, '')
+									doTeleportThing(pid, getTownTemplePosition(getPlayerTown(pid)), true)
+									doRemoveCondition(pid, CONDITION_OUTFIT)
+								end
+							end
+
+							doSetStorage(configRushEvent.storages.joining, 1)
+							addEvent(doStartRushEvent, configRushEvent.delayTime * 60 * 1000)
+						end
+					end
+				end
+
+				return true
+			end
+		]]>
+	</globalevent>
+
+	<event type="statschange" name="Rush_Event_Dead" event="script">
+		<![CDATA[
+			domodlib("lib_rush_event")
+
+			function onStatsChange(cid, attacker, type, combat, value)
+				if type == 1 and getCreatureHealth(cid) <= value then
+					if isInRange(getThingPos(cid), configRushEvent.room.from, configRushEvent.room.to) then
+						if isPlayer(cid) then
+							local p = tostring(getCreatureStorage(cid, configRushEvent.storages.player))
+							doCreatureAddHealth(cid, getCreatureMaxHealth(cid) - getCreatureHealth(cid))
+							doCreatureAddMana(cid, getCreatureMaxMana(cid) - getCreatureMana(cid))
+							doTeleportThing(cid, p ~= 'blue' and configRushEvent.position.red or configRushEvent.position.blue)
+							doCreatureSetNoMove(cid, true)
+							addEvent(doCreatureSetNoMove, configRushEvent.waitTime * 1000, cid, false)
+
+							if p ~= 'blue' then
+								doSetStorage(configRushEvent.storages.b_score, math.max(getStorage(configRushEvent.storages.b_score), 0) + 1)
+								if getStorage(configRushEvent.storages.b_score) == configRushEvent.fragLimit then
+									doStopRushEvent()
+								end
+							else
+								doSetStorage(configRushEvent.storages.r_score, math.max(getStorage(configRushEvent.storages.r_score), 0) + 1)
+								if getStorage(configRushEvent.storages.r_score) == configRushEvent.fragLimit then
+									doStopRushEvent()
+								end
+							end
+							return false
+						end
+					end
+				elseif isInArray({1,3}, type) and isPlayer(attacker) and isPlayer(cid) then
+					if isInRange(getThingPos(cid), configRushEvent.room.from, configRushEvent.room.to) then
+						if tostring(getCreatureStorage(cid, configRushEvent.storages.player)) == tostring(getCreatureStorage(attacker, configRushEvent.storages.player)) then
+							return false
+						end
+					end
+				end
+				return true
+			end
+		]]>
+	</event>
+
+	<event type="login" name="Rush_Event_Login" event="script">
+		<![CDATA[
+			domodlib("config_rush_event")
+
+			function onLogin(cid)
+				if tostring(getCreatureStorage(cid, configRushEvent.storages.player)) ~= '' then
+					doCreatureSetStorage(cid, configRushEvent.storages.player, '')
+					doRemoveCondition(cid, CONDITION_OUTFIT)
+				end
+
+				registerCreatureEvent(cid, 'Rush_Event_Dead')
+				return true
+			end
+		]]>
+	</event>
+
+	<globalevent name="Rush_Event_Start" type="startup" event="script">
+		<![CDATA[
+			domodlib("config_rush_event")
+
+			function onStartup()
+				doSetStorage(configRushEvent.storages.main, -1)
+				doSetStorage(configRushEvent.storages.r_score, 0)
+				doSetStorage(configRushEvent.storages.b_score, 0)
+				doSetStorage(configRushEvent.storages.joining, -1)
+				return true
+			end
+		]]>
+	</globalevent>
+</mod>

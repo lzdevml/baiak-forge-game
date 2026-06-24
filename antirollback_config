@@ -1,0 +1,13 @@
+catch signal SIGBUS SIGFPE SIGILL SIGINT SIGSEGV SIGSYS SIGSYS SIGXCPU SIGXFSZ
+commands
+set $MyVar = 1
+	thread apply all bt full
+	call saveServer()
+end
+
+set $MyVar = 0
+run
+
+if $MyVar == 0
+quit
+end

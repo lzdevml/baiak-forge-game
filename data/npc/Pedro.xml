@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Pedro" script="data/npc/scripts/pedro.lua" walkinterval="2000" floorchange="0">
+	<health now="185" max="185"/>
+	<look type="128" addons="3" head="41" body="67" legs="9" feet="50" corpse="2317"/>
+        <parameters>
+                <parameter key="message_greet" value="Ola aventureiro, o que faz por este local? Recebemos poucas pessoas aqui em {fling}, procura algo?" />
+        </parameters>
+</npc>

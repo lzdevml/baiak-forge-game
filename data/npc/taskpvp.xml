@@ -1,0 +1,8 @@
+<npc name="Task Pvp" script="death.lua" floorchange="0" walkinterval="3000" skull="black" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="300" head="0" body="0" legs="0" feet="0"/>
+	<parameters>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|. I need you to give me a {mission} or {rank}, send me souls and I ll give you a reward premium token and exp!"/>
+		<parameter key="message_decline" value="May your soul be my Muhahaha.!"/>
+	</parameters>
+</npc>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Rise of Devovorga" nameDescription="a rise of devovorga" race="venom" experience="100000" speed="480" manacost="0">
+	<health now="300000" max="300000"/>
+	<look type="365" corpse="12618"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="100" attack="160" poison="1250"/>
+		<attack name="lifedrain" interval="1000" chance="7" length="6" spread="0" min="-100" max="-850"> 
+			<attribute key="areaEffect" value="redspark"/>
+		</attack>
+		<attack name="earth" interval="4000" chance="15" radius="4" target="0" min="-0" max="-1250">
+			<attribute key="areaEffect" value="bigplants"/>﻿
+		</attack>
+		<attack name="poisoncondition" interval="3000" chance="28" radius="5" target="0" max="-900">
+			<attribute key="areaEffect" value="carniphila"/>
+		</attack>
+		<attack name="cursecondition" interval="4000" chance="35" radius="5" target="0" max="-650">
+			<attribute key="areaEffect" value="smallclouds"/>
+		</attack>
+	</attacks>
+	<defenses armor="40" defense="40">
+		<defense name="healing" interval="1000" chance="18" min="1000" max="21000">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<immunities>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="4">
+		<summon name="tentacles" interval="2000" chance="10" max="2"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="Slurp!"/>
+		<voice sentence="See how weak you are?"/>
+		<voice sentence="I tried to save you, but there's no use."/>
+		<voice sentence="My soul, power, hatred, knowledge and fury are far away."/>
+		<voice sentence="Now you made me mad."/>
+		<voice sentence="HE SEVEN? THEY WERE NOT ABLE TO CONTROL ME!"/>
+		<voice sentence="BRING IT! WE END THIS HERE!"/>
+		<voice sentence="YOU WILL ALL DIE - ONE WAY OR THE OTHER."/>
+		<voice sentence="PEREAS MUNDUS!"/>
+	</voices>
+	<loot>
+		<item id="2148" countmax="100" chance="60000"/><!-- gold coin -->
+		<item id="2148" countmax="100" chance="60000"/><!-- gold coin -->
+		<item id="2152" countmax="50" chance="60000"/><!-- platinum coin -->
+		<item id="2514" chance="20250"/><!-- mastermind shield -->
+		<item id="12622" chance="60500"/><!-- tentacle piece -->
+		<item id="7887" chance="14250"/><!-- terra amulet -->
+		<item id="2149" countmax="8" chance="40500"/><!-- small emerald -->
+		<item id="8880" chance="12100"/><!-- swamplair armor -->
+		<item id="7413" chance="12200"/><!-- titan axe -->
+		<item id="7884" chance="11550"/><!-- terra mantle -->
+		<item id="10219" chance="12500"/><!-- sacred tree amulet -->
+		<item id="7885" chance="11450"/><!-- terra legs -->
+		<item id="9810" chance="12550"/><!-- rusty amor -->
+	</loot>
+</monster>

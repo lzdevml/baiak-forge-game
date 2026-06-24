@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="ZOMBIE" script="default.lua" walkinterval="3000" floorchange="6000">
+	<health now="100" max="100"/>
+	<look type="311" head="17" body="54" legs="114" feet="0"/>
+	<voices>
+<voice text="Venha participar agora mesmo do Zombie Event, estamos esperando players!" interval2="10" margin="1" yell="no"/>
+<voice text="Sejá o ultimo a ficar vivo em uma sala cheia de Zombies." interval2="30" margin="1" yell="no"/>
+<voice text="Venha participar do Zombie event" interval2="50" margin="1" yell="no"/>
+<voice text="O teleport vai fechar, venha Participar do Evento!" interval2="70" margin="1" yell="no"/>
+<voice text="Bora galrela vamos participar do Zombie Event!" interval2="90" margin="1" yell="no"/>
+</voices>
+</npc>

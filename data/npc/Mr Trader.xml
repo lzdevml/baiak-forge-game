@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Styller-Shop" script="changeItem.lua" walkinterval="0" floorchange="0" access="5" >
+    <health now="150" max="150"/>
+    <look type="2823" head="115" body="0" legs="114" feet="0" addons="2" corpse="2212"/>
+    <parameters>
+      <!--  <parameter key="message_greet" value="Ola |PLAYERNAME|. eu troco seus items VIP por pontos na loja diga o nome do item que deseja trocar."/>
+        <parameter key="message_alreadyfocused" value="Você está bêbado? eu falo com você."/>
+        <parameter key="message_farewell" value="Adeus. Eu quero ver seu dinheiro ... oh você de novo."/> -->
+		
+        <parameter key="message_greet" value="Ola |PLAYERNAME|. Psso trocar itens vip por pontos. Com excessão da Styller-OTs Boots."/>
+        <parameter key="message_alreadyfocused" value="Você está bêbado? eu falo com você."/>
+        <parameter key="message_farewell" value="Adeus. Eu quero ver seu dinheiro ... oh você de novo."/>		
+    </parameters>
+</npc>

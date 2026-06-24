@@ -1,0 +1,5 @@
+	<movevent type="StepIn" itemid="106" event="script" value="bombtiles.lua"/>
+	<movevent type="AddItem" itemid="106" tileitem="1" event="script" value="bombtiles.lua"/>
+	<movevent type="StepIn" itemid="8304" event="script" value="powerups.lua"/>
+	<movevent type="StepIn" itemid="2644" event="script" value="powerups.lua"/>
+	<movevent type="StepIn" itemid="8310" event="script" value="powerups.lua"/>

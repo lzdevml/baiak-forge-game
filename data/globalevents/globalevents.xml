@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<globalevents>
+	<globalevent name="checkCastle48h" interval="5000" event="script" value="castle48hrs/castle_48h_check.lua"/>
+	<globalevent name="castle48Start" time="20:53:00" event="script" value="castle48hrs/castle_48h.lua"/>
+	<globalevent name="castle48Clear" time="13:30:00" event="script" value="castle48hrs/castle_48h_clear.lua"/>
+
+
+<!-- Anuncios -->
+<globalevent name="MensagensProgramadas" interval="29000" event="script" value="MensagensProgramadas.lua"/>
+
+	<!-- dota -->
+	
+	<!-- Safezone -->
+	<globalevent name="StartSafeZone" time="08:30" event="script" value="events/safeZone.lua"/>
+	<globalevent name="StartSafeZone1" time="11:30" event="script" value="events/safeZone.lua"/>
+	<globalevent name="StartSafeZone2" time="20:30" event="script" value="events/safeZone.lua"/>
+	<globalevent name="StartSafeZone3" time="01:30" event="script" value="events/safeZone.lua"/>	
+	<!-- Snowball -->	
+	<globalevent name="StartSBW1" time="10:00" event="script" value="events/snowBall.lua"/>	
+	<globalevent name="StartSBW2" time="13:00" event="script" value="events/snowBall.lua"/>	
+	<globalevent name="StartSBW3" time="19:30" event="script" value="events/snowBall.lua"/>	
+	<globalevent name="StartSBW4" time="02:00" event="script" value="events/snowBall.lua"/>		
+
+		<globalevent name="bet" interval="1000" event="script" value="bet.lua"/>
+			
+		
+	<globalevent name="bet1" interval="1000" event="script" value="bet1.lua"/>
+	
+	<!-- Task System -->
+   		<globalevent name="TaskSystemWebsite" type="start" event="script" value="PersonalizedTaskSystem - Global.lua"/>
+	
+	
+	
+	<!-- Task System -->
+	
+			<!--Real Castle-->
+			<globalevent name="RealCastle" time="21:00" event="script" value="events/realCastle.lua"/>
+			<globalevent name="RealCastleClose" time="22:00" event="script" value="events/realCastle.lua"/>
+   		
+	
+	<!-- Real Team Battle -->	
+    <!-- <globalevent name="Real Team Battle" time="19:00" event="script" value="events/realTeamBattle.lua"/> 
+    <globalevent name="Real Team Battle2" time="23:00" event="script" value="events/realTeamBattle.lua"/>	-->
+	<!-- DTT -->		
+	<globalevent name="StartDTT" time="20:00" event="script" value="events/DTT.lua"/>		
+	<!-- Counter Strike -->	
+	<globalevent name="CSBattle_Think" interval="60000" event="script" value="events/CSBattle.lua"/>
+	<!-- BomberMan -->		
+	<globalevent name="StartBomberman" time="16:00" event="script" value="events/bomberman.lua"/>		
+	<!-- CTF -->	
+	<globalevent name="StartCTF" interval="60000" event="script" value="events/CTF.lua"/>
+	<globalevent name="FlagCTF" interval="1000" event="script" value="events/CTF_Flag.lua"/>
+	<globalevent name="BasesCTF" interval="5000" event="script" value="events/CTF_Bases.lua"/>	
+	<!-- O Raio -->		
+	<globalevent name="StartTheRain" interval="60000" event="script" value="events/theRain.lua"/>
+	<!-- Zombie -->		
+	<globalevent name="StartZombieEvent" interval="60000" event="script" value="events/zombieEvent.lua"/>	
+	
+	 <!-- Global Monster Task -->
+	    	<globalevent name="GMT" interval="60000" event="script" value="events/globalmonstertask.lua"/>	
+	
+	<!-- Mun Ra -->		
+    <globalevent name="boss" time="08:00" event="script" value="boss.lua"/>	
+    <globalevent name="boss1" time="12:00" event="script" value="boss.lua"/>		
+    <globalevent name="boss2" time="15:00" event="script" value="boss.lua"/>
+	<globalevent name="boss3" time="18:30" event="script" value="boss.lua"/>
+	<globalevent name="boss4" time="20:30" event="script" value="boss.lua"/>
+	<globalevent name="boss5" time="22:30" event="script" value="boss.lua"/>
+	<globalevent name="boss6" time="01:30" event="script" value="boss.lua"/>	
+	<globalevent name="boss7" time="03:00" event="script" value="boss.lua"/> 
+ 	<!-- Systems -->
+	<globalevent name="mensagem" interval="1100000" script="propaganda.lua"/>
+	<globalevent name="raids" interval="60000" event="script" value="raid.lua"/>
+	
+ 	<!-- Boost --> 	
+	<globalevent name="monsterBoostThink" interval="2000" event="script" value="monsterBoost.lua" />	
+	<globalevent name="monsterBoostStart" type="startup" event="script" value="monsterBoost.lua"/>
+	
+	<!--<globalevent name="tp_falante_daily" interval="2000" event="script" value="tp_falante_daily.lua"/>	
+	<globalevent name="tp_falante_daily2" interval="2000" event="script" value="masterdaily/tp_falante_daily.lua"/>-->
+	<globalevent name="lottery" interval="30000" event="script" value="lottery.lua"/>
+	<!-- <globalevent name="stamina" interval="1440000" event="script" value="stamina.lua"/> -->
+	
+	
+	
+	
+	<!-- Shop -->
+		<globalevent name="shop" interval="30000" script="shop.lua"/>
+		<globalevent name="shopguild" interval="30000" event="script" value="shopguild.lua"/>
+		
+		
+			
+	<globalevent name="animatedtext" interval="4700" event="script" value="texto.lua"/> 
+    <globalevent name="globalSave" time="01:00" event="script" value="shutdownot.lua"/>
+    <globalevent name="events" interval="20000" event="script" value="eventshorarios.lua"/>
+	<!-- Cast System -->
+	<!--<globalevent name="viewer" interval="10000" event="script" value="viewers.lua"/>-->
+	<globalevent name="save" interval="52000000" event="script" value="save.lua"/>
+	<globalevent name="clean" interval="24200000" event="script" value="clean.lua"/>
+	<globalevent name="init" type="startup" event="script" value="init.lua"/>
+	<globalevent name="record" type="record" event="script" value="record.lua"/>
+	<!-- war anti entrosa -->
+    <globalevent name="citys_war_checks" interval="240000" event="script" value="citys_war.lua"/>
+    <globalevent name="citys_war_shutdown" type="shutdown" event="script" value="citys_war.lua"/>
+	 </globalevents>

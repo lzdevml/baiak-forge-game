@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<mod name="Exp Potion" version="1.0" author="Weslley" contact="DISCORD: Weslley#7936" enabled="yes">
+<config name="exppotion"><![CDATA[
+exp_info = {rate = 0.1, doubleRate = 0.2, storage = {354870, 354871, 354872, 354873}, minutes = 120}
+]]></config>
+<event type="login" name="ExpPotionLogin" event="script"><![CDATA[
+domodlib('exppotion')
+function onLogin(cid)
+    if ((getPlayerStorageValue(cid, exp_info.storage[3]) > 0) and (getPlayerStorageValue(cid, exp_info.storage[1]) - os.time() > 0)) then
+        registerCreatureEvent(cid, "ExpPotionThink")
+        local rates = getPlayerRates(cid)
+        doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Você ainda tem "..convertTimeString(getPlayerStorageValue(cid, exp_info.storage[1]) - os.time()).." de conhecimento.")
+        doPlayerSetExperienceRate(cid, rates[SKILL__LEVEL]+exp_info.rate)
+		setPlayerStorageValue(cid, exp_info.storage[3], 1) -- registro
+
+	elseif ((getPlayerStorageValue(cid, exp_info.storage[3]) > 0) and (getPlayerStorageValue(cid, exp_info.storage[1]) - os.time() <= 0)) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Seu conhecimento diminuiu em 20%. Procure por mais pergaminhos.")
+		setPlayerStorageValue(cid, exp_info.storage[3], 0) -- registro
+	end
+
+	if ((getPlayerStorageValue(cid, exp_info.storage[4]) > 0) and (getPlayerStorageValue(cid, exp_info.storage[2]) - os.time() > 0)) then
+		registerCreatureEvent(cid, "ExpPotionThink")
+        local rates = getPlayerRates(cid)
+        doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Você ainda tem "..convertTimeString(getPlayerStorageValue(cid, exp_info.storage[2]) - os.time()).." de conhecimento absoluto.")
+        doPlayerSetExperienceRate(cid, rates[SKILL__LEVEL]+exp_info.doubleRate)
+		setPlayerStorageValue(cid, exp_info.storage[4], 1) -- registro
+
+	elseif ((getPlayerStorageValue(cid, exp_info.storage[4]) > 0) and (getPlayerStorageValue(cid, exp_info.storage[2]) - os.time() <= 0)) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Seu Pergaminho do EXP acabou.")
+		setPlayerStorageValue(cid, exp_info.storage[4], 0) -- registro
+	end
+	return true
+end]]></event>
+<event type="think" name="ExpPotionThink" event="script"><![CDATA[
+domodlib('exppotion')
+function onThink(cid, interval)
+	if(not isPlayer(cid)) then
+		return true
+	end
+
+	if ((getPlayerStorageValue(cid, exp_info.storage[3]) > 0) and (getPlayerStorageValue(cid, exp_info.storage[1]) - os.time() <= 0)) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Sua Exp Potion acabou!")
+		local rates = getPlayerRates(cid)
+		doPlayerSetExperienceRate(cid, rates[SKILL__LEVEL]-exp_info.rate)
+		setPlayerStorageValue(cid, exp_info.storage[3], 0) -- registro
+
+	elseif ((getPlayerStorageValue(cid, exp_info.storage[4]) > 0) and (getPlayerStorageValue(cid, exp_info.storage[2]) - os.time() <= 0)) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Sua Pergaminho do EXP acabou!")
+		local rates = getPlayerRates(cid)
+		doPlayerSetExperienceRate(cid, rates[SKILL__LEVEL]-exp_info.doubleRate)
+		setPlayerStorageValue(cid, exp_info.storage[4], 0) -- registro
+	end
+	return true
+end]]></event>
+<talkaction words="!exppotion;/exppotion" event="buffer"><![CDATA[
+domodlib('exppotion')
+if (getPlayerStorageValue(cid, exp_info.storage[1]) - os.time() > 0) then
+	return doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Você tem "..convertTimeString(getPlayerStorageValue(cid, exp_info.storage[1]) - os.time()).." de de Pergaminho do EXP.")
+elseif (getPlayerStorageValue(cid, exp_info.storage[2]) - os.time() > 0) then
+	return doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Você tem "..convertTimeString(getPlayerStorageValue(cid, exp_info.storage[2]) - os.time()).." Exp Potion.")
+else
+	return doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Você não possui Exp Potion ou Pergaminho do EXP ativo no momento.")
+end]]></talkaction>
+<action itemid="21328;21327" event="script"><![CDATA[
+domodlib('exppotion')
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if (getPlayerStorageValue(cid, exp_info.storage[1]) - os.time() > 0) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Você não pode usar outra Exp Potion ou Pergaminho do EXP pois ainda possui uma ativa. Você ainda tem "..convertTimeString(getPlayerStorageValue(cid, exp_info.storage[1]) - os.time()).." de Exp Potion.")
+		return true
+	elseif (getPlayerStorageValue(cid, exp_info.storage[2]) - os.time() > 0) then
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Você não pode usar outra Exp Potion ou Pergaminho do EXP pois ainda possui uma ativa. Você ainda tem "..convertTimeString(getPlayerStorageValue(cid, exp_info.storage[2]) - os.time()).." de Exp Potion.")
+		return true
+	end
+
+	if (item.itemid == 21328) then
+		local rates = getPlayerRates(cid)
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Você ativou o Pergaminho por "..exp_info.minutes.." minutos! Durante este tempo, você receberá 20% a mais de experiência ao derrotar monstros. Para saber o tempo, digite: !exppotion") 
+		setPlayerStorageValue(cid, exp_info.storage[2], os.time()+exp_info.minutes*60)
+		setPlayerStorageValue(cid, exp_info.storage[4], 1) -- registro
+		doPlayerSetExperienceRate(cid, rates[SKILL__LEVEL] * 1.5)
+		registerCreatureEvent(cid, "ExpPotionThink")
+		doRemoveItem(item.uid, 1)
+		
+	elseif (item.itemid == 21327) then
+		local rates = getPlayerRates(cid)
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Você ativou Exp potion por "..exp_info.minutes.." minutos! Durante este tempo, você receberá +10% de experiência ao derrotar monstros. Para saber o tempo, digite: !exppotion") 
+		setPlayerStorageValue(cid, exp_info.storage[1], os.time()+exp_info.minutes*60)
+		setPlayerStorageValue(cid, exp_info.storage[3], 1) -- registro
+		doPlayerSetExperienceRate(cid, rates[SKILL__LEVEL]+exp_info.rate)
+		registerCreatureEvent(cid, "ExpPotionThink")
+		doRemoveItem(item.uid, 1)
+	end
+	return true
+end]]></action>
+</mod>

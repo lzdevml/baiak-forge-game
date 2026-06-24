@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Master Elemental" nameDescription="a master elemental" race="undead" experience="10000" speed="350" manacost="0">
+    <health now="65000" max="65000"/>
+    <look type="355" corpse="12801"/>
+    <targetchange interval="20000" chance="100"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+        <flag summonable="0"/>
+        <flag attackable="1"/>
+        <flag hostile="1"/>
+        <flag illusionable="1"/>
+        <flag convinceable="0"/>
+        <flag pushable="0"/>
+        <flag canpushitems="1"/>
+        <flag canpushcreatures="1"/>
+        <flag targetdistance="3"/>
+        <flag staticattack="90"/>
+        <flag runonhealth="500"/>
+    </flags>
+    <attacks>
+        <attack name="melee" interval="2000" skill="50" attack="90"/>
+        <attack name="ice" interval="3000" chance="30" range="6" radius="4" target="1" min="-250" max="-500">
+            <attribute key="shootEffect" value="ice"/>
+            <attribute key="areaEffect" value="iceattack"/>
+        </attack>
+        <attack name="earth" interval="2500" chance="20" range="6" radius="4" target="1" min="-250" max="-500">
+            <attribute key="shootEffect" value="earth"/>
+            <attribute key="areaEffect" value="smallplants"/>
+        </attack>
+        <attack name="fire" interval="2000" chance="5" range="6" radius="4" target="1" min="-250" max="-500">
+            <attribute key="shootEffect" value="fire"/>
+            <attribute key="areaEffect" value="fireattack"/>
+        </attack>
+        <attack name="energy" interval="3000" chance="20" range="6" radius="4" target="1" min="-250" max="-500">
+            <attribute key="shootEffect" value="energy"/>
+            <attribute key="areaEffect" value="energyarea"/>
+        </attack>
+        <attack name="holy" interval="6000" chance="30" radius="4" min="-250" max="-400">
+            <attribute key="areaEffect" value="holydamage"/>
+        </attack>
+        <attack name="death" interval="4000" chance="25" radius="4" min="-250" max="-400">
+            <attribute key="areaEffect" value="mortarea"/>
+        </attack>
+    </attacks>
+    <defenses armor="50" defense="50"/>
+    <elements>
+    </elements>
+    <immunities>
+        <immunity paralyze="1"/>
+        <immunity invisible="1"/>
+    </immunities>
+</monster>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Lord Baby Dragon" nameDescription="a Lord Baby Dragong" race="blood" experience="0" speed="200" manacost="0">
+	<health now="67750" max="67750"/>
+	<look type="272" corpse="0"/>
+	<targetchange interval="2000" chance="5"/>
+	<strategy attack="70" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="1"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag runonhealth="80"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="30" attack="45"/>
+		<attack name="fire" interval="2500" chance="12" length="8" spread="3" min="-240" max="-410">
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="lifedrain" interval="2500" chance="14" length="8" spread="3" min="-260" max="-490">
+			<attribute key="areaEffect" value="poff"/>
+		</attack>
+		<attack name="fire" interval="2500" chance="15" range="7" min="-240" max="-480">
+			<attribute key="shootEffect" value="fire"/>
+		</attack>
+		<attack name="fire" interval="2500" chance="17" range="7" radius="4" target="1" min="-280" max="-440">
+			<attribute key="shootEffect" value="fire"/>
+			<attribute key="areaEffect" value="firearea"/>
+		</attack>
+		<attack name="firefield" interval="1000" chance="15" range="7" radius="4" target="1">
+			<attribute key="shootEffect" value="fire"/>
+		</attack>
+	</attacks>
+	<defenses armor="25" defense="38">
+		<defense name="healing" interval="1000" chance="13" min="26" max="48">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element firePercent="100"/>
+		<element earthPercent="70"/>
+		<element icePercent="-10"/>
+		<element energyPercent="-5"/>
+	</elements>
+	<immunities>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<voices interval="5000" chance="50">
+		<voice sentence="Fchu?" yell="0"/>
+		<voice sentence="Rooawwrr"/>
+	</voices>
+	<loot>
+	</loot>
+</monster>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Nezil" script="nezil.lua" walkinterval="2000" floorchange="0">
+<health now="100" max="100"/>
+<look type="160" head="115" body="78" legs="116" feet="57" addons="0"/>
+<voices>
+<voice text="Vamos minerar, ficar ricooo." interval2="3000" margin="1" yell="no"/>
+</voices>
+</npc>

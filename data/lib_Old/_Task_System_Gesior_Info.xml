@@ -1,0 +1,61 @@
+<task_system>
+	<tasksystem name="troll" count="200" actprice="0" inday="0" itemList="10;2160" premdays="0" exppoints="50000" mlist="troll; troll champion; troll green" boss="none"/>
+	<tasksystem name="rotworm" count="400" actprice="0" inday="0" itemList="10;2160,1;2480" premdays="0" exppoints="50000" mlist="rotworm; carrion worm" boss="none"/>
+	<tasksystem name="crocodile" count="200" actprice="500" inday="0" itemList="20;2160" premdays="0" exppoints="50000" mlist="crocodile" boss="the snapper"/>
+	<tasksystem name="dwarf" count="600" actprice="600" inday="0" itemList="20;2160" premdays="0" exppoints="70000" mlist="dwarf; dwarf guard; dwarf soldier; dwarf geomancer" boss="dwarf geomancer"/>
+	<tasksystem name="elf" count="700" actprice="5000" inday="0" itemList="20;2160,1;5947" premdays="0" exppoints="70000" mlist="elf; elf scout; elf arcanist; elf guard" boss="none"/>
+	<tasksystem name="tarantula" count="500" actprice="0" inday="0" itemList="20;2160" premdays="0" exppoints="50000" mlist="tarantula" boss="hide"/>
+	<tasksystem name="minotaur" count="100" actprice="0" inday="0" itemList="30;2160,5;5804" premdays="0" exppoints="70000" mlist="minotaur; minotaur archer; minotaur mage; minotaur guard" boss="none"/>
+	<tasksystem name="cyclops" count="600" actprice="0" inday="0" itemList="30;2160,1;5939" premdays="0" exppoints="40000" mlist="cyclops; cyclops smith; cyclops drone" boss="none"/>
+	<tasksystem name="wailing widow" count="500" actprice="0" inday="0" itemList="30;2160" premdays="0" exppoints="50000" mlist="wailing widow" boss="none"/>
+	<tasksystem name="bog raider" count="600" actprice="0" inday="0" itemList="40;2160,1;8891" premdays="0" exppoints="70000" mlist="werewolf" boss="none"/>
+	<tasksystem name="earth elemental" count="500" actprice="0" inday="0" itemList="30;2160" premdays="0" exppoints="70000" mlist="earth elemental" boss="none"/>
+	<tasksystem name="giant spider" count="600" actprice="0" inday="0" itemList="40;2160,10;5879" premdays="0" exppoints="80000" mlist="giant spider" boss="the old widow"/>
+	<tasksystem name="werewolf" count="500" actprice="0" inday="0" itemList="30;2160,1;7383" premdays="0" exppoints="80000" mlist="werewolf" boss="none"/>
+	<tasksystem name="stone golem" count="300" actprice="0" inday="0" itemList="30;2160" premdays="0" exppoints="80000" mlist="stone golem" boss="none"/>
+	<tasksystem name="kongra" count="600" actprice="0" inday="0" itemList="30;2160" premdays="0" exppoints="30000" mlist="kongra; sibang; merklin" boss="none"/>
+	<tasksystem name="tortoise" count="500" actprice="0" inday="0" itemList="20;2160" premdays="0" exppoints="60000" mlist="thornback tortoise; tortoise" boss="none"/>
+	<tasksystem name="crystal spider" count="600" actprice="0" inday="0" itemList="30;2160,1;5801" premdays="0" exppoints="30000" mlist="sea serpent" boss="the old widow"/>
+	<tasksystem name="quara hydromancer" count="700" actprice="0" inday="0" itemList="30;2160,25;5895" premdays="0" exppoints="50000" mlist="quara predactor; quara hydromancer; quara constrictor; quara mantassin; quara pincher" boss="thul"/>
+	<tasksystem name="hellspawn" count="400" actprice="0" inday="0" itemList="30;2160,25;6500" premdays="0" exppoints="80000" mlist="hellspawn" boss="none"/>
+	<tasksystem name="hydra" count="15000" actprice="0" inday="0" itemList="100;2160,1;10523" premdays="0" exppoints="80000" mlist="hydra" boss="the many"/>
+	<tasksystem name="dragon" count="9000" actprice="0" inday="0" itemList="80;2160,1;10020" premdays="0" exppoints="100000" mlist="dragon" boss="none"/>
+	<tasksystem name="dragon lord" count="10000" actprice="0" inday="0" itemList="100;2495,1;5919" premdays="0" exppoints="100000" mlist="dragon lord" boss="demodras"/>
+	<tasksystem name="lizard high guard" count="5000" actprice="10000" inday="0" itemList="50;2160,1;5804" premdays="0" exppoints="120000" mlist="lizard chosen; lizard dragon priest; lizard high guard; lizard legionnaire" boss="none"/>
+	<tasksystem name="vampire" count="1000" actprice="10000" inday="0" itemList="40;2160" premdays="0" exppoints="120000" mlist="vampire" boss="arachir the ancient one"/>
+	<tasksystem name="frost dragon" count="1000" actprice="10000" inday="0" itemList="10;2160" premdays="0" exppoints="200000" mlist="frost dragon" boss="none"/>
+	<tasksystem name="nightmare" count="2000" actprice="10000" inday="0" itemList="50;2160,1;6524" premdays="0" exppoints="200000" mlist="nightmare" boss="none"/>
+	<tasksystem name="blue djinn" count="2000" actprice="10000" inday="0" itemList="10;2160,1;5945" premdays="0" exppoints="200000" mlist="blue djinn; green djinn; marid" boss="merikh the slaughterer"/>
+	<tasksystem name="serpent spawn" count="5000" actprice="10000" inday="0" itemList="10;2160" premdays="0" exppoints="200000" mlist="serpent spawn" boss="the noxious spawn"/>
+	<tasksystem name="wyrm" count="2000" actprice="10000" inday="0" itemList="40;2160" premdays="0" exppoints="200000" mlist="wyrm" boss="none"/>
+	<tasksystem name="elder wyrm" count="1500" actprice="10000" inday="0" itemList="10;2160" premdays="0" exppoints="300000" mlist="elder wyrm" boss="none"/>
+	<tasksystem name="medusa" count="20000" actprice="10000" inday="0" itemList="1;12324" premdays="0" exppoints="300000" mlist="medusa" boss="none"/>
+	<tasksystem name="defiler" count="5000" actprice="10000" inday="0" itemList="30;2160" premdays="0" exppoints="200000" mlist="defiler" boss="none"/>
+	<tasksystem name="infernalist" count="1000" actprice="10000" inday="0" itemList="40;2160,50;5904" premdays="0" exppoints="210000" mlist="infernalist" boss="none"/>
+	<tasksystem name="draken" count="1000" actprice="10000" inday="0" itemList="40;2160,1;12644" premdays="0" exppoints="220000" mlist="draken; draken abomination; draken elite; draken spellweaver; draken warmaster" boss="none"/>
+	<tasksystem name="warlock" count="14000" actprice="10000" inday="0" itemList="50;2160,1;13049" premdays="0" exppoints="230000" mlist="warlock" boss="none"/>
+	<tasksystem name="plaguesmith" count="15000" actprice="10000" inday="0" itemList="10;2160,3;13393" premdays="0" exppoints="240000" mlist="plaguesmith" boss="none"/>
+	<tasksystem name="behemoth" count="10000" actprice="10000" inday="0" itemList="40;2160,2;13394" premdays="0" exppoints="200000" mlist="behemoth" boss="none"/>
+	<tasksystem name="ghastly dragon" count="1000" actprice="10000" inday="0" itemList="40;2160" premdays="0" exppoints="340000" mlist="ghastly dragon" boss="none"/>
+	<tasksystem name="sea serpent" count="1000" actprice="10000" inday="0" itemList="10;2160" premdays="0" exppoints="200000" mlist="sea serpent" boss="leviathan"/>
+	<tasksystem name="hellhound" count="700" actprice="10000" inday="0" itemList="30;2160" premdays="0" exppoints="200000" mlist="hellhound" boss="none"/>
+	<tasksystem name="hellfire fighter" count="25000" actprice="5000" inday="0" itemList="50;2160,2;13394" premdays="0" exppoints="400000" mlist="hellfire fighter" boss="none"/>
+	<tasksystem name="fury" count="15000" actprice="10000" inday="0" itemList="10;2160,1;7735" premdays="0" exppoints="250000" mlist="fury" boss="furyosa"/>
+	<tasksystem name="frazzlemaw" count="3000" actprice="10000" inday="0" itemList="20;2160,5;13354" premdays="0" exppoints="300000" mlist="frazzlemaw" boss="none"/>
+	<tasksystem name="grim reaper" count="25000" actprice="10000" inday="0" itemList="50;2160,1;11374" premdays="0" exppoints="300000" mlist="grim reaper" boss="none"/>
+	<tasksystem name="guzzlemaw" count="15000" actprice="10000" inday="0" itemList="20;2160,15;13353" premdays="0" exppoints="320000" mlist="guzzlemaw" boss="mawhawk"/>
+	<tasksystem name="choking fear" count="10000" actprice="10000" inday="0" itemList="30;2160,5;13354" premdays="0" exppoints="350000" mlist="choking fear" boss="none"/>
+	<tasksystem name="destroyer" count="12000" actprice="6000" inday="0" itemList="50;2160,5;7427" premdays="0" exppoints="350000" mlist="destroyer" boss="none"/>
+	<tasksystem name="silencer" count="10000" actprice="10000" inday="0" itemList="60;2160,10;13354" premdays="0" exppoints="400000" mlist="silencer" boss="none"/>
+	<tasksystem name="demon" count="6666" actprice="10000" inday="0" itemList="40;2160,1;8293" premdays="0" exppoints="500000" mlist="demon" boss="orshabaal"/>
+	<tasksystem name="dawnfire asura" count="15000" actprice="10000" inday="0" itemList="40;2160,5;13393" premdays="0" exppoints="550000" mlist="dawnfire asura; midnight asura" boss="none"/>
+	<tasksystem name="energetic book" count="15000" actprice="10000" inday="0" itemList="50;2160,1;12861,1;12870,1;12871" premdays="0" exppoints="1000000" mlist="energetic book; burning book; icecold book; cursed book" boss="none"/>
+	<tasksystem name="distorted phantom" count="5000" actprice="10000" inday="15" itemList="100;2160,5;13394" premdays="0" exppoints="1000000" mlist="distorted phantom" boss="none"/>
+	<tasksystem name="many faces" count="5000" actprice="10000" inday="15" itemList="100;2160,5;13394" premdays="0" exppoints="1000000" mlist="many faces" boss="none"/>
+	<tasksystem name="cobra assassin" count="25000" actprice="10000" inday="10" itemList="10;2160,1;0" premdays="0" exppoints="1000000" mlist="cobra scout; cobra assassin; cobra vizier" boss="none"/>
+	<tasksystem name="falcon paladin" count="30000" actprice="10000" inday="10" itemList="10;2160,1;13086" premdays="0" exppoints="1000000" mlist="falcon paladin" boss="grand commander soeren"/>
+	<tasksystem name="falcon knight" count="30000" actprice="10000" inday="10" itemList="10;2160,1;13083" premdays="0" exppoints="1000000" mlist="falcon knight" boss="grand canon dominus"/>
+	<tasksystem name="pharaoh" count="15000" actprice="10000" inday="9" itemList="100;2160,1;13238" premdays="0" exppoints="500000" mlist="pharaoh; orshid hamses; mistic mummy; master hamses" boss="none"/>
+	<tasksystem name="juggernaut" count="1000" actprice="10000" inday="0" itemList="100;2160" premdays="0" exppoints="500000" mlist="massacre; juggernaut" boss="none"/>
+	<tasksystem name="burster spectre" count="25000" actprice="10000" inday="10" itemList="10;2160,1;13086" premdays="0" exppoints="2000000" mlist="burster spectre; gazer spectre; ripper spectre" boss="none"/>
+</task_system>

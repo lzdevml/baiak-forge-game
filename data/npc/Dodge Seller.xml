@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Constantine" script="default.lua" walkinterval="0" floorchange="0" emblem="red">
+	<health now="100" max="100"/>
+	<look type="268" head="94" body="114" legs="94" feet="94" addons="3"/>
+    <parameters> 
+		<parameter key="module_shop" value="1"/>	
+		<parameter key="message_greet" value="|PLAYERNAME|. Me chamo Constantine. E trouxe algumas coisinhas do inferno quando voltei de la!. diga {trade}."/>			
+        <parameter key="shop_buyable" value="letal dust,12640,10000000;protect dust,12426,10000000;slot free,12466,1000000"/> 	
+		<parameter key="shop_sellable" value="letal dust,12640,4500000;protect dust,12426,4500000;slot free,12466,500000"/> 
+    </parameters> 
+</npc>

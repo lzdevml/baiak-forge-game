@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raids>
+    <!-- 
+	// raid system by 5mok3
+	// do not change interval unless you are sure what you are doing!!
+	-->
+	
+<raid name="abyssador" file="abyssador.xml" interval2="30" margin="1000" enabled="yes"/>	
+<raid name="alptramun" file="alptramun.xml" interval2="30" margin="1000" enabled="yes"/>	
+<raid name="dragonking zyrtarch" file="dragonking zyrtarch.xml" interval2="30" margin="1000" enabled="yes"/>	
+<raid name="gazharagoth" file="gazharagoth.xml" interval2="30" margin="1000" enabled="yes"/>	
+<raid name="goshnars greed" file="goshnars greed.xml" interval2="30" margin="1000" enabled="yes"/>	
+<raid name="goshars malice" file="goshars malice.xml" interval2="30" margin="1000" enabled="yes"/>	
+<raid name="jaul" file="jaul.xml" interval2="30" margin="1000" enabled="yes"/>	
+<raid name="king zelos" file="king zelos.xml" interval2="30" margin="1000" enabled="yes"/>	
+<raid name="the last lore keeper" file="the last lore keeper.xml" interval2="30" margin="1000" enabled="yes"/>	
+<raid name="malofur mangrinder" file="malofur mangrinder.xml" interval2="30" margin="1000" enabled="yes"/>	
+<raid name="mawhawk" file="mawhawk.xml" interval2="30" margin="1000" enabled="yes"/> <!--adicionar mawhawk-->
+<raid name="maxxenius" file="maxxenius.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="rupture" file="rupture.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="scarlett etzel" file="scarlett etzel.xml" interval2="30" margin="1000" enabled="yes"/>
+
+<raid name="zulazza the corruptor" file="zulazza the corruptor.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="the bloodtusk" file="the bloodtusk.xml" interval2="30" margin="1000" enabled="yes"/>  
+<raid name="astaroth" file="astaroth.xml" interval2="30" margin="1000" enabled="yes"/>  
+<raid name="morgaroth" file="morgaroth.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="barbarian" file="barbarian.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="Demodras" file="demodras.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="elfos" file="elfs.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="ferumbras" file="ferumbras.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="castle winner" file="guild winner.xml" interval2="30" margin="1000" enabled="yes"/>  
+<raid name="ghazbaran" file="ghazbaran.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="the horned fox" file="the horned.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="nomads" file="nomads.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="orshabaal" file="orshabaal.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="quaras" file="quaras.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="the old widow" file="the old widow.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="undead army" file="undead army.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="undead darashia" file="undead darashia.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="sir valorcrest" file="sir valorcrest.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="zevelong duskbringer" file="zevelong duskbringer.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="diblis the fair" file="diblis the fair.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="arachir the ancient one" file="arachir the ancient one.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="imohtep" file="imohtep.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="esmeralda" file="esmeralda.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="ethershreck" file="ethershreck.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="fahin the wise" file="fahin the wise.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="gorgo" file="gorgo.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="hide" file="hide.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="Pirates" file="pirates.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="kerberos" file="kerberos.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="leviathan" file="leviathan.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="massacre" file="massacre.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="merikh the slaughterer" file="merikh the slaughterer.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="Paiz the Pauperizer" file="Paiz the Pauperizer.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="Necropharus" file="necropharus.xml" interval2="30" margin="1000" enabled="yes"/> 
+<raid name="stonecracker" file="stonecracker.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="the many" file="the many.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="the noxious spawn" file="the noxious spawn.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="the snapper" file="the snapper.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="thul" file="thul.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="tiquandas revenge" file="tiquandas revenge.xml" interval2="30" margin="1000" enabled="yes"/>
+<raid name="zanakeph" file="zanakeph.xml" interval2="30" margin="1000" enabled="yes"/>
+
+
+
+</raids>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<npc name="Maun" script="maun.lua" walkinterval="2000" floorchange="0">
+	<health now="100" max="100" />
+	<look type="289" head="38" body="19" legs="21" feet="20" addons="0" />
+	<voices>
+		<voice text="Eu só quero ver novamente meu amigo Nezil." interval2="3000" margin="1" yell="no"/>
+	</voices>
+</npc>

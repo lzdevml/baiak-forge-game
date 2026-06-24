@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Lord Spirit of Energy" nameDescription="Lord Spirit of Energy" race="energy" experience="35000" speed="450" manacost="0">
+        <health now="65000" max="65000"/>
+        <look type="12" head="9" body="92" legs="85" feet="12" corpse="5527"/>
+        <targetchange interval="2000" chance="10"/>
+        <strategy attack="100" defense="5"/>
+        <flags>
+                <flag summonable="0"/>
+                <flag attackable="1"/>
+                <flag hostile="1"/>
+                <flag illusionable="0"/>
+                <flag convinceable="0"/>
+                <flag pushable="0"/>
+                <flag canpushitems="1"/>
+                <flag canpushcreatures="1"/>
+                <flag targetdistance="1"/>
+                <flag runonhealth="2500"/>
+        </flags>
+        <attacks>
+                <attack name="melee" interval="2000" skill="200" attack="200"/>
+                <attack name="strength" interval="1000" chance="9" range="7">
+                        <attribute key="areaEffect" value="energy"/>
+                </attack>
+                <attack name="lifedrain" interval="1000" chance="13" radius="8" target="0" min="-400" max="-700">
+                        <attribute key="areaEffect" value="energy"/>
+                </attack>
+                <attack name="energy" interval="1000" chance="34" range="7" radius="7" target="1" min="-800" max="-1800">
+                        <attribute key="shootEffect" value="energy"/>
+                        <attribute key="areaEffect" value="energy"/>
+                </attack>
+                <attack name="energy" interval="1000" chance="10" range="7" radius="7" target="1" min="-700" max="-2800">
+                        <attribute key="shootEffect" value="energy"/>
+                        <attribute key="areaEffect" value="energy"/>
+                </attack>
+        </attacks>
+        <defenses armor="130" defense="130">
+                <defense name="healing" interval="1000" chance="15" min="3000" max="6000">
+                        <attribute key="areaEffect" value="blueshimmer"/>
+                </defense>
+                <defense name="healing" interval="1000" chance="25" min="200" max="1000">
+                        <attribute key="areaEffect" value="blueshimmer"/>
+                </defense>
+                <defense name="speed" interval="1000" chance="6" speedchange="1901" duration="7000">
+                        <attribute key="areaEffect" value="redshimmer"/>
+                </defense>
+        </defenses>
+        <immunities>
+                <immunity physical="0"/>
+                <immunity energy="1"/>
+                <immunity fire="0"/>
+                <immunity poison="0"/>
+                <immunity death="0"/>
+                <immunity lifedrain="0"/>
+                <immunity paralyze="1"/>
+                <immunity outfit="1"/>
+                <immunity drunk="1"/>
+                <immunity invisible="1"/>
+        </immunities>
+        <summons max="5">
+                <summon name="massive energy elemental" interval="1000" chance="13" max="3"/>
+        </summons>
+        <voices interval="5000" chance="10">
+                <voice sentence="I AM SPIRIT OF ENERGY, LORD OF THE ELECTRICITY ... AND YOU ARE LOST!" yell="1"/>
+        </voices>
+                <loot>
+    <item id="11360" chance="6850" /><!-- ghastly dragon head -->
+    <item id="8473" chance="5125" /><!-- ultimate health potion -->
+    <item id="11362" chance="1150" /><!-- jade hat -->
+    <item id="5944" chance="13025" /><!-- soul orb -->
+    <item id="11317" chance="8200" /><!-- zaoan halberd -->
+    <item id="8472" chance="3375" /><!-- great spirit potion -->
+    <item id="2152" countmax="2" chance="23550" /><!-- platinum coin -->
+    <item id="11295" chance="1225" /><!-- zaoan armor -->
+    <item id="7591" chance="10050" /><!-- great health potion -->
+    <item id="11361" chance="21300" /><!-- undead heart -->
+    <item id="2148" countmax="100" chance="43675" /><!-- gold coin -->
+    <item id="2148" countmax="100" chance="43675" /><!-- gold coin -->
+    <item id="2148" countmax="68" chance="43675" /><!-- gold coin -->
+    <item id="6500" chance="9475" /><!-- demonic essence -->
+    <item id="9808" chance="3500" /><!-- rusty armor -->
+    <item id="1987" chance="100000"><!-- bag -->
+        <inside>
+            <item id="11298" chance="1675" /><!-- zaoan legs -->
+            <item id="11303" chance="6175" /><!-- twin hooks -->
+            <item id="11299" chance="1150" /><!-- drakinata -->
+            <item id="11349" chance="1175" /><!-- spellweaver's robe -->
+            <item id="11221" chance="1350" /><!-- shiny stone -->
+            <item id="11234" chance="650" /><!-- guardian boots -->
+            <item id="11301" chance="575" /><!-- zaoan sword -->
+            <item id="11297" chance="1500" /><!-- zaoan shoes -->
+            <item id="11296" chance="650" /><!-- zaoan helmet -->
+        </inside>
+    </item>
+</loot>
+</monster>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Elemental Draken" nameDescription="a elemental draken" race="blood" experience="90000" speed="350" manacost="0">
+    <health now="10000" max="10000"/>
+    <look type="355" corpse="12724"/>
+    <targetchange interval="20000" chance="100"/>
+    <strategy attack="100" defense="0"/>
+    <flags>
+        <flag summonable="0"/>
+        <flag attackable="1"/>
+        <flag hostile="1"/>
+        <flag illusionable="1"/>
+        <flag convinceable="0"/>
+        <flag pushable="0"/>
+        <flag canpushitems="1"/>
+        <flag canpushcreatures="1"/>
+        <flag targetdistance="3"/>
+        <flag staticattack="90"/>
+        <flag runonhealth="500"/>
+    </flags>
+    <script>
+        <event name="ElementalDraken"/>
+    </script>
+    <attacks>
+        <attack name="melee" interval="2000" skill="90" attack="150"/>
+        <attack name="ice" interval="2450" chance="35" range="7" radius="4" target="1" min="-350" max="-1000">
+            <attribute key="shootEffect" value="ice"/>
+            <attribute key="areaEffect" value="iceattack"/>
+        </attack>
+        <attack name="earth" interval="1500" chance="20" range="7" radius="4" target="1" min="-350" max="-1000">
+            <attribute key="shootEffect" value="earth"/>
+            <attribute key="areaEffect" value="smallplants"/>
+        </attack>
+        <attack name="fire" interval="1000" chance="5" range="7" radius="4" target="1" min="-350" max="-1000">
+            <attribute key="shootEffect" value="fire"/>
+            <attribute key="areaEffect" value="fireattack"/>
+        </attack>
+        <attack name="energy" interval="2000" chance="25" range="7" radius="4" target="1" min="-350" max="-1000">
+            <attribute key="shootEffect" value="energy"/>
+            <attribute key="areaEffect" value="energyarea"/>
+        </attack>
+        <attack name="holy" interval="5000" chance="40" radius="5" min="-350" max="-1000">
+            <attribute key="areaEffect" value="holydamage"/>
+        </attack>
+        <attack name="death" interval="5000" chance="40" radius="5" min="-350" max="-1000">
+            <attribute key="areaEffect" value="mortarea"/>
+        </attack>
+    </attacks>
+    <defenses armor="60" defense="60">
+        <defense name="invisible" interval="60000" chance="100" duration="5000">
+        </defense>
+    </defenses>
+    <elements>
+    </elements>
+    <immunities>
+        <immunity paralyze="1"/>
+        <immunity invisible="1"/>
+    </immunities>
+    <voices interval="5000" chance="10">
+        <voice sentence="WITH EACH ATTACK YOU CRY!!"/>
+        <voice sentence="WITH THIS DAMAGE YOU NOT ME DOWN!"/>
+    </voices>
+</monster>

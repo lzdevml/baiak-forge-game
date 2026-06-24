@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Cage Guard" nameDescription="a cage guard" race="undead" experience="10000" speed="470" manacost="0">
+	<health now="35000" max="35000"/>
+	<look type="300" corpse="0"/>
+	<targetchange interval="5000" chance="8"/>
+	<strategy attack="100" defense="0"/>
+	<flags>
+		<flag summonable="0" />
+		<flag attackable="1" />
+		<flag hostile="1" />
+		<flag illusionable="0" />
+		<flag convinceable="0" />
+		<flag pushable="0" />
+		<flag canpushitems="1" />
+		<flag canpushcreatures="1" />
+		<flag targetdistance="1" />
+		<flag staticattack="70" />
+		<flag runonhealth="0" />
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="0" max="-200" />
+		<attack name="lifedrain" interval="2000" chance="35" length="8" spread="0" min="-300" max="-450">
+			<attribute key="areaEffect" value="redspark" />
+		</attack>
+	</attacks>
+	<defenses armor="25" defense="25">
+		<defense name="healing" interval="5000" chance="20" min="100" max="500">
+			<attribute key="areaEffect" value="blueshimmer" />
+		</defense>
+	</defenses>
+	<elements>
+		<element energyPercent="-10"/>
+		<element earthPercent="20"/>
+		<element icePercent="25"/>
+		<element holyPercent="-20"/>
+		<element deathPercent="20"/>
+		<element firePercent="-20"/>
+		<element physicalPercent="10"/>
+	</elements>
+	<immunities>
+		<immunity paralyze="1" />
+		<immunity invisible="1" />
+		<immunity fire="1" />
+	</immunities>
+	<voices interval="2000" chance="7">
+		<voice sentence="Dieeeeeeee!" />
+		<voice sentence="LEAVEE HUMAN!" />
+		<voice sentence="Die!" />
+		<voice sentence="Dieeee!" />
+		<voice sentence="Caaarnaaage!" />
+		<voice sentence="Ahhhhrrrr!" />
+	</voices>
+</monster>

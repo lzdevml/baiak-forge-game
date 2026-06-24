@@ -1,0 +1,1 @@
+	<talkaction words="!bomb" event="script" value="bomb.lua"/>

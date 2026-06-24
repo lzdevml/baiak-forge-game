@@ -1,0 +1,45 @@
+<task_system>
+	<tasksystem name="cyclops" class="low" count="10" actprice="0" repeated="3" inday="0" itemList="1;2519,1;2195,2;2160" premdays="0" exppoints="40000" mlist="cyclops; cyclops drone; cyclops smith"/>
+	<tasksystem name="rotworm" class="low" count="200" actprice="0" repeated="3" inday="0" itemList="1;2480,2;2160" premdays="0" exppoints="20000" mlist="rotworm; carrion worm; rotworm queen"/>
+	<tasksystem name="quara" class="addons" count="3800" actprice="900" repeated="3" inday="0" itemList="1;7963,35;5895,50;2160" premdays="0" exppoints="120000" mlist="quara; quara constrictor; quara hydromancer; quara mantassin; quara pincher; quara predator"/>
+	<tasksystem name="bog raider" class="low" count="450" actprice="1000" repeated="3" inday="0" itemList="1;8849,3;2160" premdays="0" exppoints="60000" mlist="bog raider"/>
+	<tasksystem name="wyrm" class="low" count="1100" actprice="2000" repeated="3" inday="0" itemList="1;8902,5;2160" premdays="0" exppoints="80000" mlist="wyrm; elder wyrm"/>
+	<tasksystem name="nightmare" class="medium" count="4000" actprice="5000" repeated="3" inday="10" itemList="1;5741,100;6500" premdays="0" exppoints="400000" mlist="nightmare; nightmare scion"/>
+	<tasksystem name="dragon" class="low" count="300" actprice="10000" repeated="3" inday="0" itemList="1;2520,3;2160" premdays="1" exppoints="60000" mlist="dragon; dragon hatchling"/>
+	<tasksystem name="grim reaper" class="high" count="6000" actprice="15000" repeated="1" inday="0" itemList="1;2342,3;10558" premdays="0" exppoints="500000" mlist="grim reaper"/>
+	<tasksystem name="draken" class="medium" count="6000" actprice="15000" repeated="1" inday="0" itemList="1;12605,1;2164,3;10558" premdays="3" exppoints="800000" mlist="draken; draken abomination; draken elite; draken spellweaver; draken warmaster"/>
+	<tasksystem name="dark torturer" class="high" count="6000" actprice="15000" repeated="1" inday="0" itemList="1;6537,3;10558" premdays="1" exppoints="700000" mlist="dark torturer"/>
+	<tasksystem name="infernalist" class="medium" count="1000" actprice="15000" repeated="1" inday="0" itemList="1;10139,1;6529,3;10558" premdays="0" exppoints="600000" mlist="infernalist"/>
+	<tasksystem name="fury" class="high" count="5000" actprice="15000" repeated="1" inday="0" itemList="1;12591,3;10558" premdays="0" exppoints="310000" mlist="fury"/>
+	<tasksystem name="medusa" class="medium" count="6000" actprice="15000" repeated="1" inday="0" itemList="1;8869,2;10558" premdays="0" exppoints="1100000" mlist="medusa"/>
+	<tasksystem name="serpent spawn" class="medium" count="6000" actprice="15000" repeated="1" inday="0" itemList="1;10309,3;10558" premdays="1" exppoints="800000" mlist="serpent spawn"/>
+	<tasksystem name="destroyer" class="high" count="6000" actprice="15000" repeated="1" inday="0" itemList="1;7455,3;10558" premdays="0" exppoints="500000" mlist="destroyer"/>
+	<tasksystem name="giant spider" class="addons" count="900" actprice="20000" repeated="3" inday="0" itemList="10;5879,4;2160" premdays="0" exppoints="120000" mlist="giant spider"/>
+	<tasksystem name="blue djinn" class="addons" count="600" actprice="20000" repeated="1" inday="0" itemList="12;5912,5;2160" premdays="0" exppoints="100000" mlist="blue djinn; marid"/>
+	<tasksystem name="green djinn" class="addons" count="600" actprice="20000" repeated="3" inday="0" itemList="10;5910,20;2160" premdays="0" exppoints="120000" mlist="green djinn; efreet"/>
+	<tasksystem name="sea serpent" class="medium" count="2000" actprice="20000" repeated="3" inday="0" itemList="1;10521,1;8887,1;10529" premdays="0" exppoints="200000" mlist="sea serpent"/>
+	<tasksystem name="hellspawn" class="medium" count="1300" actprice="20000" repeated="1" inday="0" itemList="1;8877,10;2160" premdays="0" exppoints="200000" mlist="hellspawn"/>
+	<tasksystem name="minotaurs" class="addons" count="800" actprice="20000" repeated="3" inday="0" itemList="15;5878" premdays="0" exppoints="70000" mlist="minotaurs; minotaur; minotaur archer; minotaur mage; minotaur guard"/>
+	<tasksystem name="monk" class="addons" count="600" actprice="20000" repeated="3" inday="0" itemList="5;2193" premdays="0" exppoints="90000" mlist="monk; dark monk"/>
+	<tasksystem name="vampire" class="addons" count="600" actprice="20000" repeated="3" inday="0" itemList="5;5905" premdays="0" exppoints="90000" mlist="vampire"/>
+	<tasksystem name="behemoth" class="addons" count="1200" actprice="20000" repeated="3" inday="0" itemList="10;5893,1;5930,5;2160" premdays="0" exppoints="120000" mlist="behemoth"/>
+	<tasksystem name="hero" class="addons" count="600" actprice="20000" repeated="3" inday="0" itemList="10;5911" premdays="0" exppoints="100000" mlist="hero"/>
+	<tasksystem name="tortoise" class="addons" count="800" actprice="20000" repeated="3" inday="0" itemList="10;5899" premdays="0" exppoints="50000" mlist="tortoise; thornback tortoise"/>
+	<tasksystem name="elfs" class="addons" count="900" actprice="20000" repeated="3" inday="0" itemList="8;5922" premdays="0" exppoints="90000" mlist="elf; elf arcanist; elf scout"/>
+	<tasksystem name="pirates" class="special" count="8000" actprice="30000" repeated="10" inday="0" itemList="1;8110,10;2160" premdays="0" exppoints="140000" mlist="pirates; pirate skeleton; pirate buccaneer; pirate corsair; pirate cutthroat; pirate marauder; pirate ghost"/>
+	<tasksystem name="necromancer" class="special" count="8000" actprice="50000" repeated="1" inday="0" itemList="1;5809,1;10558" premdays="0" exppoints="500000" mlist="necromancer"/>
+	<tasksystem name="minotaur" class="special" count="8000" actprice="50000" repeated="3" inday="0" itemList="1;5804,30;2160" premdays="0" exppoints="150000" mlist="minotaur; minotaur archer; minotaur mage; minotaur guard"/>
+	<tasksystem name="carniphila" class="special" count="600" actprice="50000" repeated="1" inday="0" itemList="1;5015,40;2160" premdays="0" exppoints="300000" mlist="carniphila"/>
+	<tasksystem name="hydra" class="medium" count="2000" actprice="50000" repeated="3" inday="4" itemList="1;8880,1;10523,20;2160" premdays="1" exppoints="200000" mlist="hydra"/>
+	<tasksystem name="undead dragon" class="high" count="6000" actprice="50000" repeated="1" inday="0" itemList="1;6433,5;10558" premdays="5" exppoints="2500000" mlist="undead dragon"/>
+	<tasksystem name="cults" class="special" count="3000" actprice="50000" repeated="1" inday="0" itemList="1;5940,30;2160" premdays="0" exppoints="250000" mlist="cults; novice of the cult; adept of the cult; acolyte of the cult; enlightened of the cult"/>
+	<tasksystem name="frost dragon" class="medium" count="2000" actprice="50000" repeated="3" inday="4" itemList="20;2160" premdays="1" exppoints="200000" mlist="frost dragon"/>
+	<tasksystem name="ghastly dragon" class="high" count="6000" actprice="50000" repeated="1" inday="0" itemList="1;6391,5;10558" premdays="7" exppoints="2500000" mlist="ghastly dragon"/>
+	<tasksystem name="warlock" class="special" count="1200" actprice="80000" repeated="1" inday="0" itemList="1;5939,30;2160" premdays="0" exppoints="400000" mlist="warlock"/>
+	<tasksystem name="dragon lord" class="special" count="10000" actprice="100000" repeated="1" inday="30" itemList="1;10020,1;10558" premdays="0" exppoints="1000000" mlist="dragon lord"/>
+	<tasksystem name="crystal spider" class="special" count="3000" actprice="100000" repeated="1" inday="0" itemList="1;11113" premdays="0" exppoints="0" mlist="crystal spider"/>
+	<tasksystem name="demon" class="special" count="6666" actprice="100000" repeated="1" inday="0" itemList="1;2496,1;2520,1;10305,1;2472" premdays="0" exppoints="1300000" mlist="demon"/>
+	<tasksystem name="asura" class="special" count="10000" actprice="100000" repeated="1" inday="0" itemList="1;2139,5;10558" premdays="0" exppoints="2000000" mlist="asura; dawnfire asura; frost flower asura; midnight asura; true dawnfire asura; true frost flower asura; true midnight asura"/>
+	<tasksystem name="glooths" class="medium" count="3000" actprice="150000" repeated="3" inday="3" itemList="1;11236,1;11236,50;2160" premdays="5" exppoints="1000000" mlist="Glooth Anemone; Glooth Bandit; Glooth Battery; Glooth Blob; Glooth Brigand; Glooth Golem; Glooth Powered Minotaur"/>
+	<tasksystem name="golems" class="medium" count="3000" actprice="150000" repeated="3" inday="3" itemList="50;2160" premdays="5" exppoints="1000000" mlist="Worker Golem; War Golem"/>
+</task_system>

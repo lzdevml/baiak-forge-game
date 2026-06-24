@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="A Sweaty Cyclops" script="a_sweaty_cyclops.lua" walkinterval="2000" floorchange="0">
+<health now="100" max="100"/>
+<look type="22" head="0" body="0" legs="0" feet="0" addons="0"/>
+<voices>
+<voice text="Silly lil' human" interval2="3000" margin="1" yell="no"/>
+<voice text="Hum hum, huhumn" interval2="4000" margin="1" yell="no"/>
+</voices>
+</npc>

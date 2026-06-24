@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Grand Commander Soeren" nameDescription="Grand Commander Soeren" race="blood" experience="10000" speed="210">
+	<health now="37000" max="37000"/>
+	<look type="584" head="0" body="85" legs="19" feet="94" addons="0" corpse="6080"/>
+	<targetchange interval="5000" chance="8"/>
+	<flags>
+		<flag rewardboss="1"/>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="70"/>
+		<flag runonhealth="0"/>
+		<flag canwalkonenergy="0"/>
+		<flag canwalkonfire="0"/>
+		<flag canwalkonpoison="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" min="-150" max="-700"/>
+		<attack name="physical" interval="2000" chance="20" range="7" min="-200" max="-720">
+			<attribute key="shootEffect" value="royalspear"/>
+		</attack>
+		<attack name="holy" interval="1000" chance="14" length="8" spread="0" min="-500" max="-1000">
+			<attribute key="areaEffect" value="yellowspark"/>
+		</attack>
+	</attacks>
+	<defenses armor="82" defense="50">
+		<defense name="healing" interval="2000" chance="20" min="200" max="650">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element physicalPercent="50"/>
+		<element deathPercent="55"/>
+	</elements>
+	<immunities>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<loot>
+		<item id="2149" countmax="3" chance="100000"/> <!-- Small Emeralds -->
+		<item id="2150" countmax="3" chance="100000"/><!-- Small Amethysts -->
+		<item id="2152" countmax="3" chance="100000"/> <!-- Platinum Coin -->
+		<item id="7368" countmax="5" chance="100000"/> <!-- Assassin Star -->
+		<item id="8472" countmax="3" chance="100000"/>
+		<item id="2148" countmax="60" chance="100000"/> <!-- Gold Coin -->
+		<item id="2148" countmax="40" chance="100000"/> <!-- Gold Coin -->
+		<item id="2147" countmax="3" chance="700"/>  <!-- Small Ruby -->
+		<item id="2156" countmax="3" chance="700"/>
+		<item id="7365" countmax="3" chance="700"/>
+		<item id="9970" countmax="3" chance="700"/>
+		<item id="7633" chance="3300"/>
+		<item id="2153" chance="300"/>
+		<item id="2155" chance="300"/>
+		<!--<item name="Damaged Armor Plates" countmax="3" chance="400"/>  Damaged Armor Plates -->
+		<item id="7413" chance="400"/>
+		<item id="13079" chance="320"/> <!-- Falcon Coif -->
+		<item id="13082" chance="320"/> <!-- Falcon Bow -->
+	</loot>
+</monster>

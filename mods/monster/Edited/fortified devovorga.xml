@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Fortified Devovorga" nameDescription="a fortified devovorga" race="venom" experience="0" speed="440" manacost="0">
+	<health now="340000" max="340000"/>
+	<look type="354" corpse="0"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="90" attack="140" poison="1250"/>
+		<attack name="lifedrain" interval="1000" chance="7" length="6" spread="0" min="-100" max="-1250"> 
+			<attribute key="areaEffect" value="redspark"/>
+		</attack>
+		<attack name="earth" interval="4000" chance="15" radius="4" target="0" min="-0" max="-1350">
+			<attribute key="areaEffect" value="bigplants"/>﻿
+		</attack>
+		<attack name="poisoncondition" interval="3000" chance="28" radius="5" target="0" max="-1000">
+			<attribute key="areaEffect" value="carniphila"/>
+		</attack>
+		<attack name="cursecondition" interval="4000" chance="35" radius="5" target="0" max="-1050">
+			<attribute key="areaEffect" value="smallclouds"/>
+		</attack>
+	</attacks>
+	<defenses armor="40" defense="40">
+		<defense name="healing" interval="1000" chance="18" min="1000" max="8500">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element icePercent="10"/>
+		<element firePercent="-5"/>
+		<element energyPercent="-5"/>
+	</elements>
+	<immunities>
+		<immunity earth="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="2">
+		<summon name="tentacles" interval="2000" chance="10" max="2"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="Slurp!"/>
+		<voice sentence="See how weak you are?"/>
+		<voice sentence="I tried to save you, but there's no use."/>
+		<voice sentence="My soul, power, hatred, knowledge and fury are far away."/>
+		<voice sentence="Now you made me mad."/>
+		<voice sentence="It's still time to change your mind."/>
+		<voice sentence="Join me and together we can reign a new and cleansed world!"/>
+		<voice sentence="This is not my real self, so you can't even touch me."/>
+		<voice sentence="Crawl back to your world and wait for my arrival there."/>
+	</voices>
+</monster>

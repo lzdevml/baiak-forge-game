@@ -1,0 +1,11 @@
+<npc name="Styller-Presents" script="present.lua" walkinterval="0" floorchange="0" access="5" level="1" maglevel="1">
+	<health now="150" max="150"/>
+	<look type="2784" head="19" body="86" legs="87" feet="95" addons="3"/>
+
+	<parameters>
+		<parameter key="message_greet" value="Hello |PLAYERNAME|, I am a Present diary! Say {present} to receive your gift toda or {trade} to buy items."/>
+        <parameter key="module_shop" value="1"/> 
+        <parameter key="shop_buyable" value="Stamina Refiler,7443,85000000;Refine Stone,8306,20000000;Addon Doll,9693,25000000;Skull Remover,9969,10000000"/>
+	</parameters>
+
+</npc>

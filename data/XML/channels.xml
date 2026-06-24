@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<channels>
+	<channel id="1" name="Gamemaster Chat" access="3"/>
+	<channel id="2" name="Tutor" access="1"/>
+	<channel id="3" name="Rule Violation" logged="yes"/>
+	<channel id="4" name="Bate-Papo"/>
+	<channel id="5" name="Trade" level="8" muted="120" conditionId="3" conditionMessage="You may only place one offer in two minutes.">
+		<vocation id="1-8"/>
+	</channel>
+	<channel id="6" name="Guild Points" level="2" muted="120" conditionId="3" conditionMessage="You may only place one offer in two minutes.">
+		<vocation id="0"/>
+	</channel>
+	<channel id="7" name="Loot"/>
+	<channel id="8" name="Party"/>
+	<channel id="9" name="Suporte" level="8" muted="60" conditionId="4" conditionMessage="please wait.">
+		<vocation id="1-8"/>
+	</channel>
+	<channel id="65535" name="Cast Channel"/>
+	<channel id="10" name="Prey System" active="0"/>
+	<channel id="11" name="Imbuements" active="0"/>
+</channels>

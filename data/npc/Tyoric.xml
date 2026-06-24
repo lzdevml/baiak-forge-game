@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Styller-Vincent" script="default.lua" walkinterval="2000" floorchange="0">
+	<health now="100" max="100"/>
+	<look type="2713" head="58" body="42" legs="25" feet="0" addons="3"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="shop_sellable" value="crossbow,2455,150;bow,2456,130"/>
+		<parameter key="shop_buyable" value="quiver,13461,100000;quiver,13462,500000;quiver,13463,5000000;crystalline arrow,7364,20;prismatic bolt,2547,20;spectral bolt,2543,70; enchanted spear,7367,1000;assassin star,7368,100000;crossbow,2455,360;bow,2456,200;spear,2389,20;poison arrow,2545,18;bolt,2543,3;arrow,2544,2;royal spear,7378,100"/>
+	</parameters>
+</npc>

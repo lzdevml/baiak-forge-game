@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="Weakened Devovorga" nameDescription="a weakened devovorga" race="venom" experience="7850" speed="410" manacost="0">
+	<health now="12500" max="12500"/>
+	<look type="354" corpse="12618"/>
+	<targetchange interval="2000" chance="10"/>
+	<strategy attack="100" defense="10"/>
+	<flags>
+		<flag summonable="0"/>
+		<flag attackable="1"/>
+		<flag hostile="1"/>
+		<flag illusionable="0"/>
+		<flag convinceable="0"/>
+		<flag pushable="0"/>
+		<flag canpushitems="1"/>
+		<flag canpushcreatures="1"/>
+		<flag targetdistance="1"/>
+		<flag staticattack="90"/>
+		<flag runonhealth="0"/>
+	</flags>
+	<attacks>
+		<attack name="melee" interval="2000" skill="90" attack="130" poison="1050"/>
+		<attack name="lifedrain" interval="1000" chance="7" length="6" spread="0" min="-100" max="-450"> 
+			<attribute key="areaEffect" value="redspark"/>
+		</attack>
+		<attack name="earth" interval="4000" chance="15" radius="4" target="0" min="-0" max="-650">
+			<attribute key="areaEffect" value="bigplants"/>﻿
+		</attack>
+		<attack name="poisoncondition" interval="3000" chance="28" radius="5" target="0" max="-350">
+			<attribute key="areaEffect" value="carniphila"/>
+		</attack>
+		<attack name="cursecondition" interval="4000" chance="35" radius="5" target="0" max="-550">
+			<attribute key="areaEffect" value="smallclouds"/>
+		</attack>
+	</attacks>
+	<defenses armor="40" defense="40">
+		<defense name="healing" interval="1000" chance="18" min="650" max="1950">
+			<attribute key="areaEffect" value="blueshimmer"/>
+		</defense>
+	</defenses>
+	<elements>
+		<element icePercent="10"/>
+		<element firePercent="-5"/>
+		<element energyPercent="-5"/>
+	</elements>
+	<immunities>
+		<immunity earth="1"/>
+		<immunity paralyze="1"/>
+		<immunity invisible="1"/>
+	</immunities>
+	<summons maxSummons="2">
+		<summon name="tentacles" interval="2000" chance="10" max="2"/>
+	</summons>
+	<voices interval="5000" chance="10">
+		<voice sentence="Slurp!"/>
+		<voice sentence="See how weak you are?"/>
+		<voice sentence="I tried to save you, but there's no use."/>
+		<voice sentence="This is not my real self, so you can't even touch me."/>
+	</voices>
+	<loot>
+		<item id="2148" countmax="100" chance="60000"/><!-- gold coin -->
+		<item id="2148" countmax="100" chance="60000"/><!-- gold coin -->
+		<item id="2152" countmax="10" chance="50000"/><!-- platinum coin -->
+		<item id="2514" chance="1250"/><!-- mastermind shield -->
+		<item id="12622" chance="10500"/><!-- tentacle piece -->
+		<item id="7887" chance="4250"/><!-- terra amulet -->
+		<item id="2149" countmax="8" chance="20500"/><!-- small emerald -->
+		<item id="8880" chance="2100"/><!-- swamplair armor -->
+		<item id="7413" chance="2200"/><!-- titan axe -->
+		<item id="7884" chance="1550"/><!-- terra mantle -->
+		<item id="10219" chance="2500"/><!-- sacred tree amulet -->
+		<item id="7885" chance="1450"/><!-- terra legs -->
+		<item id="9810" chance="2550"/><!-- rusty amor -->
+	</loot>
+</monster>

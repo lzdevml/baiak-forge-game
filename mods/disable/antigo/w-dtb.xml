@@ -1,0 +1,818 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<mod name='Defend The Base Event' version='1.0' author='Collocorpusek' contact='otland.net' enabled='yes'>
+	<config name='DTB_config'>
+		<![CDATA[
+			dtbConfig = {
+				base = {
+					-- Positions --
+					fromPos = {x=4914, y=3119, z=7},
+					toPos = {x=4920, y=3125, z=7},
+					showInfoPos = {x=4917, y=3122, z=7},
+					
+					-- Storage --
+					points = 44533,
+
+					-- Flags --
+					flags = {
+						[1] = {pos = {x=4919, y=3121, z=7}, id = {1879,1868,1871}},
+						[2] = {pos = {x=4919, y=3122, z=7}, id = {1879,1868,1871}},
+						[3] = {pos = {x=4919, y=3123, z=7}, id = {1879,1868,1871}},
+						
+						[4] = {pos = {x=4918, y=3124, z=7}, id = {1878,1867,1870}},
+						[5] = {pos = {x=4917, y=3124, z=7}, id = {1878,1867,1870}},
+						[6] = {pos = {x=4916, y=3124, z=7}, id = {1878,1867,1870}},
+						
+						-- NEXT FLOOR --
+						[7] = {pos = {x=4919, y=3122, z=6}, id = {1879,1868,1871}},
+						[8] = {pos = {x=4919, y=3123, z=6}, id = {1879,1868,1871}},
+						[9] = {pos = {x=4918, y=3124, z=6}, id = {1878,1867,1870}},
+						[10] = {pos = {x=4917, y=3124, z=6}, id = {1878,1867,1870}},
+						
+						-- NEXT FLOOR --
+						[11] = {pos = {x=4919, y=3123, z=5}, id = {1879,1868,1871}},
+						[12] = {pos = {x=4918, y=3124, z=5}, id = {1878,1867,1870}}
+					},
+
+					topFlagPos = {pos = {x=4919, y=3124, z=2}, id = {4990,11330,11326}}
+				},
+
+				red = {
+					teleportPos = {x = 4944, y = 3117, z = 7},
+					storage = 44534,
+					currentTime = 44535,
+					scores = 44536
+				},
+
+				blue = {
+					teleportPos = {x = 4890, y = 3121, z = 7},
+					storage = 44537,
+					currentTime = 44538,
+					scores = 44539
+				},
+
+				walls = {
+					{pos = {x = 4894, y = 3121, z = 7}, id = 6844},
+					{pos = {x = 4894, y = 3122, z = 7}, id = 6844},
+					{pos = {x = 4894, y = 3123, z = 7}, id = 6844},
+					{pos = {x = 4894, y = 3124, z = 7}, id = 6844},
+					{pos = {x = 4894, y = 3125, z = 7}, id = 6844},
+
+					{pos = {x = 4938, y = 3115, z = 7}, id = 1167},
+					{pos = {x = 4938, y = 3116, z = 7}, id = 1167},
+					{pos = {x = 4938, y = 3117, z = 7}, id = 1167},
+					{pos = {x = 4938, y = 3118, z = 7}, id = 1167}
+				},
+
+				days = {
+					['Monday'] = {'03:00:00'}, 
+					['Monday'] = {'07:00:00'}, 
+					['Monday'] = {'11:00:00'}, 
+					['Monday'] = {'15:00:00'}, 
+					['Monday'] = {'19:00:00'}, 
+
+					['Tuesday'] = {'03:00:00'}, 
+					['Tuesday'] = {'07:00:00'}, 
+					['Tuesday'] = {'11:00:00'}, 
+					['Tuesday'] = {'15:00:00'}, 
+					['Tuesday'] = {'19:00:00'}, 
+					
+					['Wednesday'] = {'03:00:00'}, 
+					['Wednesday'] = {'07:00:00'}, 
+					['Wednesday'] = {'11:00:00'}, 
+					['Wednesday'] = {'15:00:00'}, 
+					['Wednesday'] = {'19:00:00'},
+					
+					['Thursday'] = {'03:00:00'},
+					['Thursday'] = {'07:00:00'},
+					['Thursday'] = {'11:00:00'},
+					['Thursday'] = {'15:00:00'},
+					['Thursday'] = {'19:00:00'},
+					
+					['Friday'] = {'03:00:00'},
+					['Friday'] = {'07:00:00'},
+					['Friday'] = {'11:00:00'},
+					['Friday'] = {'15:00:00'},
+					['Friday'] = {'19:00:00'},
+					
+					['Saturday'] = {'03:00:00'},
+					['Saturday'] = {'07:00:00'},
+					['Saturday'] = {'11:00:00'},
+					['Saturday'] = {'15:00:00'},
+					['Saturday'] = {'19:00:00'},
+					
+					['Sunday'] = {'03:00:00'},
+					['Sunday'] = {'07:00:00'},
+					['Sunday'] = {'11:00:00'},
+					['Sunday'] = {'15:00:00'},
+					['Sunday'] = {'19:00:00'}
+				},
+
+				-- Rewards --
+				rewards = {6527},
+
+				-- Requires --
+				minLevel = 100,
+				minOfParticipants = 5, -- minimum graczy z kazdej druzyny aby event sie rozpoczal
+				maxOfParticipants = 40, -- ile moze byc maksymalnie uczestnikow w jeden druzynie
+
+				-- Storage --
+				eventStorage = 44540,
+				joinEventStorage = 44541,
+				deathStorage = 'deathDTB',
+
+				-- Times --
+				startTime = 300, -- [seconds] time with which each team is starting
+				
+				finishEvent = 30, -- [minutes]
+				timeToStartJoiningToDTB = 0.0,
+				timeToStartDTBEvent = 5.0,
+				waitTime = 20, -- seconds
+				
+				-- Base --
+				maxBasePoints = 12,
+				basePointsToControl = 10,
+				
+				text = 'BR-\nO que fazer para ganhar? Seu time deve tomar a base e manter sua posse por 3 minutos. \nPara assumir a base, você tem que estar na superioridade em torno dela. \nA base adquirida informa as bandeiras suspensas.'
+			}
+		]]>
+	</config>
+
+	<lib name='DTB_lib'>
+		<![CDATA[
+			domodlib('DTB_config')
+				
+function doCreateDtb()
+		doCreateNpc("DTB", {x = 163, y = 53, z = 7})
+		
+		return true
+end		
+
+function doCreateDtb2()
+		doCreateNpc("DTB", {x = 148, y = 51, z = 7}) 
+		
+		return true
+end
+
+local cfg = {
+	time = dtbConfig.timeToStartDTBEvent*60, 
+	cor = TEXTCOLOR_RED,
+	to = {x = 0, y = 0, z = 0},
+	pos = {x = 166, y = 53, z = 7}
+}
+
+function deleteTeleport()
+	local teleport = getTileItemById(cfg.pos, 1387).uid
+	if(teleport > 0) then
+		doRemoveItem(teleport)
+		doSendMagicEffect(cfg.pos, CONST_ME_POFF)
+		doSendAnimatedText(cfg.pos, "Closed", TEXTCOLOR_RED)
+		
+	end
+	return false
+end
+		
+function doCreateTeleportDTB()
+	if countDown(cfg.pos, cfg.time, cfg.cor) then
+		local teleport1 =doCreateTeleport(1387, cfg.to, cfg.pos)
+		doItemSetAttribute(teleport1, "uid", 25417)
+		doSendMagicEffect(cfg.pos, CONST_ME_ENERGYAREA)
+		addEvent(deleteTeleport, cfg.time * 1000)	
+		addEvent(doRemoveNPC, cfg.time * 1000)	
+		addEvent(doRemoveNPC2, cfg.time * 1000)	
+-- doRemoveNPC()		
+	end
+	return false
+end		
+
+
+
+			-------------------------------------
+			---- dla blue teamu przypisuje sie wartosci ujemne (basa)
+			---- dla red teamu przypisuje sie wartosci dodatnie (basa)
+			function doAddScoreToBase()
+				local v = dtbConfig.base
+				
+				local blue, red = 0, 0
+				for x = v.fromPos.x, v.toPos.x do
+					for y = v.fromPos.y, v.toPos.y do
+						local n, i = getTileInfo({x=x, y=y, z=v.toPos.z}).creatures, 1
+						if n ~= 0 then
+							local t = getThingfromPos({x=x, y=y, z=v.toPos.z, stackpos=i}).uid
+							while t ~= 0 do
+								if isPlayer(t) then
+									if getCreatureStorage(t, dtbConfig.red.storage) > 0 then
+										red = red + 1
+									elseif getCreatureStorage(t, dtbConfig.blue.storage) > 0 then
+										blue = blue + 1
+									end
+								end
+								i = i + 1
+								t = getThingfromPos({x=x, y=y, z=v.toPos.z, stackpos=i}).uid
+							end
+						end
+					end
+				end
+				
+				-- ustawia storage basy
+				local addPoints = getStorage(v.points) + (red - blue)
+				if math.abs(addPoints) > dtbConfig.maxBasePoints then
+					local t = 1
+					if addPoints < 0 then
+						if getStorage(dtbConfig.blue.currentTime) - 1 > 0 then
+							t = getStorage(dtbConfig.blue.currentTime) - 1
+							doSetStorage(dtbConfig.blue.currentTime, getStorage(dtbConfig.blue.currentTime) - 1)
+						else
+							doCloseDtbEvent('blue')
+						end
+					else
+						if getStorage(dtbConfig.red.currentTime) - 1 > 0 then
+							t = getStorage(dtbConfig.red.currentTime) - 1
+							doSetStorage(dtbConfig.red.currentTime, getStorage(dtbConfig.red.currentTime) - 1)
+						else
+							doCloseDtbEvent('red')
+						end
+					end
+				
+					doSetStorage(v.points, (addPoints < 0 and - dtbConfig.maxBasePoints or dtbConfig.maxBasePoints))
+					doSendAnimatedText(v.showInfoPos, secondsToClock(t), (addPoints < 0 and COLOR_LIGHTBLUE or COLOR_RED))
+				else
+					-- Add points --
+					if math.abs(addPoints) < dtbConfig.basePointsToControl then
+						doSendAnimatedText(v.showInfoPos, 'Neutral', COLOR_WHITE)
+					else
+						local t = 0
+						if addPoints < 0 then
+							if getStorage(dtbConfig.blue.currentTime) - 1 > 0 then
+								t = getStorage(dtbConfig.blue.currentTime) - 1
+								doSetStorage(dtbConfig.blue.currentTime, getStorage(dtbConfig.blue.currentTime) - 1)
+							else
+								doCloseDtbEvent('blue')
+							end
+						else
+							if getStorage(dtbConfig.red.currentTime) - 1 > 0 then
+								t = getStorage(dtbConfig.red.currentTime) - 1
+								doSetStorage(dtbConfig.red.currentTime, getStorage(dtbConfig.red.currentTime) - 1)
+							else
+								doCloseDtbEvent('red')
+							end
+						end
+						
+						local takeControl = addPoints < 0 and 'blue' or 'red'
+						doSendAnimatedText(v.showInfoPos, secondsToClock(t), (takeControl == 'blue' and COLOR_LIGHTBLUE or COLOR_RED))
+					end
+					doSetStorage(v.points, addPoints)
+				end
+
+				-- Top flag --
+				local topFlag
+				for _, id in pairs(v.topFlagPos.id) do
+					if getTileItemById(v.topFlagPos.pos, id).uid > 0 then
+						topFlag = getTileItemById(v.topFlagPos.pos, id).uid
+						break
+					end
+				end
+
+				if topFlag ~= nil then
+					if math.abs(addPoints) < dtbConfig.basePointsToControl then
+						doTransformItem(topFlag, v.topFlagPos.id[1])
+					else
+						doTransformItem(topFlag, v.topFlagPos.id[(addPoints < 0 and 3 or 2)])
+					end
+				end
+
+				-- Tapestry --
+				for i, flags in pairs(v.flags) do
+					local flag
+					for _, id in pairs(flags.id) do
+						if getTileItemById(flags.pos, id).uid > 0 then
+							flag = getTileItemById(flags.pos, id).uid
+							break
+						end
+					end
+
+					if flag ~= nil then
+						if i > math.abs(addPoints) then
+							doTransformItem(flag, flags.id[1])
+						else
+							doTransformItem(flag, flags.id[(addPoints < 0 and 3 or 2)])
+						end
+					end
+				end
+			end
+
+			function secondsToClock(sSeconds)
+				local nSeconds = tonumber(sSeconds)
+				if nSeconds == 0 then
+					return "00:00"
+				else
+					local nMins = string.format("%02.f", math.floor(nSeconds / 60))
+					local nSecs = string.format("%02.f", math.floor(nSeconds - nMins * 60))
+
+					return nMins..":"..nSecs
+				end
+			end
+
+			function getAmountParticipants()
+				local blue, red = {}, {}
+				for _, pid in ipairs(getPlayersOnline()) do
+					if getCreatureStorage(pid, dtbConfig.blue.storage) > 0 then
+						table.insert(blue, pid)
+					elseif getCreatureStorage(pid, dtbConfig.red.storage) > 0 then
+						table.insert(red, pid)
+					end
+				end
+				return blue, red
+			end
+function doRemoveDtbNpc()
+    local from = {x = 103, y = 22, z = 7}
+    local to = {x = 213, y = 93, z = 7}
+    local monster = "DTB"
+    for x = from.x, to.x do
+        for y = from.y, to.y do
+            for z = from.z, to.z do
+                pos = {x = x, y = y, z = z, stackpos = 253}
+                v = getThingfromPos(pos).uid
+                if isNpc(v) and getCreatureName(v):lower() == monster:lower() then
+                   doRemoveCreature(v)
+                end
+            end
+        end
+    end
+return true
+end
+			function openDtbEvent()
+				doSetStorage(dtbConfig.joinEventStorage, 1)
+				doCreateTeleportDTB()
+				doCreateDtb()
+				doCreateDtb2()
+				doBroadcastMessage("[DTB]\n\nDefend The Base Event Vai começar em 5 minutos.\n\n Premio de 10 crystal coin coins.")
+				addEvent(doBroadcastMessage, 60000, "[DTB]\n\nDefend The Base Event Vai começar em 4 minutos.\n\n Premio de 10 crystal coin coins.")
+				addEvent(doBroadcastMessage, 120000, "[DTB]\n\nDefend The Base Event Vai começar em 3 minutos.\n\n Premio de 10 crystal coin coins.")
+				addEvent(doBroadcastMessage, 180000, "[DTB]\n\nDefend The Base Event Vai começar em 2 minutos.\n\n Premio de 10 crystal coin coins.")
+				addEvent(doBroadcastMessage, 240000, "[DTB]\n\nDefend The Base Event Vai começar em 1 minuto.\n\n Premio de 10 crystal coin coins.")
+				addEvent(doStartDtbEvent, 300000)
+				addEvent(doRemoveDtbNpc, 300000)
+				for k, v in pairs(dtbConfig.walls) do
+					doCreateItem(v.id, 1, v.pos)
+				end
+			end
+
+			function doStartDtbEvent()
+				for _, pid in ipairs(getPlayersOnline()) do
+					if isInArray({getCreatureStorage(pid, dtbConfig.blue.storage), getCreatureStorage(pid, dtbConfig.red.storage)}, 1) then
+						doCreatureSetNoMove(pid, false)
+						doRemoveCondition(pid, CONDITION_INFIGHT)
+					end
+				end
+
+				local blue, red = getAmountParticipants()
+				if #blue >= dtbConfig.minOfParticipants and #red >= dtbConfig.minOfParticipants then
+					doBroadcastMessage('[DTB]\n\nLet\'s A batalha iniciou! Os portões foram abertos!', MESSAGE_EVENT_ADVANCE)
+					addEvent(
+						function() 
+							if getStorage(dtbConfig.red.currentTime) < getStorage(dtbConfig.blue.currentTime) then
+								doCloseDtbEvent('red')
+							elseif getStorage(dtbConfig.red.currentTime) > getStorage(dtbConfig.blue.currentTime) then
+								doCloseDtbEvent('blue')
+							else
+								doCloseDtbEvent('draw')
+							end
+						end, 
+						dtbConfig.finishEvent * 1000 * 60
+					)
+				else
+					doBroadcastMessage('[DTB]\n\nEvento não foi iniciado por falta de Players!', MESSAGE_INFO_DESCR)
+					for _, pid in ipairs(getPlayersOnline()) do
+						-- Storages --
+						if getCreatureStorage(pid, dtbConfig.blue.storage) == 1 then
+							doCreatureSetStorage(pid, dtbConfig.blue.storage, -1)		
+							-- TP --
+							doTeleportThing(pid, getTownTemplePosition(getPlayerTown(pid)), true)
+							doRemoveCondition(pid, CONDITION_OUTFIT)
+						elseif getCreatureStorage(pid, dtbConfig.red.storage) == 1 then
+							doCreatureSetStorage(pid, dtbConfig.red.storage, -1)
+							-- TP --
+							doTeleportThing(pid, getTownTemplePosition(getPlayerTown(pid)), true)
+							doRemoveCondition(pid, CONDITION_OUTFIT)
+						end
+					end
+
+					-- Clean tabeli i event storage --
+					doSetStorage(dtbConfig.eventStorage, -1)
+				end
+
+				for k, v in pairs(dtbConfig.walls) do
+					doRemoveItem(getTileItemById(v.pos, v.id).uid)
+				end
+				
+				doSetStorage(dtbConfig.blue.currentTime, dtbConfig.startTime)
+				doSetStorage(dtbConfig.red.currentTime, dtbConfig.startTime)
+				doSetStorage(dtbConfig.joinEventStorage, -1)
+			end
+
+			function doCloseDtbEvent(winTeam)
+				if getStorage(dtbConfig.eventStorage) ~= -1 then
+					doBroadcastMessage('[DTB]\n\nEvento terminou! '..(winTeam == 'draw' and ('Não teve time vencedor. A batalha foi encerrada.') or ('Winner is: ' .. winTeam .. ' team. Congratulations!')), MESSAGE_INFO_DESCR)
+					local reward = dtbConfig.rewards[math.random(#dtbConfig.rewards)]
+					
+					for _, eventPlayers in ipairs(getPlayersOnline()) do
+						if getCreatureStorage(eventPlayers, dtbConfig.blue.storage) == 1 then
+							doCreatureSetStorage(eventPlayers, dtbConfig.blue.storage, -1) -- clean storage
+							if winTeam == 'blue' then
+								doPlayerAddItem(eventPlayers, reward, 10) -- blue win
+							end
+							
+							doTeleportThing(eventPlayers, getTownTemplePosition(getPlayerTown(eventPlayers))) -- tp
+							doCreatureAddHealth(eventPlayers, getCreatureMaxHealth(eventPlayers) - getCreatureHealth(eventPlayers))
+							doCreatureAddMana(eventPlayers, getCreatureMaxMana(eventPlayers) - getCreatureMana(eventPlayers))
+							
+							doRemoveCondition(eventPlayers, CONDITION_OUTFIT) -- outfit
+							doRemoveConditions(eventPlayers)
+						elseif getCreatureStorage(eventPlayers, dtbConfig.red.storage) == 1 then
+							doCreatureSetStorage(eventPlayers, dtbConfig.red.storage, -1) -- clean storage
+							if winTeam == 'red' then
+								doPlayerAddItem(eventPlayers, reward, 10) -- red win
+							end
+
+							doTeleportThing(eventPlayers, getTownTemplePosition(getPlayerTown(eventPlayers))) -- tp
+							doCreatureAddHealth(eventPlayers, getCreatureMaxHealth(eventPlayers) - getCreatureHealth(eventPlayers))
+							doCreatureAddMana(eventPlayers, getCreatureMaxMana(eventPlayers) - getCreatureMana(eventPlayers))
+							
+							doRemoveCondition(eventPlayers, CONDITION_OUTFIT) -- outfit
+							doRemoveConditions(eventPlayers)
+						end
+						
+						doCreatureSetStorage(eventPlayers, dtbConfig.deathStorage, 0)
+					end
+
+					-- Clean all storages --
+					addEvent(doSetStorage, 2000, dtbConfig.base.points, 0)
+
+					addEvent(doSetStorage, 2000, dtbConfig.red.scores, 0)
+					addEvent(doSetStorage, 2000, dtbConfig.red.currentTime, 10000)
+					addEvent(doSetStorage, 2000, dtbConfig.blue.scores, 0)
+					addEvent(doSetStorage, 2000, dtbConfig.blue.currentTime, 10000)
+
+					doSetStorage(dtbConfig.eventStorage, -1)
+					doSetStorage(dtbConfig.joinEventStorage, -1)
+
+					addEvent(cleanFlags, 2000) -- clean flags and tapestry
+				end
+			end
+			
+			function cleanFlags()
+				local topFlag
+				for _, id in pairs(dtbConfig.base.topFlagPos.id) do
+					if getTileItemById(dtbConfig.base.topFlagPos.pos, id).uid > 0 then
+						topFlag = getTileItemById(dtbConfig.base.topFlagPos.pos, id).uid
+						break
+					end
+				end
+
+				if topFlag ~= nil then
+					doTransformItem(topFlag, dtbConfig.base.topFlagPos.id[1])
+				end
+
+				-- Tapestry --
+				for i, flags in pairs(dtbConfig.base.flags) do
+					local flag
+					for _, id in pairs(flags.id) do
+						if getTileItemById(flags.pos, id).uid > 0 then
+							flag = getTileItemById(flags.pos, id).uid
+							break
+						end
+					end
+
+					if flag ~= nil then
+						doTransformItem(flag, flags.id[1])
+					end
+				end
+			end
+			
+			function doStartCountingDtbEvent(x)
+				if dtbConfig.timeToStartJoiningToDTB-x > 0 then
+					doBroadcastMessage('[DTB]\n\nDefend The Base Event sera iniciado em '..dtbConfig.timeToStartJoiningToDTB+dtbConfig.timeToStartDTBEvent-x..' minutos, compremio de 50 Tokens.')
+					addEvent(doStartCountingDtbEvent, 60*1000, x+1)
+				else
+					openDtbEvent()
+				end
+			end
+		]]>
+	</lib>
+
+	<talkaction words='!startdtb' access='5' event='script'>
+		<![CDATA[
+			domodlib('DTB_config')
+			domodlib('DTB_lib')
+
+			function onSay(cid, words, param)
+				if getStorage(dtbConfig.eventStorage) ~= 1 then
+					doStartCountingDtbEvent(0)
+					doSetStorage(dtbConfig.eventStorage, 1)
+				else
+					doPlayerSendCancel(cid, 'Você não pode fazer isso se o "evento DEFEND THE BASE" ainda estiver ativado.')
+				end
+				return true
+			end
+		]]>
+	</talkaction>
+
+	<movement type='StepIn' uniqueid='25417' event='script'>
+		<![CDATA[
+			domodlib('DTB_config')
+			domodlib('DTB_lib')
+
+			local conditionBlue = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionBlue, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionBlue, {lookType = 335, lookHead = 87, lookBody = 87, lookLegs = 87, lookFeet = 87, lookAddons = 3})
+
+			local conditionRed = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionRed, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionRed, {lookType = 335, lookHead = 94, lookBody = 94, lookLegs = 94, lookFeet = 94, lookAddons = 3})
+
+			
+			local conditionBlue = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionBlue, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionBlue, {lookType = 335, lookHead = 87, lookBody = 87, lookLegs = 87, lookFeet = 87, lookAddons = 3})
+
+			local conditionRed = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionRed, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionRed, {lookType = 335, lookHead = 94, lookBody = 94, lookLegs = 94, lookFeet = 94, lookAddons = 3})
+
+			function onStepIn(cid, item, position, fromPosition)
+local blue, red = getAmountParticipants()
+				
+				--if param == 'info' then
+					if getStorage(dtbConfig.eventStorage) == 1 and getStorage(dtbConfig.joinEventStorage) ~= 1 and (#blue > 0 or #red > 0) then
+						return doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, 'DTB em andamento.\nRed time: '..secondsToClock(getStorage(dtbConfig.red.currentTime))..'\nBlue time: '..secondsToClock(getStorage(dtbConfig.blue.currentTime))..'')
+					--end
+					elseif getStorage(dtbConfig.joinEventStorage) == 1 then
+						if getPlayerLevel(cid) < dtbConfig.minLevel then
+						    doTeleportThing(cid, fromPosition, true)
+							return doPlayerSendCancel(cid, 'Você não tem o level minimo para participar. level minimo de [' .. dtbConfig.minLevel .. ']')
+			
+						elseif #blue == dtbConfig.maxOfParticipants and #red == dtbConfig.maxOfParticipants then
+						    doTeleportThing(cid, fromPosition, true)
+							return doPlayerSendCancel(cid, 'O limite máximo de jogadores no evento foi atingido!')
+						elseif getCreatureStorage(cid, dtbConfig.blue.storage) == 1 or getCreatureStorage(cid, dtbConfig.red.storage) == 1 then
+							return doPlayerSendCancel(cid, 'Você já está no evento!')
+						end
+					
+						
+						if #blue > 0 or #red > 0 then
+							if #blue > #red then
+								doTeleportThing(cid, dtbConfig.red.teleportPos)
+								doCreatureSetStorage(cid, dtbConfig.red.storage, 1)
+								doAddCondition(cid, conditionRed)
+							elseif #blue < #red then
+								doTeleportThing(cid, dtbConfig.blue.teleportPos)
+								doCreatureSetStorage(cid, dtbConfig.blue.storage, 1)
+								doAddCondition(cid, conditionBlue)
+							elseif #blue == #red then
+								local team = math.random(2) == 1 and dtbConfig.blue or dtbConfig.red
+								doTeleportThing(cid, team.teleportPos)
+								doCreatureSetStorage(cid, team.storage, 1)
+								doAddCondition(cid, getCreatureStorage(cid, dtbConfig.blue.storage) > 0 and conditionBlue or conditionRed)
+							end
+						else
+							local team = math.random(2) == 1 and dtbConfig.blue or dtbConfig.red
+							doTeleportThing(cid, team.teleportPos)
+							doCreatureSetStorage(cid, team.storage, 1)
+							doAddCondition(cid, getCreatureStorage(cid, dtbConfig.blue.storage) > 0 and conditionBlue or conditionRed)
+						end
+
+						doCreatureSetNoMove(cid, false)
+						doPlayerPopupFYI(cid, dtbConfig.text)
+						doCreatureSetStorage(cid, dtbConfig.deathStorage, 0)
+						doAddCondition(cid, createConditionObject(CONDITION_INFIGHT, -1))
+					else
+					    doTeleportThing(cid, fromPosition, true)
+						doPlayerSendCancel(cid, 'Ainda não é tempo!')
+					end
+				return true
+			end
+		]]>
+	</movement>
+
+	<!-- Events -->
+	<event type='login' name='DTB_event_login' event='script'>
+		<![CDATA[
+			domodlib('DTB_config')
+			domodlib('DTB_lib')
+
+			function onLogin(cid)
+				if getCreatureStorage(cid, dtbConfig.blue.storage) == 1 then
+					doCreatureSetStorage(cid, dtbConfig.blue.storage, -1)
+					doCreatureSetStorage(cid, dtbConfig.deathStorage, 0)
+					
+					doTeleportThing(cid, getTownTemplePosition(getPlayerTown(cid)), true)
+					doRemoveCondition(cid, CONDITION_OUTFIT)
+				elseif getCreatureStorage(cid, dtbConfig.red.storage) == 1 then
+					doCreatureSetStorage(cid, dtbConfig.red.storage, -1)
+					doCreatureSetStorage(cid, dtbConfig.deathStorage, 0)
+
+					doTeleportThing(cid, getTownTemplePosition(getPlayerTown(cid)), true)
+					doRemoveCondition(cid, CONDITION_OUTFIT)
+				end
+
+				registerCreatureEvent(cid, 'DTB_statsChange')
+				registerCreatureEvent(cid, 'DTB_target')
+				return true
+			end
+		]]>
+	</event>
+
+	<event type='statschange' name='DTB_statsChange' event='script'>
+		<![CDATA[
+			domodlib('DTB_config')
+			domodlib('DTB_lib')
+			
+			local conditionBlue = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionBlue, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionBlue, {lookType = 335, lookHead = 87, lookBody = 87, lookLegs = 87, lookFeet = 87, lookAddons = 3})
+
+			local conditionRed = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionRed, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionRed, {lookType = 335, lookHead = 94, lookBody = 94, lookLegs = 94, lookFeet = 94, lookAddons = 3})
+				
+			local conditionWhite = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionWhite, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionWhite, {lookType = 335, lookHead = 0, lookBody = 0, lookLegs = 0, lookFeet = 0, lookAddons = 3})
+
+			function onStatsChange(cid, attacker, type, combat, value)
+				if type == 1 and getCreatureHealth(cid) <= value then
+					if isPlayer(cid) then
+						if getCreatureStorage(cid, dtbConfig.red.storage) > 0 then
+							doTeleportThing(cid, dtbConfig.red.teleportPos)
+							doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'Você está a morto e você tem que esperar '..dtbConfig.waitTime..' segundos para voltar pra batalha.')
+							doCreatureSetNoMove(cid, true)
+							doCreatureSetStorage(cid, dtbConfig.deathStorage, 1)
+							addEvent(
+								function(cid)
+									if isPlayer(cid) then
+										doCreatureSetNoMove(cid, false)
+										
+										doRemoveCondition(cid, CONDITION_OUTFIT)
+										doAddCondition(cid, conditionRed)
+										doCreatureSetStorage(cid, dtbConfig.deathStorage, 0)
+										doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'Você entrou no evento.')
+									end
+								end,
+								dtbConfig.waitTime * 1000,
+								cid
+							)
+							
+							doRemoveConditions(cid)
+
+							doCreatureAddHealth(cid, getCreatureMaxHealth(cid) - getCreatureHealth(cid))
+							doCreatureAddMana(cid, getCreatureMaxMana(cid) - getCreatureMana(cid))
+							doAddCondition(cid, conditionWhite)
+							return false
+						elseif getCreatureStorage(cid, dtbConfig.blue.storage) > 0 then
+							doTeleportThing(cid, dtbConfig.blue.teleportPos)
+							doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'Você está morto e você tem que esperar '..dtbConfig.waitTime..' segundos para voltar pra batalha.')
+							doCreatureSetNoMove(cid, true)
+							doCreatureSetStorage(cid, dtbConfig.deathStorage, 1)
+							addEvent(
+								function(cid)
+									if isPlayer(cid) then
+										doCreatureSetNoMove(cid, false)
+										
+										doRemoveCondition(cid, CONDITION_OUTFIT)
+										doAddCondition(cid, conditionBlue)
+										doCreatureSetStorage(cid, dtbConfig.deathStorage, 0)
+										doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'Você pode participar do evento novamente.')
+									end
+								end,
+								dtbConfig.waitTime * 1000,
+								cid
+							)
+							doRemoveConditions(cid)
+							
+							doCreatureAddHealth(cid, getCreatureMaxHealth(cid) - getCreatureHealth(cid))
+							doCreatureAddMana(cid, getCreatureMaxMana(cid) - getCreatureMana(cid))
+							doAddCondition(cid, conditionWhite)
+							return false
+						end
+					end
+				end
+				return true
+			end
+		]]>
+	</event>
+
+	<event type='combat' name='DTB_target' event='script'>
+		<![CDATA[
+			domodlib('DTB_config')
+			domodlib('DTB_lib')
+
+			function onCombat(cid, target)
+				if isPlayer(cid) and isPlayer(target) then
+					if getCreatureStorage(cid, dtbConfig.red.storage) == 1 and getCreatureStorage(target, dtbConfig.red.storage) == 1 then
+						return doPlayerSendCancel(cid, 'Você não pode atacar seus companheiros de equipe.') and false
+					elseif getCreatureStorage(cid, dtbConfig.blue.storage) == 1 and getCreatureStorage(target, dtbConfig.blue.storage) == 1 then
+						return doPlayerSendCancel(cid, 'Você não pode atacar seus companheiros de equipe.') and false
+					elseif getCreatureStorage(cid, dtbConfig.deathStorage) == 1 then
+						return doPlayerSendCancel(cid, 'Você não pode atacar seus companheiros de equipe.') and false
+					end
+				end
+				return true
+			end
+		]]>
+	</event>
+
+	<globalevent name='DTB_startEvent' interval='1000' event='script'>
+		<![CDATA[
+			domodlib('DTB_config')
+			domodlib('DTB_lib')
+
+			local daysOpen = {}
+
+			for k, v in pairs(dtbConfig.days) do
+				table.insert(daysOpen, k)
+			end
+
+			function onThink(interval)
+				if isInArray(daysOpen, os.date('%A')) then
+					if isInArray(dtbConfig.days[os.date('%A')], os.date('%X', os.time())) then
+						if getStorage(dtbConfig.eventStorage) ~= 1 then
+							doStartCountingDtbEvent(0)
+							doSetStorage(dtbConfig.eventStorage, 1)
+						end
+					end
+				end
+				return true
+			end
+		]]>
+	</globalevent>
+	
+	<globalevent name='DTB_base' interval='1000' event='script'>
+		<![CDATA[
+			domodlib('DTB_config')
+			domodlib('DTB_lib')
+
+			function onThink(interval)
+				if getStorage(dtbConfig.eventStorage) == 1 then
+					doAddScoreToBase()
+				end
+				return true
+			end
+		]]>
+	</globalevent>
+	
+	
+	<globalevent name='DTB_outfits' interval='1000' event='script'>
+		<![CDATA[
+			domodlib('DTB_config')
+
+			local conditionBlue = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionBlue, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionBlue, {lookType = 335, lookHead = 87, lookBody = 87, lookLegs = 87, lookFeet = 87, lookAddons = 3})
+
+			local conditionRed = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionRed, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionRed, {lookType = 335, lookHead = 94, lookBody = 94, lookLegs = 94, lookFeet = 94, lookAddons = 3})
+				
+			local conditionWhite = createConditionObject(CONDITION_OUTFIT)
+				setConditionParam(conditionWhite, CONDITION_PARAM_TICKS, -1)
+				addOutfitCondition(conditionWhite, {lookType = 335, lookHead = 0, lookBody = 0, lookLegs = 0, lookFeet = 0, lookAddons = 3})
+			
+			function onThink(interval)
+				if getStorage(dtbConfig.eventStorage) == 1 then
+					for _, cid in ipairs(getPlayersOnline()) do
+						if getCreatureStorage(cid, dtbConfig.deathStorage) > 0 then
+							doRemoveCondition(cid, CONDITION_OUTFIT)
+							doAddCondition(cid, conditionWhite)
+						elseif getCreatureStorage(cid, dtbConfig.blue.storage) > 0 then
+							doRemoveCondition(cid, CONDITION_OUTFIT)
+							doAddCondition(cid, conditionBlue)
+						elseif getCreatureStorage(cid, dtbConfig.red.storage) > 0 then
+							doRemoveCondition(cid, CONDITION_OUTFIT)
+							doAddCondition(cid, conditionRed)
+						end
+					end
+				end
+				return true
+			end
+		]]>
+	</globalevent>
+	
+	<globalevent name='DTB_start' type='startup' event='script'>
+		<![CDATA[
+			domodlib('DTB_config')
+			
+			function onStartup()
+				addEvent(doSetStorage, 2000, dtbConfig.base.points, 0)
+
+				addEvent(doSetStorage, 2000, dtbConfig.red.scores, 0)
+				addEvent(doSetStorage, 2000, dtbConfig.red.currentTime, 10000)
+				addEvent(doSetStorage, 2000, dtbConfig.blue.scores, 0)
+				addEvent(doSetStorage, 2000, dtbConfig.blue.currentTime, 10000)
+
+				doSetStorage(dtbConfig.eventStorage, -1)
+				doSetStorage(dtbConfig.joinEventStorage, -1)
+				return true
+			end
+		]]>
+	</globalevent>
+</mod>
