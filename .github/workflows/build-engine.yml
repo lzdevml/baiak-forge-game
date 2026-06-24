@@ -29,8 +29,11 @@ jobs:
       - name: Compile (make)
         working-directory: src
         run: |
-          make -j$(nproc) 2>&1 | tee /tmp/build.log
-          test -f theotxserver && echo "BINARY OK" || (echo "BUILD FAILED"; tail -40 /tmp/build.log; exit 1)
+          mkdir -p objects
+          sed -i 's/-march=native[[:space:]]*-mtune=native/-O2/' Makefile
+          sed -i 's/-D__ROOT_PERMISSION__/-D__ROOT_PERMISSION__ -DOPENSSL_API_COMPAT=0x10100000L -Wno-deprecated-declarations/' Makefile
+          make -j$(nproc) 2>&1 | tee /tmp/build.log | grep -iE "error:|fatal error" | head -60 || true
+          test -f theotxserver && echo "BINARY OK" || (echo "===BUILD FAILED==="; exit 1)
 
       - name: Upload binary
         if: success()
