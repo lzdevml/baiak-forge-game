@@ -1,33 +1,10 @@
 # =============================================================
-# Baiak Forge — engine OTX 2.x (NewStyller) compilado no Linux
-# Multi-stage: build (compila) -> runtime (binario + datapack).
-# Protocolo 8.60. Patch u32 aplicado no AddPlayerStats.
+# Baiak Forge — engine OTX 2.x (NewStyller), RUNTIME-ONLY.
+# O binario e compilado FORA do VPS (GitHub Actions, off-VPS) e commitado
+# em bin/theotxserver. Aqui so copiamos -> deploy rapido, ZERO compile no VPS.
+# (Compilar no VPS de producao causou OOM/queda — nunca mais.)
 # =============================================================
-
-# ---- build ----
-FROM ubuntu:22.04 AS build
-ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update -qq && apt-get install -y --no-install-recommends \
-      g++ make python3 ca-certificates \
-      liblua5.1-0-dev libxml2-dev \
-      libboost-system-dev libboost-thread-dev libboost-filesystem-dev libboost-regex-dev \
-      libgmp-dev libmysqlclient-dev libssl-dev libsqlite3-dev libunwind-dev libgoogle-perftools-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /engine
-COPY src/ ./src/
-COPY infra/ ./infra/
-# Patch u32 (AddPlayerStats -> uint32) antes de compilar
-RUN python3 infra/u32-patch.py src/protocolgame.cpp
-# Ajustes de build: criar objects/, tirar -march=native (portabilidade),
-# expor APIs OpenSSL 1.1 p/ codigo OTX antigo (OpenSSL 3.0 no ubuntu 22.04).
-RUN cd src && mkdir -p objects && \
-    sed -i 's/-march=native[[:space:]]*-mtune=native/-O2/' Makefile && \
-    sed -i 's/-D__ROOT_PERMISSION__/-D__ROOT_PERMISSION__ -DOPENSSL_API_COMPAT=0x10100000L -Wno-deprecated-declarations/' Makefile && \
-    make -j"$(nproc)" 2>&1 | tail -80 && test -f theotxserver
-
-# ---- runtime ----
-FROM ubuntu:22.04 AS runtime
+FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -qq && apt-get install -y --no-install-recommends \
       liblua5.1-0 libxml2 libmysqlclient21 \
@@ -37,14 +14,13 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /srv
-# datapack + config + binario
 COPY data/ ./data/
 COPY mods/ ./mods/
 COPY config.lua ./config.lua
 COPY styller.sql ./styller.sql
-COPY --from=build /engine/src/theotxserver ./theotxserver
+COPY bin/theotxserver ./theotxserver
 COPY infra/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh ./theotxserver && mkdir -p logs
 
-EXPOSE 7171 7172
+EXPOSE 7181 7182
 ENTRYPOINT ["/entrypoint.sh"]
