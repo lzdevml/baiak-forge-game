@@ -23,7 +23,7 @@ services:
       DB_NAME: baiakforge
       DB_USER: root
       DB_PASS: ${DB_ROOT_PASS:-forgetest123}
-      SERVER_IP: ${SERVER_IP:-187.127.5.64}
+      SERVER_IP: ${SERVER_IP:-127.0.0.1}
       SERVER_NAME: ${SERVER_NAME:-Baiak Forge}
       LOGIN_PORT: "7181"
       GAME_PORT: "7182"
