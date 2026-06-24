@@ -20,6 +20,11 @@ sed -i "s|^[[:space:]]*sqlPass = .*|	sqlPass = \"${DB_PASS}\"|"       "$CFG"
 sed -i "s|^[[:space:]]*sqlDatabase = .*|	sqlDatabase = \"${DB_NAME}\"|" "$CFG"
 sed -i "s|^[[:space:]]*ip = .*|	ip = \"${SRV_IP}\"|"                  "$CFG"
 sed -i "s|^[[:space:]]*serverName = .*|	serverName = \"${SRV_NAME}\"|"  "$CFG"
+# portas via env (teste usa 7181/7182 p/ nao conflitar com o jogo no ar)
+LOGIN_PORT="${LOGIN_PORT:-7171}"; GAME_PORT="${GAME_PORT:-7172}"; STATUS_PORT="${STATUS_PORT:-${LOGIN_PORT}}"
+sed -i "s|^[[:space:]]*loginPort = .*|	loginPort = ${LOGIN_PORT}|"   "$CFG"
+sed -i "s|^[[:space:]]*gamePort = .*|	gamePort = ${GAME_PORT}|"      "$CFG"
+sed -i "s|^[[:space:]]*statusPort = .*|	statusPort = ${STATUS_PORT}|" "$CFG"
 
 echo "[forge-otx] Aguardando MariaDB ${DB_HOST}:${DB_PORT}..."
 i=0

@@ -1,0 +1,41 @@
+# Baiak Forge — deploy de TESTE do NewStyller (OTX 2.x), isolado.
+# mariadb proprio (nao toca o DB do jogo no ar) + engine compilada do Dockerfile.
+# Portas 7181/7182 (jogo atual usa 7171/7172) -> os dois rodam juntos.
+services:
+  mariadb:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASS:-forgetest123}
+      MARIADB_DATABASE: baiakforge
+    volumes:
+      - forge-db:/var/lib/mysql
+    networks: [forge-net]
+
+  engine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      DB_HOST: mariadb
+      DB_PORT: "3306"
+      DB_NAME: baiakforge
+      DB_USER: root
+      DB_PASS: ${DB_ROOT_PASS:-forgetest123}
+      SERVER_IP: ${SERVER_IP:-187.127.5.64}
+      SERVER_NAME: ${SERVER_NAME:-Baiak Forge}
+      LOGIN_PORT: "7181"
+      GAME_PORT: "7182"
+      STATUS_PORT: "7181"
+    ports:
+      - "7181:7181"
+      - "7182:7182"
+    depends_on: [mariadb]
+    networks: [forge-net]
+
+volumes:
+  forge-db:
+
+networks:
+  forge-net:
