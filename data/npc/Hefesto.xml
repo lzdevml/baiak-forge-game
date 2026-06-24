@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<npc name="Hefesto" script="mercadogod.lua" walkinterval="0" floorchange="0">
-	<health now="100" max="100"/>
-	<look type="130" head="11" body="125" legs="114" feet="11" addons="3" corpse="5995"/>	
-	<parameters>
-<parameter key="message_greet" value="Olá |PLAYERNAME|, eu vendo items especias por {DC}, diga {trade} para ver nosso menu, para saber mais sobre o item diga por exemplo: {look vip rp shield}!"/>
-<!-- <parameter key="message_greet_en" value="Olá |PLAYERNAME|, eu vendo items especias por {DC}, diga {trade} para ver nosso menu, para saber mais sobre o item diga {ex: look vip rp shield}!"/> -->
-</parameters>
-</npc>

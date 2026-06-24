@@ -15,16 +15,15 @@ local talkUser = NPCHANDLER_CONVbehavior == CONVERSATION_DEFAULT and 0 or cid
 local shopWindow = {}
 local moeda = 6527 -- id da sua moeda vip
 local t = {
-	  [5953] = {price = 25},
-      [7440] = {price = 90},
-	  [10502] = {price = 30},
-	  [2164] = {price = 6},
-	  [2197] = {price = 6},
-	  [12328] = {price = 105},
-	  [8306] = {price = 150},
-      [5957] = {price = 200},
-      [9693] = {price = 240},
-      [6132] = {price = 140}
+	  [7440] = {price = 800},
+	  [7443] = {price = 800},
+	  [8981] = {price = 1500},
+	  [5468] = {price = 500},
+          [2156] = {price = 800},
+          [2153] = {price = 700},
+          [2154] = {price = 700},
+          [2155] = {price = 700},
+	  [2346] = {price = 200}
       }
 	  
 local onBuy = function(cid, item, subType, amount, ignoreCap, inBackpacks)

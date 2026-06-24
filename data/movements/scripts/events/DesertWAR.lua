@@ -8,15 +8,12 @@ function onStepIn(cid, item, position, fromPosition)
 	if getPlayerAccess(cid) > 3 or getPlayerLevel(cid) < 80 then
 		doTeleportThing(cid, getTownTemplePosition(getPlayerTown(cid)))
 		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "Você precisa ser no mínimo level 80!")
-		return true
-	end
-
-	if getGlobalStorageValue(4) >= getGlobalStorageValue(5) then
+	elseif getGlobalStorageValue(4) >= getGlobalStorageValue(5) then
 		setPlayerStorageValue(cid, 52, 1)
 		setGlobalStorageValue(5, getGlobalStorageValue(5)+1)
 		doAddCondition(cid, conditionBlack)
 		doRemoveCondition(cid, CONDITION_INVISIBLE)
-		doTeleportThing(cid, {x = 32538, y = 32409, z = 7})
+		doTeleportThing(cid, {x= 713, y= 763, z=6})
 		doCreatureSetNoMove(cid, true)
 		doPlayerPopupFYI(cid, "-BR-\nVocê entrou! Aguarde o ínicio do evento. Você precisa matar todos os players do time adversário e SOBREVIVER para obter a recompensa.\n\n-ENG-\nYou entered! Wait for the event start. You need to kill all the players of the opposing team and SURVIVE for win the reward.")
 	else
@@ -24,7 +21,7 @@ function onStepIn(cid, item, position, fromPosition)
 		setGlobalStorageValue(4, getGlobalStorageValue(4)+1)
 		doAddCondition(cid, conditionRed)
 		doRemoveCondition(cid, CONDITION_INVISIBLE)
-		doTeleportThing(cid, {x = 32595, y = 32377, z = 7})
+		doTeleportThing(cid, {x= 656, y= 795, z=6})
 		doPlayerPopupFYI(cid, "-BR-\nVocê entrou! Aguarde o ínicio do evento. Você precisa matar todos os players do time adversário e SOBREVIVER para obter a recompensa.\n\n-ENG-\nYou entered! Wait for the event start. You need to kill all the players of the opposing team and SURVIVE for win the reward.")
 		doCreatureSetNoMove(cid, true)
 	end

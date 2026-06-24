@@ -1,9 +1,0 @@
-<raid>
-<announce delay="1000" type="event" message="Beware! Beware of the Halloween Hare in INVOCATION ROOM!" />
-
-  <!--Single Spawns-->
-  <singlespawn delay="1000" name="halloween hare" x="1075" y="2293" z="7" />
-  <!--Area Spawns-->
-
-
-</raid>

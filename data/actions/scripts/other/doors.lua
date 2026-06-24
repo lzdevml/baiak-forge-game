@@ -13,6 +13,7 @@ end
 function onUse(cid, item, fromPosition, itemEx, toPosition)
 local nuevas = {
 {closed=10269, open=10270},
+{closed=10271, open=10277},
 {closed=10272, open=10273},
 {closed=10274, open=10275},
 {closed=10276, open=10277},
@@ -30,9 +31,6 @@ local nuevas = {
 {closed=10484, open=10485},
 {closed=10488, open=10490},
 {closed=10489, open=10491},
--- Novas
-{closed=16534, open=16535},
-{closed=16525, open=16526}
 }
 for ia = 1,#nuevas do
 if (item.itemid == nuevas[ia].closed) then
@@ -43,49 +41,14 @@ end
 end
 
 if(getItemLevelDoor(item.itemid) > 0) then
-	if item.aid == 35099 then
-		local guildId = getPlayerGuildId(cid)
-		if (guildId > 0) then
-			if getPlayerLevel(cid) >= Castle48h.minLevel then
-				if Castle48h.started then
-					doPlayerSendCancel(cid, 'Aguarde o resultado final para saber quem ter? o dom?nio.')
-					return true
-				end					
-				if guildId ~= Castle48h.dominant then
-					doPlayerSendCancel(cid, 'Este castelo n?o percente ? sua guild.')
-					return true
-				end
+if(item.actionid > 0 and getPlayerLevel(cid) >= (item.actionid - getItemLevelDoor(item.itemid))) then
+doTransformItem(item.uid, item.itemid + 1)
+doTeleportThing(cid, toPosition, TRUE)
+else
+doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "Only the worthy may pass.")
+end
 
-				if Castle48h:memberInside(cid) then
-					unregisterCreatureEvent(cid, 'Castle48hDeath')
-					Castle48h:memberInside(cid, false)
-					doTeleportThing(cid, {x = toPosition.x, y = toPosition.y +1, z = toPosition.z, stackpos = STACKPOS_TOP_CREATURE})
-					doSendMagicEffect(getCreaturePosition(cid), CONST_ME_MAGIC_GREEN)
-					return true
-				else
-					registerCreatureEvent(cid, 'Castle48hDeath')
-					Castle48h:memberInside(cid, true)
-					doTeleportThing(cid, {x = toPosition.x, y = toPosition.y -1, z = toPosition.z, stackpos = STACKPOS_TOP_CREATURE})
-					doSendMagicEffect(getCreaturePosition(cid), CONST_ME_MAGIC_GREEN)
-					return true
-				end
-			else
-				doPlayerSendCancel(cid, 'Voc? precisa ser level ' .. Castle48h.minLevel .. '+ para passar.')
-				return true
-			end
-		else
-			doPlayerSendCancel(cid, 'Voc? n?o ? membro de uma guild.')
-			return true
-		end
-	end
-
-	if(item.actionid > 0 and getPlayerLevel(cid) >= (item.actionid - getItemLevelDoor(item.itemid))) then
-		doTransformItem(item.uid, item.itemid + 1)
-		doTeleportThing(cid, toPosition, TRUE)
-	else
-		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "Only the worthy may pass.")
-	end
-	return true
+return TRUE
 end
 
 if(isInArray(specialDoors, item.itemid) == TRUE) then

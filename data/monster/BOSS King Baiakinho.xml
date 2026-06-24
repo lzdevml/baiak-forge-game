@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monster name="BOSS King Baiakinho" nameDescription="BOSS King Baiakinho" race="fire" experience="500000" speed="640" manacost="0">
+<health now="5400000" max="5400000"/>
+<look type="12" head="9" body="86" legs="9" feet="94" corpse="6068"/>
+<targetchange interval="5000" chance="8"/>
+<strategy attack="80" defense="20"/>
+
+<flags>
+	<flag summonable="0"/>
+	<flag attackable="1"/>
+	<flag hostile="1"/>
+	<flag illusionable="0"/>
+	<flag convinceable="0"/>
+	<flag pushable="0"/>
+	<flag canpushitems="1"/>
+	<flag canpushcreatures="1"/>
+	<flag targetdistance="1"/>
+	<flag staticattack="85"/>
+	<flag runonhealth="0"/>
+</flags>
+
+<attacks>
+    <attack name="melee" interval="1000" skill="120" attack="505"/>
+    <attack name="ice" interval="1000" chance="1000" length="7" spread="0" min="-2050" max="-3850">
+        <attribute key="areaEffect" value="explosion"/>
+    </attack>
+<attack name="ice" interval="1000" chance="1000" range="7" target="1" min="-2460" max="-2600">
+		<attribute key="shootEffect" value="smallice"/>
+		<attribute key="areaEffect" value="iceattack"/>
+	</attack>
+</attacks>
+
+<defenses armor="35" defense="45"/>
+
+<elements>
+    <element icePercent="-10"/>
+    <element energyPercent="35"/>
+    <element deathPercent="-12"/>
+</elements>
+
+<immunities>
+	<immunity fire="1"/>
+        <immunity invisible="1"/>
+        <immunity paralyze="1"/>
+</immunities>
+
+<voices interval="5000" chance="10">
+	<voice sentence="Venus Boss VAI TE PEGAR MUHAHAHAA!" yell="1"/>
+</voices>
+
+<loot>
+	<item id="12658" count="1" chance="500"/> --Ring
+	<item id="6300" count="1" chance="500"/> -- Ring
+	<item id="10502" countmax="1" chance1="500" chancemax="500"/> --Ring
+				<inside>
+			<item id="8306" countmax="3" chance1="6500" chancemax="0"/> --Talons
+			<item id="9693" chance="6555"/> --addon doll
+			<item id="8981" chance="8200"/> --Cave Exclusiva
+		</inside>
+	</item>
+</loot>
+</monster>
+

@@ -25,12 +25,12 @@ local drunk = createConditionObject(CONDITION_DRUNK)
 setConditionParam(drunk, CONDITION_PARAM_TICKS, 60000)
 
 local poison = createConditionObject(CONDITION_POISON)
-setConditionParam(poison, CONDITION_PARAM_DELAYED, true)
-setConditionParam(poison, CONDITION_PARAM_MINVALUE, -50) 
-setConditionParam(poison, CONDITION_PARAM_MAXVALUE, -120)
-setConditionParam(poison, CONDITION_PARAM_STARTVALUE, -5) 
-setConditionParam(poison, CONDITION_PARAM_TICKINTERVAL, 4000) 
-setConditionParam(poison, CONDITION_PARAM_FORCEUPDATE, true) 
+setConditionParam(poison, CONDITION_PARAM_DELAYED, true) -- Condition will delay the first damage from when it's added
+setConditionParam(poison, CONDITION_PARAM_MINVALUE, -50) -- Minimum damage the condition can do at total
+setConditionParam(poison, CONDITION_PARAM_MAXVALUE, -120) -- Maximum damage
+setConditionParam(poison, CONDITION_PARAM_STARTVALUE, -5) -- The damage the condition will do on the first hit
+setConditionParam(poison, CONDITION_PARAM_TICKINTERVAL, 4000) -- Delay between damages
+setConditionParam(poison, CONDITION_PARAM_FORCEUPDATE, true) -- Re-update condition when adding it(ie. min/max value)
 
 local exhaust = createConditionObject(CONDITION_EXHAUST)
 setConditionParam(exhaust, CONDITION_PARAM_TICKS, (getConfigInfo('timeBetweenExActions') - 100))

@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<npc name="Styller-Lion" script="data/npc/scripts/lion.lua" walkinterval="0" floorchange="0">
-    <health now="100" max="100"/>
-    <look type="2820" head="0" body="57" legs="0" feet="68" addons="0" />
-    <parameters>
-		<parameter key="message_greet" value="Ola |PLAYERNAME| Eu troco {Lion Stick} por items Lion, para fazer a troca é necessário ter o item na bp. diga {trade}." />
-        <parameter key="module_keywords" value="1" />
-    </parameters>
-</npc>

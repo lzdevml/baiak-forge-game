@@ -1,6 +1,6 @@
 local food =
 {	
-	[12638] = {60, "mmmm."}	
+	[6574] = {60, "Mmmm."}	
 }
 
 function onUse(cid, item, fromPosition, itemEx, toPosition)

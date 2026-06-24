@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<raid>
+	<announce delay="1000" type="event" message="[ATENÇÃO] BOSS King Baiakinho de outro continente esta atacando a cidade, ajude a protege-la!"/>
+	<areaspawn delay="1000" radius="2" centerx="153" centery="58" centerz="7">
+		<monster name="BOSS King Baiakinho" amount="1"/>
+	</areaspawn>
+</raid>

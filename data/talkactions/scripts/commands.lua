@@ -3,8 +3,8 @@ local config = {
 }
 
 function onSay(cid, words, param, channel)
-	if(not checkExhausted(cid, 666, 2)) then
-		return true
+	if(not checkExhausted(cid, 666, 10)) then
+		return false
 	end
 
 	local playerAccess, t = getPlayerAccess(cid), {}

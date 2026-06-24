@@ -22,9 +22,9 @@ function onSay(cid, words, param, channel)
 			if(shutdownEvent ~= 0) then
 				stopEvent(shutdownEvent)
 				shutdownEvent = 0
-				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Shutdown cancelled.")
+				doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "Desligamento cancelado.")
 			else
-				doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "Server is not in the shutdown phase.")
+				doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "O servidor não esta na fase de desligamento.")
 			end
 			return true
 		elseif(action == "kill") then
@@ -35,12 +35,12 @@ function onSay(cid, words, param, channel)
 
 	mins = tonumber(mins)
 	if(not mins or mins < 0) then
-		doPlayerSendCancel(cid, "Numeric param may not be lower than 0.")
+		doPlayerSendCancel(cid, "Par numerico não pode ser menor que 0.")
 		return true
 	end
 
 	if(shutdownEvent ~= 0) then
-		doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "Server is already in a shutdown state. To cancel shutdown use the \"/shutdown stop\" command.")
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_WARNING, "O servidor ja esta em um estado de desligamento. Para cancelar o desligamento, use o \"/shutdown stop\" command.")
 		return true
 	end
 
@@ -55,9 +55,9 @@ function prepareShutdown(minutes, reason)
 
 	local change, r = 5, (reason ~= "" and " Reason: "..reason or "")
 	if(minutes == 1) then
-		doBroadcastMessage("Server is going down in " .. minutes .. " minute, please log out now!" .. r)
+		doBroadcastMessage("Servidor está indo para baixo em " .. minutos .. " minutos, por favor saia agora!" .. r)
 	elseif(minutes <= 5) then
-		doBroadcastMessage("Server is going down in " .. minutes .. " minutes, please log out." .. r)
+		doBroadcastMessage("Servidor ira reiniciar em " .. minutos .. " minutos, por favor aguarde." .. r)
 		change = 1
 	else
 		doBroadcastMessage("Server is going down in " .. minutes .. " minutes." .. r)

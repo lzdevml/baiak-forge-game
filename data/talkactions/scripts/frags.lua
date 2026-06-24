@@ -1,4 +1,8 @@
-function onSay(cid, words, param)
+function onSay(cid, words, param, channel)
+	if(not checkExhausted(cid, 666, 10)) then
+		return false
+	end
+
 	if(not getBooleanFromString(getConfigValue('useFragHandler'))) then
 		return false
 	end
@@ -32,7 +36,7 @@ function onSay(cid, words, param)
 	}
 
 	if(getBooleanFromString(getConfigValue('advancedFragList'))) then
-		local result = "Frags ganhou hoje: " .. size.day .. "/30."
+		local result = "Frags gained today: " .. size.day .. "."
 		if(size.day > 0) then
 			for _, content in ipairs(contents.day) do
 				result = result .. "\n* " .. os.date("%d %B %Y %X at ", content.date) .. content.name .. " on level " .. content.level
@@ -41,7 +45,7 @@ function onSay(cid, words, param)
 			result = result .. "\n"
 		end
 
-		result = result .. "\nFrags ganhou esta semana: " .. (size.day + size.week) .. "/210."
+		result = result .. "\nFrags gained this week: " .. (size.day + size.week) .. "."
 		if(size.week > 0) then
 			for _, content in ipairs(contents.week) do
 				result = result .. "\n* " .. os.date("%d %B %Y %X at ", content.date) .. content.name .. " on level " .. content.level
@@ -50,7 +54,7 @@ function onSay(cid, words, param)
 			result = result .. "\n"
 		end
 
-		result = result .. "\nFrags ganhou este mês: " .. (size.day + size.week + size.month) .. "/840."
+		result = result .. "\nFrags gained this month: " .. (size.day + size.week + size.month) .. "."
 		if(size.month > 0) then
 			for _, content in ipairs(contents.month) do
 				result = result .. "\n* " .. os.date("%d %B %Y %X at ", content.date) .. content.name .. " on level " .. content.level
@@ -61,19 +65,19 @@ function onSay(cid, words, param)
 
 		local skullEnd = getPlayerSkullEnd(cid)
 		if(skullEnd > 0) then
-			result = result .. "\nSeu " .. (getCreatureSkullType(cid) == SKULL_RED and "red" or "black") .. " skull expirará em " .. os.date("%d %B %Y %X", skullEnd)
+			result = result .. "\nYour " .. (getCreatureSkullType(cid) == SKULL_RED and "red" or "black") .. " skull will expire at " .. os.date("%d %B %Y %X", skullEnd)
 		end
 
-		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, result)
+		doPlayerPopupFYI(cid, result)
 	else
-		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Você tem atualmente " .. size.day .. "/15 hoje frags, " .. (size.day + size.week) .. "/100 esta semana e " .. (size.day + size.week + size.month) .. "/200 este mês!")
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You currently have " .. size.day .. " frags today, " .. (size.day + size.week) .. " this week and " .. (size.day + size.week + size.month) .. " this month.")
 		if(size.day > 0) then
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Último frag em " .. os.date("%d %B %Y %X", contents.day[1].date) .. " no level " .. contents.day[1].level .. " (" .. contents.day[1].name .. ").")
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Last frag at " .. os.date("%d %B %Y %X", contents.day[1].date) .. " on level " .. contents.day[1].level .. " (" .. contents.day[1].name .. ").")
 		end
 
 		local skullEnd = getPlayerSkullEnd(cid)
 		if(skullEnd > 0) then
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Seu " .. (getCreatureSkullType(cid) == SKULL_RED and "red" or "black") .. " skull expirará em " .. os.date("%d %B %Y %X", skullEnd))
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Your " .. (getCreatureSkullType(cid) == SKULL_RED and "red" or "black") .. " skull will expire at " .. os.date("%d %B %Y %X", skullEnd))
 		end
 	end
 

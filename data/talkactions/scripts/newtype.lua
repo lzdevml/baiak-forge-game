@@ -26,7 +26,7 @@ function onSay(cid, words, param, channel)
 		if(getMonsterInfo(t[1])) then
 			doSetMonsterOutfit(pid, t[1], period)
 		else
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Such outfit does not exist.")
+			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Essa roupa não existe.")
 		end
 
 		return true

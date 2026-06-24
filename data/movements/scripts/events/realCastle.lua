@@ -1,7 +1,7 @@
 --[[
 
                 Real Castle Event
-    Desenvolvido por Vï¿½tor Bertolucci (Killua)
+    Desenvolvido por Vítor Bertolucci (Killua)
 
 ]]
 
@@ -9,10 +9,10 @@ function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, a
     if item.actionid == 61465 then
         if realCastle.isOpen() then
             if getPlayerGuildId(cid) > 0 then
-                if getPlayerLevel(cid) >= 120 then
+                if getPlayerLevel(cid) >= 150 then
                     doSendMagicEffect(getThingPos(cid),CONST_ME_MAGIC_BLUE)
                 else
-                    doPlayerSendCancel(cid,"Somente jogadores level 120+ podem tentar dominar o castelo.")
+                    doPlayerSendCancel(cid,"Somente jogadores level 150+ podem tentar dominar o castelo.")
                     doTeleportThing(cid,fromPosition)
                     doSendMagicEffect(fromPosition,CONST_ME_POFF)
                 end
@@ -22,7 +22,7 @@ function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, a
                 doSendMagicEffect(fromPosition,CONST_ME_POFF)
             end
         else
-            doPlayerSendCancel(cid,"O castelo nï¿½o estï¿½ aberto para invasï¿½es.")
+            doPlayerSendCancel(cid,"O castelo não está aberto para invasões.")
             doTeleportThing(cid,fromPosition)
             doSendMagicEffect(fromPosition,CONST_ME_POFF)
         end
@@ -30,14 +30,14 @@ function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, a
         if not realCastle.isOpen() then
             if realCastle.isDominating(cid) then
                 doSendMagicEffect(getThingPos(cid),CONST_ME_MAGIC_BLUE)
-                doPlayerSendTextMessage(cid,MESSAGE_INFO_DESCR,"Bem vindo ao Real Castle!")
+                doPlayerSendTextMessage(cid,MESSAGE_INFO_DESCR,"Bem vindo ao Baiakinho Castle!")
             else
                 doPlayerSendCancel(cid,"Somente membros da guild dominante podem entrar.")
                 doTeleportThing(cid,{x = toPosition.x, y = toPosition.y + 2, z = toPosition.z})
                 doSendMagicEffect({x = toPosition.x, y = toPosition.y + 2, z = toPosition.z},6)
             end
         else
-            doPlayerSendCancel(cid,"Nï¿½o ï¿½ permitido entrar no castelo enquanto as guild estï¿½o batalhando pelo seu domï¿½nio.")
+            doPlayerSendCancel(cid,"Não é permitido entrar no castelo enquanto as guild estão batalhando pelo seu domínio.")
             doTeleportThing(cid,{x = toPosition.x, y = toPosition.y + 2, z = toPosition.z})
             doSendMagicEffect({x = toPosition.x, y = toPosition.y + 2, z = toPosition.z},6)
         end

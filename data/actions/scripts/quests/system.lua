@@ -1,17 +1,15 @@
 local specialQuests = {
-	-- [2001] = 30015 --Annihilator
+	[2001] = 30015 --Annihilator
 }
 
 local questsExperience = {
-	-- [30015] = 10000
+	[30015] = 10000
 }
 
 function onUse(cid, item, fromPosition, itemEx, toPosition)
-	if(getBooleanFromString(getConfigValue('enableProtectionQuestForGM'))) then
-		if(getPlayerCustomFlagValue(cid, PLAYERCUSTOMFLAG_GAMEMASTERPRIVILEGES)) then
-			doSendMagicEffect(getCreaturePosition(cid), CONST_ME_POFF, cid)
-			return true
-		end
+	if(getPlayerCustomFlagValue(cid, PlayerCustomFlag_GamemasterPrivileges)) then
+		doSendMagicEffect(getCreaturePosition(cid), CONST_ME_POFF, cid)
+		return true
 	end
 
 	local storage = specialQuests[item.actionid]
@@ -22,9 +20,8 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		end
 	end
 
-	if(getCreatureStorage(cid, storage) > 0) then
-	local ret = getItemDescriptions(item.uid)
-		doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, "The " .. ret.name .. " is empty.")
+	if(getPlayerStorageValue(cid, storage) > 0) then
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
 		return true
 	end
 
@@ -92,18 +89,17 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		end
 	end
 
-	local ret = getItemDescriptions(reward.uid)
-	result = "You have found " .. ret.article .. " " .. ret.name
-	if(doPlayerAddItemEx(cid, reward.uid, false) == RETURNVALUE_NOERROR)then
-		result = result .. "."
-		doCreatureSetStorage(cid, storage, 1)
+	if(doPlayerAddItemEx(cid, reward.uid, false) ~= RETURNVALUE_NOERROR) then
+		result = "You have found a reward weighing " .. getItemWeight(reward.uid) .. " oz. It is too heavy or you have not enough space."
 	else
-		result = (getPlayerFreeCap(cid) < getItemWeight(reward.uid)) and result .. ". Weighing " .. getItemWeight(reward.uid) .. " oz it is too heavy." or result .. ", but you have no room to take it."
-	end	
+		result = "You have found " .. result .. "."
+		setPlayerStorageValue(cid, storage, 1)
 		if(questsExperience[storage] ~= nil) then
-			doPlayerAddExpEx(cid, questsExperience[storage])
+			doPlayerAddExp(cid, questsExperience[storage])
+			doSendAnimatedText(getCreaturePosition(cid), questsExperience[storage], TEXTCOLOR_WHITE)
 		end
+	end
 
-	doPlayerSendTextMessage(cid, MESSAGE_EVENT_ADVANCE, result)
+	doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, result)
 	return true
 end

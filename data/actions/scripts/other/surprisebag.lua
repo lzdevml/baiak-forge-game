@@ -8,36 +8,16 @@ local config = {
 	
 	-- blue
 	[6570] = {		
-		{ rate = 1132, item = 6280, count = { const = 1 }},
-		{ rate = 1132, item = 2114, count = { const = 1 }},
-		{ rate = 991, item = 6575, count = { const = 1 }},
-		{ rate = 943, item = 6576, count = { const = 1 }},
-		{ rate = 991, item = 6578, count = { const = 1 }},
-		{ rate = 991, item = 6572, count = { const = 1 }},
-		{ rate = 802, item = 6577, count = { const = 1 }},
-		{ rate = 802, item = 2687, count = { const = 10 }},
-		{ rate = 849, item = 6569, count = { const = 3 }},
-		{ rate = 755, item = 6574, count = { const = 1 }},
-		{ rate = 613, item = 6394, count = { const = 1 }}
+		{ rate = 5000, item = 7440, count = { const = 1 }},
+		{ rate = 400, item = 9693, count = { const = 1 }},
+		{ rate = 700, item = 2346, count = { const = 1 }},
+		{ rate = 450, item = 12461, count = { const = 1 }},
 	},
 	-- red
 	[6571] = {
-		{ rate = 4745, item = 6576, count = { const = 1 }},
-		{ rate = 2072, item = 6394, count = { const = 1 }},
-		{ rate = 1152, item = 6574, count = { const = 1 }},
-		{ rate = 1017, item = 6578, count = { const = 1 }},
-		{ rate = 538, item = 2114, count = { const = 1 }},
-		{ rate = 20, item = 2112, count = { const = 1 }},
-		{ rate = 17, item = 2195, count = { const = 1 }},
-		{ rate = 17, item = 5080, count = { const = 1 }},
-		{ rate = 15, item = 2520, count = { const = 1 }},
-		{ rate = 7, item = 2173, count = { const = 1 }},
-		{ rate = 17, item = 2492, count = { const = 1 }},
-		{ rate = 167, item = 2153, count = { const = 1 }},
-		{ rate = 37, item = 2156, count = { const = 1 }},
-		{ rate = 159, item = 5944, count = { const = 1 }},
-		{ rate = 7, item = 6566, count = { const = 1 }},
-		{ rate = 13, item = 2498, count = { const = 1 }}
+		{ rate = 5000, item = 9971, count = { const = 3 }},
+		{ rate = 1000, item = 9971, count = { const = 4 }},
+		{ rate = 800, item = 9971, count = { const = 5 }},
 	},
 }
 

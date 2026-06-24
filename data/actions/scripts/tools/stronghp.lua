@@ -1,14 +1,20 @@
-function onUse(cid, item, frompos, item2, topos)
-	if getPlayerMoney(cid) >= 10000 then
-		if doPlayerAddItem(cid, 7588, 100, false) then
-			doSendMagicEffect(topos, 14)
-			doPlayerRemoveMoney(cid, 22000)
-			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "Bought 100x Strong Health Potion for 10k.")
-		else
-			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You dont have capacity enough.")
-		end
-	else
-		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You dont have enough money 10k.")
-	end
-return FALSE
+        shp_id = 7588 -- Item a ser vendido
+        backpackshp_id = 3940 -- Backpack
+		custoshp_id = 2000 -- Valor
+		cargasshp_id = 20 -- Cargas
+
+local name = getItemNameById(shp_id)
+----- End Config -----
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+        if doPlayerRemoveMoney(cid, custoshp_id) == TRUE then
+                local bag = doPlayerAddItem(cid, backpackshp_id, 1)
+                        doSendAnimatedText(fromPosition, "", TEXTCOLOR_YELLOW)
+                        doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have purchased a backpack of ".. name .."s for ".. custoshp_id .." gold.")
+						for i=1,20 do
+                        doAddContainerItem(bag, shp_id, cargasshp_id)
+                end
+                else
+                        doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "You need ".. custoshp_id .." gold coins for a backpack of ".. name .."s.")
+                end
+        return FALSE
 end

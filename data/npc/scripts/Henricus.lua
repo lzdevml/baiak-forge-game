@@ -1,95 +1,74 @@
 local keywordHandler = KeywordHandler:new()
 local npcHandler = NpcHandler:new(keywordHandler)
 NpcSystem.parseParameters(npcHandler)
+
 local talkState = {}
-function onCreatureAppear(cid)
-	npcHandler:onCreatureAppear(cid)
-end
-function onCreatureDisappear(cid)
-	npcHandler:onCreatureDisappear(cid)
-end
-function onCreatureSay(cid, type, msg)
-	npcHandler:onCreatureSay(cid, type, msg)
-end
-function onThink()
-	npcHandler:onThink()
-end
-function delaySay(text, delay, cid)
-	addEvent(function()
-		npcHandler:say(text, cid)
-	end, delay)
-end
+
+function onCreatureAppear(cid)                          npcHandler:onCreatureAppear(cid)                        end
+function onCreatureDisappear(cid)                       npcHandler:onCreatureDisappear(cid)                     end
+function onCreatureSay(cid, type, msg)                  npcHandler:onCreatureSay(cid, type, msg)                end
+function onThink()                                      npcHandler:onThink()                                    end
 
 function creatureSayCallback(cid, type, msg)
 	if(not npcHandler:isFocused(cid)) then
-            return false
-    end
-	local TALKDELAY_ONTHINK = 1    
+			return false
+	end
+
 	local talkUser = NPCHANDLER_CONVBEHAVIOR == CONVERSATION_DEFAULT and 0 or cid
-	local storage = getPlayerStorageValue(cid, 100078)
 	
-	if(msgcontains(msg, 'join') or msgcontains(msg, 'inquisition') or msgcontains(msg, 'mission')) and storage == -1 then
-			npcHandler:say("Do you want to join the inquisition?", cid)
+	-- CONFIG --
+	local storage_join = 2101
+	local storage_mission = 2102
+	-- END CONFIG --
+	
+	if msgcontains(msg, 'inquisitor') then
+		if getPlayerStorageValue(cid, storage_join) == -1 then
+			npcHandler:say("The churches of the gods entrusted me with the enormous and responsible task to lead the inquisition. I leave the field work to inquisitors who I recruit from fitting people that cross my way.", cid)
 			talkState[talkUser] = 1
-		
-	elseif msgcontains(msg, 'mission') then
-		if storage == 19 then
-			delaySay("We've got information about something very dangerous going on on the isle of Edron. The demons are preparing something there ...", 100, cid) 
-			delaySay("It'll be your task to take revenge and to kill that demon. You'll find him in the depths of Edron. Good luck.", 5000, cid) 
-			delaySay("Something that is a threat to all of us. Our investigators were able to acquire vital information before some of them were slain by a demon named Ungreez.", 10000, cid) 			
-			setPlayerStorageValue(cid, 100078, 20)
-			setPlayerStorageValue(cid, 61112, 1) -- storage door
+		else
+			npcHandler:say("You are already a member of the Inquisition.", cid)
 			talkState[talkUser] = 0
-		elseif storage == 20 or storage == 21 then
-			npcHandler:say("Your current mission is to Kill Ungreez. Are you done with that mission?", cid)
-			talkState[talkUser] = 3		
-		elseif storage == 22 then
-			delaySay("The entire team was wiped out in the infamous Pits of Inferno. I don't know how to enter this infernal place but we expect you to enter the pits. ...", 100,cid)
-			delaySay("Somewhere down there in the infernal depths, guarded by armies of dangerous demons, are the thrones of the Ruthless Seven. It\'s necessary that you touch one of these thrones to absorb some of its demonic essence. ...", 4000,cid)
-			delaySay("Even though it will taint you forever, we need you to make this sacrifice for the good of mankind. After touching one of the thrones, you\'ll be able to pass a magic portal in the dungeon north of Edron. ...", 8000,cid)
-			delaySay("This will lead you to a complex that we call Demon Forge. That\'s the place where the Ruthless Seven are preparing some kind of doomsday device. They must be stopped at any cost. ...", 12000,cid)
-			delaySay("Considering the dark energy they concentrade there a vial of water should be increadibly destructive. ...", 16000,cid)
-			delaySay("But be warned. the seven have some of their most dangerous followers guard this cursed place. Nonetheless, you must succed for the safety of mankind.", 20000,cid)
-			local item2 = doPlayerAddItem(cid, 7494, 1)
-			setPlayerStorageValue(cid, 100078, 23)
+		end
+	end
+	if msgcontains(msg, 'join') and talkState[talkUser] == 1 then
+		if getPlayerStorageValue(cid, storage_join) == -1 then
+			npcHandler:say("Do you want to join the Inquisition?", cid)
+			talkState[talkUser] = 2
+		end
+	elseif msgcontains(msg, 'yes') and talkState[talkUser] == 2 then
+		if getPlayerStorageValue(cid, storage_join) == -1 then
+			npcHandler:say("So be it. Now you are a member of the inquisition. You might ask me for a {mission} to raise in my esteem.", cid)
+			setPlayerStorageValue(cid, storage_join, 1)
+			talkState[talkUser] = 3
+		else
+			npcHandler:say("You are already a member of the Inquisition.", cid)
 			talkState[talkUser] = 0
-		elseif storage >= 23 and storage < 26 then
-			npcHandler:say("Your current mission is to destroy the Shadow Nexus. Are you done with that mission?", cid)
+		end
+	elseif msgcontains(msg, 'mission') and talkState[talkUser] == 3 then
+		if getPlayerStorageValue(cid, storage_join) == 1 then
+			doNPCTalkALot({"Let's see if you are worthy. Take an inquisitor's field guide from the box in the back room. ...", "Follow the instructions in the guide to talk to the Thaian guards that protect the walls and gates of the city and test their loyalty. Then report to me about your mission."}, 10000, cid)
+			setPlayerStorageValue(cid, storage_mission, 1)
 			talkState[talkUser] = 4
+		else
+			npcHandler:say("You have not joined the {Inquisition}.", cid)
+			talkState[talkUser] = 0
 		end
-
-	elseif msgcontains(msg, 'yes') then		
-		if talkState[talkUser] == 1 then
-				if storage == -1 then
-					npcHandler:say("So be it. Now you are a member of the inquisition. You might ask me for a {mission} to raise in my esteem.", cid)
-					setPlayerStorageValue(cid, 100078, 19)
-				end
-		elseif talkState[talkUser] == 3 then
-			if storage == 21 then
-				delaySay("So the beast is finally dead! Thank the gods. At least some things work out in our favour ...", 100, cid)
-				delaySay("Our other operatives were not that lucky, though. But you will learn more about that in your next {mission}.", 4000, cid)
-				delaySay("Here is the first addon for your demon hunter outfit. Complete one more mission for the final addon.", 8000, cid)
-				doPlayerAddOutfitId(cid,20,1)
-				doSendMagicEffect(getPlayerPosition(cid), 12)
-				setPlayerStorageValue(cid, 100078, 22)
-			end
-		elseif talkState[talkUser] == 4 then
-				if getPlayerStorageValue(cid, 100078) == 25 then
-
-					npcHandler:say("Fine, fine. You have proven that you can work efficiently. Now you can enter the reward room and choose your reward and Enjoy your new fresh outfit!", cid)
-					setPlayerStorageValue(cid, 6077, 1) -- Storage DOor
-					doPlayerAddOutfitId(cid,20,3)
-					setPlayerStorageValue(cid, 100078, 26)
-					talkState[talkUser] = 0
-				end			
-		end
+	end
+	
+	if msgcontains(msg, 'mission') and getPlayerStorageValue(cid, storage_mission) == 5 then
+		npcHandler:say("Your current mission is to investigate the reliability of certain guards. Are you done with that mission?", cid)
+		talkState[talkUser] = 4
+	elseif msgcontains(msg, 'yes') and talkState[talkUser] == 4 then
+		doNPCTalkALot({"Indeed, this is exactly what my other sources told me. Of course I knew the outcome of this investigation in advance. This was just a test. ...", "Well, now that you've proven yourself as useful, you can ask me for another mission. Let's see if you can handle some field duty, too."}, 10000, cid)
+		talkState[talkUser] = 5
+	elseif msgcontains(msg, 'task') and talkState[talkUser] == 5 then
+		doNPCTalkALot({"Listen, we have information about a heretic coven that hides in a mountain called the Big Old One. The witches reach this cursed place on flying brooms and think theyare safe there. ...", "I've arranged a flying carpet that will bring you to their hideout. Travel to Femor Hills and tell the carpet pilot the code word 'eclipse'. ... ", "He'll bring you to your destination. At their meeting place, you'll find a cauldron in which they cook some forbidden brew. ...", "Use this vial of holy water to destroy the brew. Also steal their grimoire and bring it to me."}, 10000, cid)
+		setPlayerStorageValue(cid, storage_mission, 6)
+		doPlayerAddItem(cid, 2006, 0)
 		talkState[talkUser] = 0
 	end
-	return TRUE
+	return true
 end
-
-
-
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monster name="red top tower" nameDescription="a red top tower" race="blood" experience="0" speed="0" manacost="0">
-  <health now="10000" max="10000"/>
+  <health now="2000000" max="2000000"/>
   <look typeex="9596" />
    <script>
-    <event name="dttCombat"/>
+    
     <event name="dttDeath"/>
     <event name="dttStats"/>
+	<event name="dttCombat"/>
   </script>
   <targetchange interval="5000" chance="30"/>
   <strategy attack="100" defense="0"/>
@@ -41,5 +42,6 @@
     <summon name="deathspawn" interval="1500" chance="0" max="0"/>
   </summons>
   <loot>
+    <item id="2148" countmax="20" chance1="100000" chancemax="0"/>
   </loot>
 </monster>

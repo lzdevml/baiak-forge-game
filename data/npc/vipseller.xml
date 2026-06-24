@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<npc name="Vip Seller" script="data/npc/scripts/default.lua" walkinterval="200" floorchange="0" emblem="3">
+	<health now="100" max="100"/>
+	<look type="143" body="105" feet="0" head="59"  legs="122"  addons="3"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="shop_buyable" value="stamina potion,2346,80000000;imperium axe,9693,100000000;"/>
+	</parameters>
+</npc>

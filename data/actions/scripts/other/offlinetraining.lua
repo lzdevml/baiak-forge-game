@@ -1,9 +1,9 @@
 local statue = {
-	[1444] = SKILL_SWORD,
-	[1449] = SKILL_AXE,
-	[3705] = SKILL_CLUB,
-	[3739] = SKILL_DISTANCE,
-	[1448] = SKILL__MAGLEVEL
+	[10351] = SKILL_SWORD,
+	[8836] = SKILL_AXE,
+	[8626] = SKILL_CLUB,
+	[10353] = SKILL_DISTANCE,
+	[8834] = SKILL__MAGLEVEL
 }
 
 function onUse(cid, item, fromPosition, itemEx, toPosition)
@@ -15,7 +15,7 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
 		doPlayerSetOfflineTrainingSkill(cid, statue[item.itemid])
 		doRemoveCreature(cid)
 	else
-		doPlayerSendDefaultCancel(cid, RETURNVALUE_YOUNEEDPREMIUMACCOUNT)
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_YOUNEEDFREEACCOUNT)
 	end
 
 	return true

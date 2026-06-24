@@ -1,6 +1,3 @@
-local exausted = 30 -- exhausted em segundos
-local storage = 15481 -- storage do exausted
-
 local combat = createCombatObject()
 setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
 setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)
@@ -14,5 +11,5 @@ setConditionParam(condition, CONDITION_PARAM_HEALTHTICKS, 3000)
 setCombatCondition(combat, condition)
 
 function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+        return doCombat(cid, combat, var)
 end

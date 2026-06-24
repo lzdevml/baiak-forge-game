@@ -17,14 +17,11 @@ local function getPlayerList(cid)
 	if getPlayerStorageValue(cid, 04420031) ~= -1 then
 		table.insert(tab, getPlayerStorageValue(cid, 04420031))
 	end
-	
-	if isPremium(cid) then
-		if getPlayerStorageValue(cid, 04420041) ~= -1 then
-			table.insert(tab, getPlayerStorageValue(cid, 04420041))
-		end
-		if getPlayerStorageValue(cid, 04420051) ~= -1 then
-			table.insert(tab, getPlayerStorageValue(cid, 04420051))
-		end
+	if getPlayerStorageValue(cid, 04420041) ~= -1 then
+		table.insert(tab, getPlayerStorageValue(cid, 04420041))
+	end
+	if getPlayerStorageValue(cid, 04420051) ~= -1 then
+		table.insert(tab, getPlayerStorageValue(cid, 04420051))
 	end
 	if #tab > 0 then
 		return tab
@@ -41,14 +38,10 @@ local function addToList(cid, name)
 		return doPlayerSetStorageValue(cid, 04420021, itemid)
 	elseif getPlayerStorageValue(cid, 04420031) == -1 then
 		return doPlayerSetStorageValue(cid, 04420031, itemid)
-	end
-	
-	if isPremium(cid) then
-		if getPlayerStorageValue(cid, 04420041) == -1 then	
-			return doPlayerSetStorageValue(cid, 04420041, itemid)
-		elseif getPlayerStorageValue(cid, 04420051) == -1 then
-			return doPlayerSetStorageValue(cid, 04420051, itemid)
-		end
+	elseif getPlayerStorageValue(cid, 04420041) == -1 then	
+		return doPlayerSetStorageValue(cid, 04420041, itemid)
+	elseif getPlayerStorageValue(cid, 04420051) == -1 then
+		return doPlayerSetStorageValue(cid, 04420051, itemid)
 	end
 end
 
@@ -70,11 +63,11 @@ function onSay(cid, words, param)
 	if param == "" then
 		local fi = getPlayerStorageValue(cid, 04420021) ~= -1 and getItemNameById(getPlayerStorageValue(cid, 04420021)) or ""
 		local se = getPlayerStorageValue(cid, 04420031) ~= -1 and getItemNameById(getPlayerStorageValue(cid, 04420031)) or ""
-		local th = not isPremium(cid) and "Não disponível para free account" or getPlayerStorageValue(cid, 04420041) ~= -1 and getItemNameById(getPlayerStorageValue(cid, 04420041)) or ""
-		local fo = not isPremium(cid) and "Não disponível para free account" or getPlayerStorageValue(cid, 04420051) ~= -1 and getItemNameById(getPlayerStorageValue(cid, 04420051)) or ""
-		local stt = getPlayerStorageValue(cid, 04421011) == 1 and "ATIVADO" or "DESATIVADO"
-		local str = getPlayerStorageValue(cid, 04421001) == 1 and "ATIVADO" or "DESATIVADO"
-		doPlayerPopupFYI(cid, "Informações Autoloot \n\n[+] Autoloot Gold:  ["..stt.."] \n[+] Autoloot Itens:  ["..str.."] \n\n1- !autoloot power (Iniciar sistema autoloot)\n2- Autoloot gold (Iniciar coleta de dinhiero).\n3- !autoloot add, golden legs. (Adiciona um item da sua escolha)\n4- !autoloot remove, golden legs. (Remove um item da sua escolha)\n5- !autoloot clear: (Limpa os itens da lista)\n6- !autoloot balance (Verifica lucro em dinheiro).\n\nFree Account possuem 2 Slots para adicionar.\nPremium accounts possuem 4 Slots.\n\nCaso haja algum problema com o sistema, use: !autoloot desbug. \nCaso o problema persista, entre em contato com nosso suporte.")
+		local th = not vip.hasVip(cid) and "Não disponível para free account" or getPlayerStorageValue(cid, 04420041) ~= -1 and getItemNameById(getPlayerStorageValue(cid, 04420041)) or ""
+		local fo = not vip.hasVip(cid) and "Não disponível para free account" or getPlayerStorageValue(cid, 04420051) ~= -1 and getItemNameById(getPlayerStorageValue(cid, 04420051)) or ""
+		local stt = getPlayerStorageValue(cid, 04421011) == 1 and "sim" or "não"
+		local str = getPlayerStorageValue(cid, 04421001) == 1 and "sim" or "não"
+		doPlayerPopupFYI(cid, "{Auto-Loot} ---Menu Auto Loot do jogador\n{Auto-Loot} ----------------\n{Auto-Loot} ---Coletar dinheiro: "..stt..". Para ligar/desligar: !autoloot gold \n{Auto-Loot} ---Coletar itens únicos: "..str..". Para ligar/desligar: !autoloot power\n{Auto-Loot} --Configuração dos slots:\n{Auto-Loot} ---Slot 1: "..fi.."\n{Auto-Loot} ---Slot 2: "..se.."\n{Auto-Loot} ---Slot 3: "..th.."\n{Auto-Loot} ---Slot 4: "..fo.."\n{Auto-Loot} ---Para adicionar um novo item aos slots: !autoloot add, <nome do item>\n{Auto-Loot} ---Para retirar um item dos slots: !autoloot remove, <nome do item>\n{Auto-Loot} ---Para limpar todos os slots utilize: !autoloot clear\n{Auto-Loot} ---Para informações de quanto você já fez utilizando a coleta de dinheiro, use: !autoloot goldinfo\n\nSe seu autoloot bugar use !autoloot desbug\n\n{Auto-Loot} ----------------")
 		return true
 	end
 	
@@ -89,7 +82,7 @@ function onSay(cid, words, param)
 		doPlayerSetStorageValue(cid, 04421011, getPlayerStorageValue(cid, 04421011) == -1 and 1 or -1)
 		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Você "..check.." a coleta de dinheiro.")
 		doPlayerSetStorageValue(cid, 04421021, 0)
-	elseif t[1] == "balance" then
+	elseif t[1] == "goldinfo" then
 		local str = getPlayerStorageValue(cid, 04421011) == -1 and "O sistema de coleta de dinheiro está desligado" or "O sistema já coletou "..getPlayerStorageZero(cid, 04421021).." gold coins"
 		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, str)
 	elseif t[1] == "add" then
@@ -98,19 +91,19 @@ function onSay(cid, words, param)
 			if isInArray({2160, 2148, 2152}, item) then
 				return doPlayerSendCancel(cid, "Você não pode adicionar moedas no autoloot. Para coletar dinheiro use !autoloot gold")
 			end
-			if getPlayerStorageValue(cid, 13616) then
+			if vip.hasVip(cid) then
 				if getPlayerStorageValue(cid, 04420011) < 3 then
 					if addToList(cid, t[2]) then
 						doPlayerSetStorageValue(cid, 04420011, getPlayerStorageValue(cid, 04420011) + 1)
 						doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, t[2].." adicionado à sua lista do auto loot! Para ver sua lista diga !autoloot list")
 					else
-						doPlayerSendCancel(cid, t[2].." já está em sua lista ou você precisa ser premium account para adicionar mais de 2 itens!")
+						doPlayerSendCancel(cid, t[2].." já está em sua lista!")
 					end
 				else
 					doPlayerSendCancel(cid, "Sua lista já tem 4 itens! Você deve remover algum antes de adicionar outro.")
 				end
 			else
-				if getPlayerStorageValue(cid, 04420011) == -1 then
+				if getPlayerStorageValue(cid, 04420011) < 1 then
 					if addToList(cid, t[2]) then
 						doPlayerSetStorageValue(cid, 04420011, getPlayerStorageValue(cid, 04420011) + 1)
 						doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, t[2].." adicionado à sua lista do auto loot! Para ver sua lista diga !autoloot")
@@ -152,13 +145,14 @@ function onSay(cid, words, param)
 		doPlayerSetStorageValue(cid, 04420031, -1)
 		doPlayerSetStorageValue(cid, 04420041, -1)
 		doPlayerSetStorageValue(cid, 04420051, -1)
-		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Nosso sistema esta verificando se há alguma falha em seu autoloot.")
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "Desbugado!")
 	elseif t[1] == "list" then
 		local fi = getPlayerStorageValue(cid, 04420021) ~= -1 and ""..getItemNameById(getPlayerStorageValue(cid, 04420021)).."\n" or ""
 		local se = getPlayerStorageValue(cid, 04420031) ~= -1 and ""..getItemNameById(getPlayerStorageValue(cid, 04420031)).."\n" or ""
 		local th = getPlayerStorageValue(cid, 04420041) ~= -1 and ""..getItemNameById(getPlayerStorageValue(cid, 04420041)).."\n" or ""
 		local fo = getPlayerStorageValue(cid, 04420051) ~= -1 and ""..getItemNameById(getPlayerStorageValue(cid, 04420051)).."\n" or ""
-		doPlayerPopupFYI(cid, "O sistema auto loot está coletando:\n\n"..fi..""..se..""..th..""..fo)
+		doPlayerPopupFYI(cid, "O sistema auto loot está coletando:\n "..fi..""..se..""..th..""..fo)
 	end
 	return true
 end
+					

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<npc name="Styller-Flores" script="data/npc/scripts/Florentine.lua" walkinterval="2000" floorchange="0">
+<npc name="Florentine" script="data/npc/scripts/Florentine.lua" walkinterval="2000" floorchange="0">
 <health now="100" max="100"/>
-<look type="2824" head="3" body="91" legs="38" feet="2" addons="3"/>
+<look type="140" head="3" body="91" legs="38" feet="2" addons="0"/>
 <voices>
 <voice text="Embellish your home with flowers!" interval2="100" margin="1" yell="no"/>
 </voices>

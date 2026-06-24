@@ -1,206 +1,3 @@
---[[function getResets(cid)
-    local Info = db.getResult("SELECT `Rebirths` FROM `players` WHERE `id` = " .. getPlayerGUID(cid) .. " LIMIT 1")
-        if Info:getID() ~= LUA_ERROR then
-        local rebs= Info:getDataInt("Rebirths")
-        Info:free()
-        return rebs
-    end
-     return LUA_ERROR
-end
-
-function getPlayerRebirth(cid)
-    local Info = db.getResult("SELECT `Rebirths` FROM `players` WHERE `id` = " .. getPlayerGUID(cid) .. " LIMIT 1")
-        if Info:getID() ~= LUA_ERROR then
-        local rebs= Info:getDataInt("Rebirths")
-        Info:free()
-        return rebs
-    end
-     return LUA_ERROR
-end
-
-function doRemoveThing(uid)
-	if(isCreature(uid)) then
-		return doRemoveCreature(uid)
-	end
-
-	return doRemoveItem(uid)
-end
-
- 
-function doAddRebirth(cid, rebs)
-    db.executeQuery("UPDATE `players` SET `Rebirths` = `Rebirths` + " .. rebs .. " WHERE `id` = " .. getPlayerGUID(cid) .. ";")
-end
- 
-function doRemoveRebirth(cid, rebs)
-    db.executeQuery("UPDATE `players` SET `Rebirths` = `Rebirths` - " .. rebs .. " WHERE `id` = " .. getPlayerGUID(cid) .. ";")
-end
-
-local event = nil
- 
-local function Restore(id, pos, npos, uid)
-    if getTileItemById(pos, id).uid ~= 1 then
-        return doCreateItem(id, pos), doRelocate(pos, npos), doTransformItem(uid, 1945)
-    end
-end
- ]]--
-
-function countDown(number, pos, effect, msgonend, effectonend)
-  local n = number
-       for i = 1, number do
-           addEvent(doSendAnimatedText,i* 1000, pos, n > 1 and n.."" or msgonend .."", n < 6 and TEXTCOLOR_RED or TEXTCOLOR_GREEN)
-		   addEvent(doSendMagicEffect,i* 1000, pos, n > 1 and effect or effectonend )
-              n = n -1
-	   end
-      n = number
-return true
-end
-vip = {
-   name = "Vip system";
-   author = "Mock";
-   version = "1.0.0.0";
-   query="ALTER TABLE `accounts` ADD `vip_time` INTEGER";
-   query2="ALTER TABLE `accounts` ADD `vip_time` INT(15) NOT NULL"
-}
-
-extraVipStorage = 77001
-extraLootStorage = 22881
-extraDamageStorage = 22001
-
-function doPlayerSetSkills(cid, value)
-    for i = 0, 7 do
-        doPlayerSetRate(cid, i, value)
-    end
-end
-
---[[function timeString(timeDiff)
-  local dateFormat = {
-    {"day", timeDiff / 60 / 60 / 24},
-    {"hour", timeDiff / 60 / 60 % 24},
-    {"minut", timeDiff / 60 % 60},
-    {"second", timeDiff % 60}
-  }
-
-  local out = {}
-    for k, t in ipairs(dateFormat) do
-      local v = math.floor(t[2])
-        if(v > 0) then
-            table.insert(out, (k < #dateFormat and (#out > 0 and ', ' or '') or ' y ') .. v .. ' ' .. t[1] .. (v ~= 1 and 's' or ''))
-        end
-    end
-  local ret = table.concat(out)
-    if ret:len() < 16 and ret:find("second") then
-      local a, b = ret:find(" y ")
-      ret = ret:sub(b+1)
-    end
-  return ret
-end]]--
-
-function vip.setTable()
-   dofile('config.lua')
-   if sqlType == "sqlite" then
-   db.executeQuery(vip.query)
-   else
-        db.executeQuery(vip.query2)
-   end
-end
-
-
-function vip.getVip(cid)
-         assert(tonumber(cid),'Parameter must be a number') 
-         if isPlayer(cid) == FALSE then error('Player don\'t find') end; 
-         ae =  db.getResult("SELECT `vip_time` FROM `accounts` WHERE `name` = '"..getPlayerAccount(cid).."';")
-         if ae:getID() == -1 then
-            return 0
-         end
-
-local retee = ae:getDataInt("vip_time") or 0
-ae:free()
-         return retee
-end
-
-function vip.getVipByAcc(acc)
-         assert(acc,'Account is nil')
-         local a = db.getResult("SELECT `vip_time` FROM `accounts` WHERE `name` = '"..acc.."';")
-         if a:getID() ~= -1 then
-             return a:getDataInt("vip_time") or 0, a:free()
-         else
-             error('Account don\'t find.')
-         end
-end
-
-function vip.setVip(cid,time)
-         dofile("config.lua")
-         assert(tonumber(cid),'Parameter must be a number')
-         assert(tonumber(time),'Parameter must be a number')
-         if isPlayer(cid) == FALSE then error('Player don\'t find') end; 
-         db.executeQuery("UPDATE `"..sqlDatabase.."`.`accounts` SET `vip_time` = '"..(os.time()+time).."' WHERE `accounts`.`name` ='".. getPlayerAccount(cid).."';")
-end
-
-function vip.getVipByAccount(acc)
-         assert(acc,'Account is nil')
-         return db.getResult("SELECT `vip_time` FROM `accounts` WHERE `name` = '"..acc.."';"):getDataInt("vip_time") or 0
-end                                      
-
-function vip.hasVip(cid)
-         assert(tonumber(cid),'Parameter must be a number')
-         if isPlayer(cid) == FALSE then return end;
-         local t = vip.getVip(cid) or 0
-         if os.time(day) < t then
-            return TRUE
-         else
-            return FALSE
-         end
-end
-
-function vip.hasVips(cid)
-         assert(tonumber(cid),'Parameter must be a number')
-         if isPlayer(cid) == FALSE then return end;
-         local t = vip.getVip(cid)
-         if os.time(day) < t then
-            return TRUE
-         else
-            return FALSE
-         end
-end
-
-function vip.accountHasVip(acc)
-         assert(acc,'Account is nil')
-         if os.time() < vip.getVipByAccount(acc) then
-            return TRUE
-         else
-            return FALSE
-         end
-end
-function vip.getDays(days)
-   return (3600 * 24 * days)
-end
-
-function vip.addVipByAccount(acc,time)
-   assert(acc,'Account is nil')
-   assert(tonumber(time),'Parameter must be a number')
-   local a = vip.getVipByAcc(acc)
-   a = os.difftime(a,os.time())
-   if a < 0 then a = 0 end;
-   a = a+time
-   return vip.setVipByAccount(acc,a)
-end
-
-function vip.setVipByAccount(acc,time)
-         dofile("config.lua")
-         assert(acc,'Account is nil')
-         assert(tonumber(time),'Parameter must be a number')
-         db.executeQuery("UPDATE `accounts` SET `vip_time` = '"..(os.time()+time).."' WHERE `accounts`.`name` ='"..acc.."';")
-         return TRUE
-end
-
-function vip.returnVipString(cid)
-   assert(tonumber(cid),'Parameter must be a number')
-   if isPlayer(cid) == TRUE then
-      return os.date("%d %B %Y %X ", vip.getVip(cid))
-   end
-end
-------end-----
-
 function getGuildNameByID(gid) -- By Killua
     local query = db.getResult("SELECT `name` FROM `guilds` WHERE `id` = '"..gid.."'")
     if query:getID() == -1 then
@@ -211,7 +8,7 @@ function getGuildNameByID(gid) -- By Killua
     return name
 end
 
---[[function isWalkable(pos, creature, proj, pz)
+function isWalkable(pos, creature, proj, pz)
     if getTileThingByPos({x = pos.x, y = pos.y, z = pos.z, stackpos = 0}).itemid == 0 then return false end
     if getTopCreature(pos).uid > 0 and creature then return false end
     if getTileInfo(pos).protection and pz then return false, true end
@@ -226,7 +23,7 @@ end
         end
     end
     return true
-end]]--
+end
 
 function isInArray(array, value, caseSensitive)
 	if(caseSensitive == nil or caseSensitive == false) and type(value) == "string" then
@@ -246,51 +43,51 @@ function isInArray(array, value, caseSensitive)
 end
 
 ARMY = {
-	[1] = {1, 15, "Soldado Raso", 150000, 15000}, -- [NAºmero] = {Pontos Kill, Points para UP, "Nome",PLATINIUM COINS POR KILL, 0},
-	[2] = {1, 20, "Soldado de Primeira Classe", 200000, 20000},
-	[3] = {1, 25, "Cabo", 250000, 25000},
-	[4] = {1, 30, "Sargento", 300000, 30000},
-	[5] = {1, 35, "Sargento-Ajudante 1", 350000, 35000},
-	[6] = {1, 40, "Sargento-Ajudante 2", 400000, 40000},
-	[7] = {1, 45, "Sargento-Chefe", 450000, 45000},
-	[8] = {1, 50, "Sargento-Mestre 1", 500000, 50000},
-	[9] = {1, 55, "Sargento-Mestre 2", 550000, 55000},
-	[10] = {1, 60, "Sargento-Mestre 3", 600000, 60000},
-	[11] = {1, 65, "Sargento-Mestre 4", 650000, 65000},
-	[12] = {1, 70, "Sargento-Mor do Comando", 700000, 70000},
-	[13] = {1, 75, "Segundo-Tenente 1", 750000, 75000},
-	[14] = {1, 80, "Segundo-Tenente 2", 800000, 80000},
-	[15] = {1, 85, "Segundo-Tenente 3", 850000, 85000},
-	[16] = {1, 90, "Segundo-Tenente 4", 900000, 90000},
-	[17] = {1, 95, "Primeiro-Tenente 1", 950000, 95000},
-	[18] = {1, 100, "Primeiro-Tenente 2", 1000000, 100000},
-	[19] = {1, 105, "Primeiro-Tenente 3", 1100000, 100000},
-	[20] = {1, 110, "Primeiro-Tenente 4", 1200000, 100000},
-	[21] = {1, 115, "Primeiro-Tenente 5", 1300000, 100000},
-	[22] = {1, 120, "Capitao 1", 1400000, 500000},
-	[23] = {1, 125, "Capitao 2", 1500000, 500000},
-	[24] = {1, 130, "Capitao 3", 1600000, 500000},
-	[25] = {1, 135, "Capitao 4", 1700000, 500000},
-	[26] = {1, 140, "Capitao 5", 1800000, 500000},
-	[27] = {1, 145, "Major 1", 1900000, 1000000},
-	[28] = {1, 150, "Major 2", 2000000, 1000000},
-	[29] = {1, 155, "Major 3", 2100000, 1000000},
-	[30] = {1, 160, "Major 4", 2200000, 1000000},
-	[31] = {1, 165, "Major 5", 2300000, 1000000},
-	[32] = {1, 170, "Tenente-Coronel 1", 2400000, 1500000},
-	[33] = {1, 175, "Tenente-Coronel 2", 2500000, 1500000},
-	[34] = {1, 180, "Tenente-Coronel 3", 2600000, 1500000},
-	[35] = {1, 185, "Tenente-Coronel 4", 2700000, 1500000},
-	[36] = {1, 190, "Tenente-Coronel 5", 2800000, 1500000},
-	[37] = {1, 195, "Coronel 1", 3000000, 2000000},
-	[38] = {1, 200, "Coronel 2", 3000000, 2500000},
-	[39] = {1, 300, "Coronel 3", 3000000, 3000000},
-	[40] = {1, 400, "Coronel 4", 3000000, 3500000},
-	[41] = {1, 500, "Coronel 5", 3000000, 4000000},
-	[42] = {1, 9999999, "General", 5000000, 5000000},
+	[1] = {50, 350, "Soldado Raso", 1}, -- [Número] = {Pontos Kill, Points para UP, "Nome",PLATINIUM COINS POR KILL},
+	[2] = {50, 1500, "Soldado de Primeira Classe", 50000000},
+	[3] = {50, 2000, "Cabo", 60000000},
+	[4] = {50, 3000, "Sargento", 70000000},
+	[5] = {50, 3500, "Sargento-Ajudante 1", 90000000},
+	[6] = {50, 5000, "Sargento-Ajudante 2", 11000000},
+	[7] = {50, 5500, "Sargento-Chefe", 15000000},
+	[8] = {50, 6000, "Sargento-Mestre 1", 18000000},
+	[9] = {50, 6500, "Sargento-Mestre 2", 20000000},
+	[10] = {50, 7000, "Sargento-Mestre 3", 22000000},
+	[11] = {50, 7600, "Sargento-Mestre 4", 24000000},
+	[12] = {50, 8200, "Sargento-Mor do Comando", 26000000},
+	[13] = {50, 9000, "Segundo-Tenente 1", 28000000},
+	[14] = {50, 9600, "Segundo-Tenente 2", 30000000},
+	[15] = {50, 10200, "Segundo-Tenente 3", 32000000},
+	[16] = {50, 11000, "Segundo-Tenente 4", 34000000},
+	[17] = {50, 11500, "Primeiro-Tenente 1", 36000000},
+	[18] = {50, 12000, "Primeiro-Tenente 2", 38000000},
+	[19] = {50, 13000, "Primeiro-Tenente 3", 40000000},
+	[20] = {50, 14000, "Primeiro-Tenente 4", 45000000},
+	[21] = {50, 15000, "Primeiro-Tenente 5", 55000000},
+	[22] = {50, 16000, "Capitao 1", 60000000},
+	[23] = {50, 17000, "Capitao 2", 70000000},
+	[24] = {50, 18000, "Capitao 3", 80000000},
+	[25] = {50, 19000, "Capitao 4", 90000000},
+	[26] = {50, 20000, "Capitao 5", 100000000},
+	[27] = {50, 21000, "Major 1", 110000000},
+	[28] = {50, 21500, "Major 2", 120000000},
+	[29] = {50, 22000, "Major 3", 130000000},
+	[30] = {50, 23000, "Major 4", 140000000},
+	[31] = {50, 23500, "Major 5", 150000000},
+	[32] = {50, 24000, "Tenente-Coronel 1", 160000000},
+	[33] = {50, 25000, "Tenente-Coronel 2", 170000000},
+	[34] = {50, 26000, "Tenente-Coronel 3", 180000000},
+	[35] = {50, 27000, "Tenente-Coronel 4", 190000000},
+	[36] = {50, 28000, "Tenente-Coronel 5", 200000000},
+	[37] = {50, 29000, "Coronel 1", 210000000},
+	[38] = {50, 30000, "Coronel 2", 220000000},
+	[39] = {50, 31000, "Coronel 3", 230000000},
+	[40] = {50, 32000, "Coronel 4", 400000000},
+	[41] = {50, 35000, "Coronel 5", 500000000},
+	[42] = {50, 100000, "General", 1000000000},
 	
 	
-}  
+}                           
 ARMY_LEVEL = 2014159
 ARMY_EXPERIENCE = 2014160
 
@@ -766,144 +563,60 @@ function addContainerItems(container,items)
 
 	return main_bp
 end
-function doCreateItemInArea(firstpos, area, tab) -- function by MatheusMkalo
-    for i, z in pairs(area) do
-        pos = {x=firstpos.x, y=firstpos.y+i-1, z=firstpos.z}
-        for s, x in pairs(z) do
-            pos.x = firstpos.x+s-1
-            if tab[x] or type(x) == "table" then
-                for l = 1, type(x) == "table" and #x or 1 do
-                    item = doCreateItem(type(x) == "table" and (not tab[x[l]].name and tab[x[l]].itemid or getItemIdByName(tab[x[l]].name)) or (not tab[x].name and tab[x].itemid or getItemIdByName(tab[x[l]].name)), type(x) == "table" and (tab[x[l]].count == nil and 1 or tab[x[l]].count) or tab[x].count == nil and 1 or tab[x].count, pos)
-                    doItemSetAttribute(item, "aid", type(x) == "table" and (tab[x[l]].actionid == nil and 0 or tab[x[l]].actionid) or tab[x].actionid == nil and 0 or tab[x].actionid) 
-                end
-            end
-        end
-    end
-return TRUE
+
+WAR_TYPE_STORAGE = 22222
+
+function isGuildLeader(cid)
+	return getPlayerGuildLevel(cid) == GUILDLEVEL_LEADER
 end
 
-function doCleanArea(x,ex,y,ey,z)
- for x = x,ex do
- for y = y,ey do
- pos = {x=x, y=y, z=z, stackpos = 1}
- var = getThingFromPos(pos)
- 
- doRemoveItem(var.uid, 1)
- end
- end
- end
- 
-function getClock(secs)
-return os.date("%H:%M:%S ",secs- os.time()+82800)
-end
-
-function countPlayers(fromPos, toPos)
-    local count = 0
-    for x=fromPos.x,toPos.x do
-        for y=fromPos.y,toPos.y do
-            for z=fromPos.z,toPos.z do
-                local v = getTopCreature({x=x, y=y, z=z}).uid
-                if isPlayer(v) then
-                    count = (count + 1)
-                end
-            end
-        end
-    end
-    return count
-end
-
-function getPlayerId(cid)
-	Query1 = db.getResult("SELECT `id` FROM `players` WHERE `name` = '"..getPlayerName(cid).."'")
-	local id = Query1:getDataString("id")
-	return id
-end
-
-function getFullStorage(cid, storage, notsave)
-	if not notsave then
-		doPlayerSave(cid)
+function isInAnyArray(array, value)
+	if not type(array) == 'table' then
+		return false
 	end
-	
-	local id = getPlayerId(cid)
-	Query = db.getResult("SELECT `value` FROM `player_storage` WHERE `player_id` = "..id.." AND `key` = "..storage..";")
-	local Result = Query:getDataString("value")
-	return Result
-end
-
-function getStorageByGUID(guid, storage)
-	Query = db.getResult("SELECT `value` FROM `player_storage` WHERE `player_id` = "..guid.." AND `key` = "..storage..";")
-	local Result = Query:getDataString("value")
-	return Result
-end
-
-function doCutStorage(cid, storageKey, cutType) -- cutType [Ex: ","]
-local cutSto = {}
-	local allStorages = getFullStorage(cid, storageKey)
-	local cutSto = allStorages:explode(cutType)
-
-	if #cutSto > 0 then
-		for i = 1, #cutSto do
-			table.insert(cutSto, cutSto[i])
-		end
-		return cutSto
-	else
-		return true
-	end
-end
-
-function doCutText(text, cutType) -- cutType [Ex: ","]
-local cutTxt = {}
-	local cutTxt = text:explode(cutType)
-
-	if #cutTxt > 0 then
-		for i = 1, #cutTxt do
-			table.insert(cutTxt, cutTxt[i])
-		end
-		return cutTxt
-	else
-		return true
-	end
-end
-
-function mathtime(table)
-local unit = {"sec", "min", "hour", "day"}
-	for i, v in pairs(unit) do
-		if v == table[2] then
-			return table[1]*(60^(v == unit[4] and 2 or i-1))*(v == unit[4] and 24 or 1)
+	for k, v in pairs(array) do
+		if type(v) == 'table' then
+			ret = isInAnyArray(v, value)
+			if ret ~= false then
+				return true, k
+			end
+		else
+			if v == value then
+				return true, k
+			end
 		end
 	end
-	
-	return error("Erro em function: mathtime. Reveja seu script antes de function.")
+	return false
 end
 
-function getPointsp(cid) 
-local res = db.getResult('select `points` from znote_accounts where account_id = \''..getPlayerAccountId(cid)..'\'') 
-if(res:getID() == -1) then 
-return false 
-end 
-
-local ret = res:getDataInt("points") res:free() 
-return tonumber(ret) 
-end 
-
-function doPlayerAddPointsp(cid, quant) 
-return db.query("UPDATE `znote_accounts` SET `points` = '".. getPointsp(cid) + quant .."' WHERE `account_id` ='"..getPlayerAccountId(cid).."'") 
-end 
-
-function doPlayerRemovePointsp(cid, quant) 
-return db.query("UPDATE `znote_accounts` SET `points` = '".. getPointsp(cid) - quant .."' WHERE `account_id` ='"..getPlayerAccountId(cid).."'") 
+function setPlayerWarType(cid, value)
+	return doCreatureSetStorage(cid, WAR_TYPE_STORAGE, value)
 end
 
+function getPlayerWarType(cid)
+	return getCreatureStorage(cid, WAR_TYPE_STORAGE)
+end
 
-function pairsByKeys (t, f)
-    local a = {}
-    for n in pairs(t) do table.insert(a, n) end
-    	table.sort(a, f)
-      	local i = 0      -- iterator variable
-      	local iter = function ()   -- iterator function
-        i = i + 1
-        if a[i] == nil then return nil
-        else return a[i], t[a[i]]
-        end
-    end
-    return iter
+function isGuildAntiEntrosa(guildId)
+if not type(guildId) == 'number' then
+	return false
+end
+	for _, v in pairs(Wars) do
+		if type(v) == "table" then
+			if v:isGuildOnWar(guildId) then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+function table.elements(tabela)
+local i = 0
+	for _,v in pairs(tabela) do
+		if v ~= nil then
+			i = i + 1
+		end
+	end
+	return i
 end

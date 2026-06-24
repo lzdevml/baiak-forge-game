@@ -5,11 +5,11 @@ local light = createConditionObject(CONDITION_LIGHT, -1, false, 0, CONDITIONID_D
 	setConditionParam(light, CONDITION_PARAM_LIGHT_COLOR, 215)
 
 function onSay(cid, words, param, channel)
-	local condition, type, subId, name = ignore, CONDITION_GAMEMASTER, GAMEMASTER_IGNORE, "private messages ignoring"
+	local condition, type, subId, name = ignore, CONDITION_GAMEMASTER, GAMEMASTER_IGNORE, "mensagens privadas ignorando"
 	if(words:sub(2, 2) == "c") then
-		condition, subId, name = teleport, GAMEMASTER_TELEPORT, "map click teleport"
+		condition, subId, name = teleport, GAMEMASTER_TELEPORT, "clique no mapa teletransporte"
 	elseif(words:sub(2, 2) == "l") then
-		condition, type, subId, name = light, CONDITION_LIGHT, 0, "full light"
+		condition, type, subId, name = light, CONDITION_LIGHT, 0, "luz cheia"
 	end
 
 	local action = "off"
@@ -20,6 +20,6 @@ function onSay(cid, words, param, channel)
 		doRemoveCondition(cid, type, subId, CONDITIONID_DEFAULT)
 	end
 
-	doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have turned " .. action .. " " .. name .. ".")
+	doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Você virou " .. action .. " " .. name .. ".")
 	return true
 end

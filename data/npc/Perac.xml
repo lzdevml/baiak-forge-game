@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<npc name="Perac" script="perac.lua" walkinterval="2000" floorchange="0">
-<health now="100" max="100"/>
-<look type="128" head="66" body="46" legs="2" feet="89" addons="0"/>
-</npc>
+<npc name="Mega Seller" script="data/npc/scripts/default.lua" walkinterval="2000" floorchange="0">
+	<health now="100" max="100"/>
+	<look type="300" head="64" body="44" legs="42" feet="54" addons="3"/>
+	<parameters>
+		<parameter key="module_shop" value="1"/>
+		<parameter key="shop_buyable" value="Sword ROX,7417,30000000;Axe ROX,7420,30000000;Bow ROX,8854,30000000;Club ROX,7450,30000000;Staff ROX,7424,30000000;"/>
+	</parameters>
+1</npc>

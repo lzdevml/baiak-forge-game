@@ -80,20 +80,6 @@ if(KeywordHandler == nil) then
 		local new = KeywordNode:new(keywords, callback, parameters)
 		return self:addChildKeywordNode(new)
 	end
-	
-	function KeywordNode:addAliasKeyword(keywords)
-		if #self.children == 0 then
-			print('KeywordNode:addAliasKeyword no previous node found')
-			return false
-		end
-
-		local prevNode = self.children[#self.children]
-		local new = KeywordNode:new(keywords, prevNode.callback, prevNode.parameters, prevNode.condition, prevNode.action)
-		for i = 1, #prevNode.children do
-			new:addChildKeywordNode(prevNode.children[i])
-		end
-		return self:addChildKeywordNode(new)
-	end
 
 	-- Adds a pre-created childNode to this node. Should be used for example if several nodes should have a common child.
 	function KeywordNode:addChildKeywordNode(childNode)
@@ -216,11 +202,6 @@ if(KeywordHandler == nil) then
 	-- Adds a new keyword to the root keywordnode. Returns the new node.
 	function KeywordHandler:addKeyword(keys, callback, parameters)
 		return self:getRoot():addChildKeyword(keys, callback, parameters)
-	end
-	
-	-- Adds an alias keyword for the previous node.
-	function KeywordHandler:addAliasKeyword(keys)
-		return self:getRoot():addAliasKeyword(keys)
 	end
 
 	-- Moves the current position in the keyword hierarchy count steps upwards. Count defalut value = 1.

@@ -5,10 +5,10 @@ set -e
 
 DB_HOST="${DB_HOST:-mariadb}"
 DB_PORT="${DB_PORT:-3306}"
-DB_NAME="${DB_NAME:-baiakforge}"
+DB_NAME="${DB_NAME:-gesior860}"
 DB_USER="${DB_USER:-root}"
 DB_PASS="${DB_PASS:-}"
-SRV_IP="${SERVER_IP:-127.0.0.1}"
+SRV_IP="${SERVER_IP:-187.127.5.64}"
 SRV_NAME="${SERVER_NAME:-Baiak Forge}"
 CFG=/srv/config.lua
 
@@ -39,9 +39,9 @@ done
 HASTBL=$(mysql --skip-ssl -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" -N -e \
   "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${DB_NAME}' AND table_name='players';" 2>/dev/null || echo 0)
 if [ "${HASTBL:-0}" = "0" ]; then
-  echo "[forge-otx] Importando styller.sql (DB novo)..."
+  echo "[forge-otx] Importando gesior860.sql (DB novo)..."
   mysql --skip-ssl -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;" 2>/dev/null || true
-  mysql --skip-ssl -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" "${DB_NAME}" < /srv/styller.sql \
+  mysql --skip-ssl -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" "${DB_NAME}" < /srv/gesior860.sql \
     && echo "[forge-otx] schema importado." || echo "[forge-otx] AVISO: import falhou (segue)."
 else
   echo "[forge-otx] DB ja tem players (pula import)."

@@ -1,32 +1,30 @@
 --[[
 
-	Castle Custom @Vetodj
+				Real Castle Event
+	Desenvolvido por Vítor Bertolucci (Killua)
 
 ]]
 
 function onUse(cid, item, frompos, item2, topos)
-
-		local guild = getGlobalStorageValue(realCastle.guild_storage) > 1 and "a guild "..getGuildNameByID(getGlobalStorageValue(realCastle.guild_storage)).." possui o domï¿½nio" or "nenhuma guild possui o domï¿½nio do castelo"
+	if item.uid == 61466 then
+		local guild = getGlobalStorageValue(realCastle.guild_storage) > 1 and "a guild "..getGuildNameByID(getGlobalStorageValue(realCastle.guild_storage)).." possui o domínio" or "nenhuma guild possui o domínio do castelo"
 		local sto = realCastle.date_storages
 		local gsto = getGlobalStorageValue
 		local time = gsto(sto[1]).."/"..gsto(sto[2]).."/"..gsto(sto[3])
-		local domain = realCastle.isOpen() and "as guilds estï¿½o batalhando pelo domï¿½nio do castelo" or guild
-		local msg = " ---------[Styller-Castle]-------\n\n\nAtualmente "..domain..".\n\nPrï¿½xima batalha: "..time.." ï¿½s 21:00."
-	if item.uid == 61466 then
-	doShowTextDialog(cid,8977,msg)
+		local domain = realCastle.isOpen() and "as guilds estão batalhando pelo domínio do castelo" or guild
+		local msg = " -----------[B.Castle]---------\n\n\nAtualmente "..domain..".\n\nPróxima batalha: "..time.." às 20:00."
+		doShowTextDialog(cid,8977,msg)
 		return true
 	end
 	if not realCastle.isOpen() then 
 		doTeleportThing(cid,getTownTemplePosition(1)) 
-		doCreatureSay(cid,'Castle estï¿½ fechado para dominio!', TALKTYPE_ORANGE_1)
 		return true 
 	end
 	if not realCastle.isDominating(cid) then
 		realCastle.domain(cid)
 		doSendMagicEffect(getThingPos(cid), CONST_ME_CRAPS)
-		doCreatureSay(cid,'Dominei!', TALKTYPE_ORANGE_1)
 	else
-		doPlayerSendCancel(cid,"Sua guild jï¿½ estï¿½ com o domï¿½nio do castelo.")
+		doPlayerSendCancel(cid,"Sua guild já está com o domínio do castelo.")
 	end
 	return true
 end

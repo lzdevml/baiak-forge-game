@@ -1,5 +1,5 @@
 local config = { 
-        removeOnUse = "yes", 
+        removeOnUse = "no", 
         usableOnTarget = "yes", -- can be used on target? (fe. healing friend) 
         splashable = "no", 
         realAnimation = "no", -- make text effect visible only for players in range 1x1 
@@ -11,28 +11,23 @@ config.removeOnUse = getBooleanFromString(config.removeOnUse)
 config.usableOnTarget = getBooleanFromString(config.usableOnTarget) 
 config.splashable = getBooleanFromString(config.splashable) 
 config.realAnimation = getBooleanFromString(config.realAnimation) 
-
-local POTIONS = {
-	[8704] = {empty = 7636, splash = 42, health = {50, 100}}, -- small health potion
-	[7618] = {empty = 7636, splash = 42, health = {150, 200}}, -- health potion
-	[7588] = {empty = 7634, splash = 42, health = {200, 400}, level = 50, vocations = {3, 4, 7, 8}, vocStr = "knights and paladins"}, -- strong health potion
-	[7591] = {empty = 7635, splash = 42, health = {500, 700}, level = 80, vocations = {4, 8}, vocStr = "knights"}, -- great health potion
-	[8473] = {empty = 7635, splash = 42, health = {750, 900}, level = 130, vocations = {4, 8}, vocStr = "knights"}, -- ultimate health potion
-	[7620] = {empty = 7636, splash = 47, mana = {100, 130}}, -- mana potion
-	[7589] = {empty = 7634, splash = 47, mana = {150, 190}, level = 50, vocations = {1, 2, 3, 5, 6, 7}, vocStr = "sorcerers, druids and paladins"}, -- strong mana potion
-	[7590] = {empty = 7635, splash = 47, mana = {300, 340}, level = 80, vocations = {1, 2, 5, 6}, vocStr = "sorcerers and druids"}, -- great mana potion
-	[8472] = {empty = 7635, splash = 43, health = {300, 400}, mana = {150, 190}, level = 80, vocations = {3, 7}, vocStr = "paladins"}, -- great spirit potion
-	[13213] = {empty = 7635, splash = 47, mana = {320, 480}, level = 300, vocations = {1, 2, 5, 6}, vocStr = "sorcerers and druids"}, -- ultimate mana potion	
-	[13214] = {empty = 7635, splash = 43, health = {400, 500}, mana = {250, 320}, level = 300, vocations = {3, 7}, vocStr = "paladins"}, -- great spirit potion	
-	[13215] = {empty = 7635, splash = 42, health = {875, 1120}, level = 320, vocations = {4, 8}, vocStr = "knights"} -- ultimate health potion
-	
-}
-
+ 
+local POTIONS = { 
+        [8704] = {empty = 7636, splash = 2, health = {100, 200}}, -- small health potion 
+        [7618] = {empty = 7636, splash = 2, health = {150, 200}}, -- health potion 
+        [7588] = {empty = 7634, splash = 2, health = {300, 350}, level = 50, vocations = {3, 4, 7, 8}, vocStr = "knights and paladins"}, -- strong health potion 
+        [7591] = {empty = 7635, splash = 2, health = {900, 1000}, level = 80, vocations = {4, 8}, vocStr = "knights"}, -- great health potion 
+        [8473] = {empty = 7635, splash = 2, health = {1500, 1600}, level = 130, vocations = {4, 8}, vocStr = "knights"}, -- ultimate health potion 
+        [7620] = {empty = 7636, splash = 7, mana = {200, 250}}, -- mana potion 
+        [7589] = {empty = 7634, splash = 7, mana = {300, 300}, level = 50, vocations = {1, 2, 3, 5, 6, 7}, vocStr = "sorcerers, druids and paladins"}, -- strong mana potion 
+        [7590] = {empty = 7635, splash = 7, mana = {650, 750}, level = 80, vocations = {1, 2, 5, 6}, vocStr = "sorcerers and druids"}, -- great mana potion 
+        [8472] = {empty = 7635, splash = 3, health = {500, 550}, mana = {500, 550}, level = 80, vocations = {3, 7}, vocStr = "paladins"}, -- great spirit potion 
+} 
+ 
 local exhaust = createConditionObject(CONDITION_EXHAUST) 
-	setConditionParam(exhaust, CONDITION_PARAM_TICKS, (getConfigInfo('timeBetweenExActions') - 100)) 
-	
-	
-function onUse(cid, item, fromPosition, itemEx, toPosition)
+setConditionParam(exhaust, CONDITION_PARAM_TICKS, (getConfigInfo('timeBetweenExActions') - 100)) 
+ 
+function onUse(cid, item, fromPosition, itemEx, toPosition) 
         local potion = POTIONS[item.itemid] 
         if(not potion) then 
                 return false 
@@ -66,17 +61,10 @@ function onUse(cid, item, fromPosition, itemEx, toPosition)
         if(mana and not doPlayerAddMana(itemEx.uid, math.ceil(math.random(mana[1], mana[2]) * config.manaMultiplier))) then 
                 return false 
         end 
-        doSendMagicEffect(getThingPos(itemEx.uid), 12) 
         if(not realAnimation) then 
                 doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_ORANGE_1) 
-        else 
-                for i, tid in ipairs(getSpectators(getCreaturePosition(cid), 1, 1)) do 
-                        if(isPlayer(tid)) then 
-                                doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_ORANGE_1, false, tid) 
-                        end 
-                end 
-        end  
-		 doAddCondition(cid, exhaust) 
+        end 
+        doAddCondition(cid, exhaust) 
         if(not potion.empty or config.removeOnUse) then 
         doRemoveItem(item.uid, 1) 
         return TRUE 

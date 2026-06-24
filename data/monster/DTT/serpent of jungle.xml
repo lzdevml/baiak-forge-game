@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="serpent of jungle" nameDescription="a serpent of jungle" race="venom" experience="10350" speed="0" manacost="0">
-  <health now="10000" max="10000"/>
+<monster name="serpent of jungle" nameDescription="a serpent of jungle" race="venom" experience="10350" speed="440" manacost="0">
+  <health now="1500000" max="1500000"/>
   <look type="220" corpse="4323"/>
   <script>
     <event name="dttDeath"/>
@@ -68,5 +68,30 @@
     <voice sentence="I bring your deathhh, mortalssss"/>
   </voices>
   <loot>
+    <item id="2182" chance="1333"/><!-- snakebite rod -->
+    <item id="2195" chance="800"/><!-- boots of haste -->
+    <item id="3976" countmax="10" chance="50000"/><!-- worm -->
+    <item id="2148" countmax="50" chance="100000"/><!-- gold coin -->
+    <item id="2476" chance="500"/><!-- knight armor -->
+    <item id="1976" chance="9000"/><!-- gemmed book -->
+    <item id="3971" chance="2000"/><!-- charmer tiara -->
+    <item id="2492" chance="200"/><!-- dragon scale mail -->
+    <item id="2167" chance="3000"/><!-- energy ring -->
+    <item id="2392" chance="300"/><!-- fire sword -->
+    <item id="1987" chance="100000"><!-- bag -->
+      <inside>
+        <item id="2148" countmax="100" chance="100000"/><!-- gold coin -->
+        <item id="2033" chance="3000"/><!-- golden mug -->
+        <item id="2182" chance="1000"/><!-- snakebite rod -->
+        <item id="2796" countmax="1" chance="18000"/><!-- green mushroom -->
+        <item id="2177" chance="800"/><!-- life crystal -->
+        <item id="2168" chance="3000"/><!-- life ring -->
+        <item id="2547" chance="6000"/><!-- power bolt -->
+        <item id="2498" chance="100"/><!-- royal helmet -->
+        <item id="2146" countmax="1" chance="6000"/><!-- small sapphire -->
+        <item id="2479" chance="600"/><!-- strange helmet -->
+        <item id="2528" chance="400"/><!-- tower shield -->
+      </inside>
+    </item>
   </loot>
 </monster>

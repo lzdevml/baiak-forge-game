@@ -17,7 +17,7 @@ WORKDIR /srv
 COPY data/ ./data/
 COPY mods/ ./mods/
 COPY config.lua ./config.lua
-COPY styller.sql ./styller.sql
+COPY gesior860.sql ./gesior860.sql
 COPY bin/theotxserver ./theotxserver
 COPY infra/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh ./theotxserver && mkdir -p logs

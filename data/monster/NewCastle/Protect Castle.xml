@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <monster name="Protect Castle" nameDescription="a protect castle" race="undead" experience="12000" speed="0" manacost="0">
-  <health now="50000" max="50000"/>
+  <health now="800000" max="800000"/>
   <look typeex="9787" />
   <targetchange interval="5000" chance="0"/>
   <strategy attack="100" defense="0"/>
@@ -20,7 +20,7 @@
 	<flag runonhealth="100"/>
   </flags>
   <attacks>
-	<attack name="energy" interval="4000" chance="20" radius="10" target="0" min="-30" max="-50">
+	<attack name="energy" interval="4000" chance="100" radius="10" target="0" min="-350" max="-500">
    <attribute key="areaEffect" value="energy"/>
 </attack>
   </attacks>

@@ -1,6 +1,3 @@
-local exausted = 2 -- exhausted em segundos
-local storage = 15444 -- storage do exausted
-
 local combat = createCombatObject()
 setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_HOLYDAMAGE)
 setCombatParam(combat, COMBAT_PARAM_DISTANCEEFFECT, CONST_ANI_SMALLHOLY)
@@ -11,5 +8,5 @@ addDamageCondition(condition, math.random(7,11), 3000, -20)
 setCombatCondition(combat, condition)
 
 function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+       return doCombat(cid, combat, var)
 end

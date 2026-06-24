@@ -1,6 +1,15 @@
 function onLogin(cid)
+    registerCreatureEvent(cid, "dttDeath")
+    registerCreatureEvent(cid, "dttPrepare")
+    registerCreatureEvent(cid, "dttStats")
+    registerCreatureEvent(cid, "dttOutfit")
+    registerCreatureEvent(cid, "dttKill") 
+    registerCreatureEvent(cid, "dttCombat")
     if (getPlayerStorageValue(cid, dtt.storage.team_blue) == 1) or (getPlayerStorageValue(cid, dtt.storage.team_red) == 1) then
         dtt.cleanPlayer(cid)
+    end
+    if (dtt.getBonusExp(cid)) then
+        doPlayerSendTextMessage(cid,25, "[DEFEND THE TOWER] Voce esta com "..dtt.bonus_rate.."x de bonus experiencia.")
     end
     return true
 end
@@ -103,17 +112,25 @@ function onCombat(cid, target)
 
     --Impedir que ataquem torres secundarias
     if (getCreatureName(target) == dtt.monster.name.a1) and isMonster(target) then
-        if(isCreature(getThingFromPos(dtt.monster.pos.a2).uid) or isCreature(getThingFromPos(dtt.monster.pos.a3).uid) or isCreature(getThingFromPos(dtt.monster.pos.a4).uid)) then  -- SE ALGUM VALOR DER TRUE N√O VAI PODER ATACAR 
+        if(isCreature(getThingFromPos(dtt.monster.pos.a2).uid) or isCreature(getThingFromPos(dtt.monster.pos.a3).uid) or isCreature(getThingFromPos(dtt.monster.pos.a4).uid)) then  -- SE ALGUM VALOR DER TRUE N√ÉO VAI PODER ATACAR 
             return false
         end
     end
 
     if (getCreatureName(target) == dtt.monster.name.b1) and isMonster(target) then
-        if(isCreature(getThingFromPos(dtt.monster.pos.b2).uid) or isCreature(getThingFromPos(dtt.monster.pos.b3).uid) or isCreature(getThingFromPos(dtt.monster.pos.b4).uid)) then  -- SE ALGUM VALOR DER TRUE N√O VAI PODER ATACAR 
+        if(isCreature(getThingFromPos(dtt.monster.pos.b2).uid) or isCreature(getThingFromPos(dtt.monster.pos.b3).uid) or isCreature(getThingFromPos(dtt.monster.pos.b4).uid)) then  -- SE ALGUM VALOR DER TRUE N√ÉO VAI PODER ATACAR 
             return false
         end
     end
 
+    return true
+end
+
+--Bonus exp
+function onKill(cid, target)
+    if (dtt.getBonusExp(cid)) and isMonster(target) then     
+        doPlayerAddExp(cid, getMonsterInfo(getCreatureName(target)).experience * dtt.bonus_rate)
+    end
     return true
 end
 
@@ -123,7 +140,7 @@ function onStatsChange(cid, attacker, type, combat, value)
         return true
     end
 
-    -- Avisar que as torres est„o sendo atacadas | a2 =  top, a3 = middle, a4 = bottom.
+    -- Avisar que as torres est√£o sendo atacadas | a2 =  top, a3 = middle, a4 = bottom.
     if (type == STATSCHANGE_HEALTHLOSS) and (getCreatureName(cid) == dtt.monster.name.a2) then
         dtt.warningAttack(cid, "azul do topo", dtt.storage.team_blue) 
     end
@@ -157,102 +174,102 @@ end
 
 --Tratando morte dos montros buff e torres
 function onDeath(cid, corpse, mostDamageKiller) 
-	--Avisos de morte torres time azul
-	if getCreatureName(cid) == dtt.monster.name.a2 then
-		doBroadcastMessage("[DEFEND THE TOWER] A torre azul do topo foi destruida.", MESSAGE_EVENT_ADVANCE)
-		doCreateItem(9596, dtt.monster.pos.a2)
-		setGlobalStorageValue(dtt.storage.tower_red, (getGlobalStorageValue(dtt.storage.tower_red)+1))
-		return true
-	end 
-	if getCreatureName(cid) == dtt.monster.name.a3 then
-		broadcastMessage("[DEFEND THE TOWER] A torre azul do meio foi destruida.", MESSAGE_EVENT_ADVANCE)
-		doCreateItem(9596, dtt.monster.pos.a3)
-		setGlobalStorageValue(dtt.storage.tower_red, (getGlobalStorageValue(dtt.storage.tower_red)+1))
-		return true
-	end
-	if getCreatureName(cid) == dtt.monster.name.a4 then
-		broadcastMessage("[DEFEND THE TOWER] A torre azul de baixo foi destruida.", MESSAGE_EVENT_ADVANCE)
-		doCreateItem(9596, dtt.monster.pos.a4)
-		setGlobalStorageValue(dtt.storage.tower_red, (getGlobalStorageValue(dtt.storage.tower_red)+1))
-		return true
-	end
-	--Avisos de morte torres time vermelho
-	if getCreatureName(cid) == dtt.monster.name.b2 then
-		broadcastMessage("[DEFEND THE TOWER] A torre vermelha do topo foi destruida.", MESSAGE_EVENT_ADVANCE)
-		doCreateItem(9596, dtt.monster.pos.b2)
-		setGlobalStorageValue(dtt.storage.tower_blue, (getGlobalStorageValue(dtt.storage.tower_blue)+1))
-		return true
-	end 
-	if getCreatureName(cid) == dtt.monster.name.b3 then
-		broadcastMessage("[DEFEND THE TOWER] A torre vermelha do meio foi destruida.", MESSAGE_EVENT_ADVANCE)
-		doCreateItem(9596, dtt.monster.pos.b3)
-		setGlobalStorageValue(dtt.storage.tower_blue, (getGlobalStorageValue(dtt.storage.tower_blue)+1))
-		return true
-	end
-	if getCreatureName(cid) == dtt.monster.name.b4 then
-		broadcastMessage("[DEFEND THE TOWER] A torre vermelha de baixo foi destruida.", MESSAGE_EVENT_ADVANCE)
-		doCreateItem(9596, dtt.monster.pos.b4)
-		setGlobalStorageValue(dtt.storage.tower_blue, (getGlobalStorageValue(dtt.storage.tower_blue)+1))
-		return true
-	end
+--Avisos de morte torres time azul
+if getCreatureName(cid) == dtt.monster.name.a2 then
+    broadcastMessage("[DEFEND THE TOWER] A torre azul do topo foi destruida.", MESSAGE_EVENT_ADVANCE)
+    doCreateItem(9596, dtt.monster.pos.a2)
+    setGlobalStorageValue(dtt.storage.tower_red, (getGlobalStorageValue(dtt.storage.tower_red)+1))
+end 
 
-	--Aviso ultimas torres e abertura do teleporte
-	if getCreatureName(cid) == dtt.monster.name.a1 then
-		dtt.removeMonsters()
-		setGlobalStorageValue(dtt.storage.win, "red")
-		setGlobalStorageValue(dtt.storage.tower_red, (getGlobalStorageValue(dtt.storage.tower_red)+1))
-		dtt.close()
-		broadcastMessage(dtt.msg.win_team_red, MESSAGE_EVENT_ADVANCE)
-		dtt.resultBattle()
-		return true
-	end 
-	--Aviso ultimas torres e abertura do teleporte
-	if getCreatureName(cid) == dtt.monster.name.b1 then
-		dtt.removeMonsters()
-		setGlobalStorageValue(dtt.storage.win, "blue")
-		setGlobalStorageValue(dtt.storage.tower_blue, (getGlobalStorageValue(dtt.storage.tower_blue)+1))
-		dtt.close()
-		broadcastMessage(dtt.msg.win_team_blue, MESSAGE_EVENT_ADVANCE)
-		dtt.resultBattle()
-		return true
-	end 
-	--Verificando buff sorcerer and paladin
-	if getCreatureName(cid) == dtt.monster.name.buff1 then
-		if (getPlayerStorageValue(mostDamageKiller[1], dtt.storage.team_blue) == 1) then
-			dtt.setBuff(dtt.storage.team_blue, 1, 3)
-			for _, index in ipairs(dtt.getPlayersInEvent()) do
-				if getPlayerStorageValue(index.pid, dtt.storage.team_blue) == 1 then
-					doPlayerSendTextMessage(index.pid, 25, "[DEFEND THE TOWER] Os sorcerers e paladinos do seu time receberao buff, utilize as magias wizard buff ou archer buff.")  
-				end
-			end
-		else
-			dtt.setBuff(dtt.storage.team_red, 1, 3)
-			for _, index in ipairs(dtt.getPlayersInEvent()) do
-				if getPlayerStorageValue(index.pid, dtt.storage.team_red) == 1 then
-					doPlayerSendTextMessage(index.pid, 25, "[DEFEND THE TOWER] Os sorcerers e paladinos do seu time receberao buff, utilize as magias wizard buff ou archer buff.")  
-				end
-			end
-		end
-		return true
-	end
-	--Verificando buff druid and knight
-	if getCreatureName(cid) == dtt.monster.name.buff2 then
-		if (getPlayerStorageValue(mostDamageKiller[1], dtt.storage.team_blue) == 1) then
-			dtt.setBuff(dtt.storage.team_blue, 2, 4)
-			for _, index in ipairs(dtt.getPlayersInEvent()) do
-				if getPlayerStorageValue(index.pid, dtt.storage.team_blue) == 1 then
-					doPlayerSendTextMessage(index.pid, 25, "[DEFEND THE TOWER] Os druids e knights do seu time receberao buff, utilize as magias magician buff ou warrior buff.")  
-				end
-			end
-		else
-			dtt.setBuff(dtt.storage.team_red, 2, 4)
-			for _, index in ipairs(dtt.getPlayersInEvent()) do
-				if getPlayerStorageValue(index.pid, dtt.storage.team_red) == 1 then
-					doPlayerSendTextMessage(index.pid, 25, "[DEFEND THE TOWER] Os druids e knights do seu time receberao buff, utilize as magias magician buff ou warrior buff.")  
-				end
-			end
-		end
-		return true
-	end
-	return true
+if getCreatureName(cid) == dtt.monster.name.a3 then
+    broadcastMessage("[DEFEND THE TOWER] A torre azul do meio foi destruida.", MESSAGE_EVENT_ADVANCE)
+    doCreateItem(9596, dtt.monster.pos.a3)
+    setGlobalStorageValue(dtt.storage.tower_red, (getGlobalStorageValue(dtt.storage.tower_red)+1))
 end
+
+if getCreatureName(cid) == dtt.monster.name.a4 then
+    broadcastMessage("[DEFEND THE TOWER] A torre azul de baixo foi destruida.", MESSAGE_EVENT_ADVANCE)
+    doCreateItem(9596, dtt.monster.pos.a4)
+    setGlobalStorageValue(dtt.storage.tower_red, (getGlobalStorageValue(dtt.storage.tower_red)+1))
+end
+
+--Avisos de morte torres time vermelho
+if getCreatureName(cid) == dtt.monster.name.b2 then
+    broadcastMessage("[DEFEND THE TOWER] A torre vermelha do topo foi destruida.", MESSAGE_EVENT_ADVANCE)
+    doCreateItem(9596, dtt.monster.pos.b2)
+    setGlobalStorageValue(dtt.storage.tower_blue, (getGlobalStorageValue(dtt.storage.tower_blue)+1))
+end 
+
+if getCreatureName(cid) == dtt.monster.name.b3 then
+    broadcastMessage("[DEFEND THE TOWER] A torre vermelha do meio foi destruida.", MESSAGE_EVENT_ADVANCE)
+    doCreateItem(9596, dtt.monster.pos.b3)
+    setGlobalStorageValue(dtt.storage.tower_blue, (getGlobalStorageValue(dtt.storage.tower_blue)+1))
+end
+
+if getCreatureName(cid) == dtt.monster.name.b4 then
+    broadcastMessage("[DEFEND THE TOWER] A torre vermelha de baixo foi destruida.", MESSAGE_EVENT_ADVANCE)
+    doCreateItem(9596, dtt.monster.pos.b4)
+    setGlobalStorageValue(dtt.storage.tower_blue, (getGlobalStorageValue(dtt.storage.tower_blue)+1))
+end
+
+
+--Aviso ultimas torres e abertura do teleporte
+if getCreatureName(cid) == dtt.monster.name.a1 then
+    dtt.removeMonsters()
+    setGlobalStorageValue(dtt.storage.win, "red")
+    setGlobalStorageValue(dtt.storage.tower_red, (getGlobalStorageValue(dtt.storage.tower_red)+1))
+    dtt.close()
+    broadcastMessage(dtt.msg.win_team_red, MESSAGE_EVENT_ADVANCE)
+    dtt.resultBattle()
+end 
+
+--Aviso ultimas torres e abertura do teleporte
+if getCreatureName(cid) == dtt.monster.name.b1 then
+    dtt.removeMonsters()
+    setGlobalStorageValue(dtt.storage.win, "blue")
+    setGlobalStorageValue(dtt.storage.tower_blue, (getGlobalStorageValue(dtt.storage.tower_blue)+1))
+    dtt.close()
+    broadcastMessage(dtt.msg.win_team_blue, MESSAGE_EVENT_ADVANCE)
+    dtt.resultBattle()
+end 
+
+--Verificando buff sorcerer and paladin
+if getCreatureName(cid) == dtt.monster.name.buff1 then
+    if (getPlayerStorageValue(mostDamageKiller[1], dtt.storage.team_blue) == 1) then
+        dtt.setBuff(dtt.storage.team_blue, 1, 3)
+        for _, index in ipairs(dtt.getPlayersInEvent()) do
+            if getPlayerStorageValue(index.pid, dtt.storage.team_blue) == 1 then
+                doPlayerSendTextMessage(index.pid, 25, "[DEFEND THE TOWER] Os sorcerers e paladinos do seu time receberao buff, utilize as magias wizard buff ou archer buff.")  
+            end
+        end
+    else
+        dtt.setBuff(dtt.storage.team_red, 1, 3)
+        for _, index in ipairs(dtt.getPlayersInEvent()) do
+            if getPlayerStorageValue(index.pid, dtt.storage.team_red) == 1 then
+                doPlayerSendTextMessage(index.pid, 25, "[DEFEND THE TOWER] Os sorcerers e paladinos do seu time receberao buff, utilize as magias wizard buff ou archer buff.")  
+            end
+        end
+    end
+end
+
+--Verificando buff druid and knight
+if getCreatureName(cid) == dtt.monster.name.buff2 then
+    if (getPlayerStorageValue(mostDamageKiller[1], dtt.storage.team_blue) == 1) then
+        dtt.setBuff(dtt.storage.team_blue, 2, 4)
+        for _, index in ipairs(dtt.getPlayersInEvent()) do
+            if getPlayerStorageValue(index.pid, dtt.storage.team_blue) == 1 then
+                doPlayerSendTextMessage(index.pid, 25, "[DEFEND THE TOWER] Os druids e knights do seu time receberao buff, utilize as magias magician buff ou warrior buff.")  
+            end
+        end
+    else
+        dtt.setBuff(dtt.storage.team_red, 2, 4)
+        for _, index in ipairs(dtt.getPlayersInEvent()) do
+            if getPlayerStorageValue(index.pid, dtt.storage.team_red) == 1 then
+                doPlayerSendTextMessage(index.pid, 25, "[DEFEND THE TOWER] Os druids e knights do seu time receberao buff, utilize as magias magician buff ou warrior buff.")  
+            end
+        end
+    end
+end
+return true
+end
+

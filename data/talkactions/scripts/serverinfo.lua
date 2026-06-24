@@ -10,11 +10,15 @@ local config = {
 }
 
 function onSay(cid, words, param, channel)
+	if(not checkExhausted(cid, 666, 10)) then
+		return false
+	end
+
 	local exp = config.rateExperience
 	if(config.stages) then
 		exp = getExperienceStage(getPlayerLevel(cid), getVocationInfo(getPlayerVocation(cid)).experienceMultiplier)
 	end
 
-	doPlayerPopupFYI(cid, "Server Information:\n\nExperience rate: x" .. exp .. "\nSkills rate: x10\nLoot rate: x2\nMagic rate: x5\nSpawns rate: x" .. config.rateSpawnMin .. " - x" .. config.rateSpawnMax .. "\nProtection level: " .. config.protectionLevel)
+	doPlayerPopupFYI(cid, "Server Information:\n\nExperience rate: x" .. exp .. "\nSkills rate: x" .. config.rateSkill .. "\nLoot rate: x" .. config.rateLoot .. "\nMagic rate: x" .. config.rateMagic .. "\nSpawns rate: x" .. config.rateSpawnMin .. " - x" .. config.rateSpawnMax .. "\nProtection level: " .. config.protectionLevel)
 	return true
 end

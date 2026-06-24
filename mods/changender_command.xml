@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mod name="Change gender command" version="1.0" author="The Forgotten Server" contact="otland.net" enabled="yes">
 	<description>
-		This mod will add new command for players - !changender.
+		This mod will add new command for players - !changesex.
 		Players will be able to change gender, cost can be configured.
 	</description>
 
@@ -10,7 +10,7 @@
 			costPremiumDays = 3
 		}
 	]]></config>
-	<talkaction words="!changender; !changesex" event="buffer"><![CDATA[
+	<talkaction words="!changesex" event="buffer"><![CDATA[
 		domodlib('changender_config')
 		if(getPlayerSex(cid) >= 2) then
 			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You cannot change your gender.")

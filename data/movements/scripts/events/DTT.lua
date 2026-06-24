@@ -1,32 +1,28 @@
 function onStepIn(cid, item, position, fromPosition)
-	if (not isPlayer(cid)) then
-		return true
+	if not isPlayer(cid) then
+		return false
 	end
 	-- Entrada sala de espera
 	if (item.aid == 9801) then
 		if(getPlayerLevel(cid) >= dtt.min_level) then
-			local checkPlayers = getCreaturesFromArea({x=2186, y=199, z=7}, {x=2196, y=209, z=7}, true)
-			if (dtt.block_mc == true) and (#checkPlayers > 0) then
-				for i=1, #checkPlayers do
-					pid = checkPlayers[i]
-					if getPlayerIp(cid) == getPlayerIp(pid) then
+			if (dtt.block_mc == true) and (dtt.getPlayersInEvent() ~= false) then
+				for _, index in ipairs(dtt.getPlayersInEvent()) do
+					if getPlayerIp(cid) == getPlayerIp(index.pid) then
         				doPlayerSendCancel(cid, "[DEFEND THE TOWER] Ja existe jogador com mesmo IP no evento.") 
-						doTeleportThing(cid, fromPosition)
-						return true
+						doTeleportThing(cid, getTownTemplePosition(dtt.townid.init))
+						return false
 					end
 				end
 			end
-
 			-- INSERINDO JOGADOR  DB 
 			db.query("INSERT INTO `dtt_players`  VALUES ('', ".. cid ..  ",".. 0 ..", ".. getPlayerIp(cid) ..");")  
 			doTeleportThing(cid, dtt.pos.temple_wait)
 		else
-			doPlayerSendCancel(cid, "[DEFEND THE TOWER] Voce nao possui o level minimo.")
-			doTeleportThing(cid, fromPosition)
-			return true
+			doPlayerSendCancel(cid, "[DEFEND THE TOWER] Voce nao possui o level minimo.") 
+			return false
 		end
 	end
-	-- Impedir avanço ao templo
+	-- Impedir avanÃ§o ao templo
 	if (item.aid == 9802) and (getPlayerStorageValue(cid, dtt.storage.team_red) ==  1) then
 		local pos = getCreaturePosition(cid)
 		local newPos = {x=pos.x+1, y=pos.y, z=pos.z}
@@ -45,5 +41,6 @@ function onStepIn(cid, item, position, fromPosition)
 		db.query("DELETE FROM dtt_players WHERE pid = "..cid..";")  
         doTeleportThing(cid, getTownTemplePosition(dtt.townid.init))
 	end
+
    	return true
 end

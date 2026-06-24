@@ -1,6 +1,3 @@
-local exausted = 2 -- exhausted em segundos
-local storage = 15448 -- storage do exausted
-
 local combat = createCombatObject()
 setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
 
@@ -17,3 +14,4 @@ setCombatCondition(combat, condition)
 function onCastSpell(cid, var)
 	return doCombat(cid, combat, var)
 end
+

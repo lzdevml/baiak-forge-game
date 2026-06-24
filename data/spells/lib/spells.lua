@@ -1,11 +1,3 @@
-AREA_TOWER = {
-{1, 1, 1, 1, 1},
-{1, 1, 1, 1, 1},
-{1, 1, 3, 1, 1},
-{1, 1, 1, 1, 1},
-{1, 1, 1, 1, 1}
-}
-
 -- Waves
 AREA_WAVE4 = {
 	{1, 1, 1, 1, 1},
@@ -186,3 +178,10 @@ AREADIAGONAL_WALLFIELD = {
 	{1, 1, 0, 0, 0},
 	{1, 0, 0, 0, 0},
 }
+
+function isSpellBlocked(cid, tipos)
+	if isInArray(tipos, getPlayerWarType(cid)) then
+		return true
+	end
+	return false
+end

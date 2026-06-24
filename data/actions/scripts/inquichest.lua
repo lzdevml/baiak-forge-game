@@ -5,8 +5,8 @@ function onUse(cid, item, frompos, item2, topos)
        if item.uid == 8560 then
            queststatus = getPlayerStorageValue(cid,8560)
            if queststatus == -1 then
-               doPlayerSendTextMessage(cid,22,"You have found a Emerald Sword.")
-               doPlayerAddItem(cid,8930,1)
+               doPlayerSendTextMessage(cid,22,"You have found a Mega Wand.")
+               doPlayerAddItem(cid,8920,1)
                setPlayerStorageValue(cid,8560,1)
            else
                doPlayerSendTextMessage(cid,22,"It is empty.")
@@ -14,8 +14,8 @@ function onUse(cid, item, frompos, item2, topos)
        elseif item.uid == 8561 then
            queststatus = getPlayerStorageValue(cid,8560)
            if queststatus == -1 then
-               doPlayerSendTextMessage(cid,22,"You have found a Spellbook of dark Mysteries.")
-               doPlayerAddItem(cid,8918,1)
+               doPlayerSendTextMessage(cid,22,"You have found a Mega Sword.")
+               doPlayerAddItem(cid,7391,1)
                setPlayerStorageValue(cid,8560,1)
            else
                doPlayerSendTextMessage(cid,22,"It is empty.")
@@ -23,8 +23,8 @@ function onUse(cid, item, frompos, item2, topos)
        elseif item.uid == 8562 then
            queststatus = getPlayerStorageValue(cid,8560)
            if queststatus == -1 then
-               doPlayerSendTextMessage(cid,22,"You have found a Master Archer's Armor.")
-               doPlayerAddItem(cid,8888,1)
+               doPlayerSendTextMessage(cid,22,"You have found a Mega Axe.")
+               doPlayerAddItem(cid,7456,1)
                setPlayerStorageValue(cid,8560,1)
            else
                doPlayerSendTextMessage(cid,22,"It is empty.")
@@ -32,8 +32,8 @@ function onUse(cid, item, frompos, item2, topos)
        elseif item.uid == 8563 then
            queststatus = getPlayerStorageValue(cid,8560)
            if queststatus == -1 then
-               doPlayerSendTextMessage(cid,22,"You have found a Robe of the Underworld")
-               doPlayerAddItem(cid,8890,1)
+               doPlayerSendTextMessage(cid,22,"You have found a Mega Club")
+               doPlayerAddItem(cid,7429,1)
                setPlayerStorageValue(cid,8560,1)
            else
                doPlayerSendTextMessage(cid,22,"It is empty.")
@@ -41,8 +41,8 @@ function onUse(cid, item, frompos, item2, topos)
        elseif item.uid == 8564 then
            queststatus = getPlayerStorageValue(cid,8560)
            if queststatus == -1 then
-               doPlayerSendTextMessage(cid,22,"You have found a Fireborn Giant Armor.")
-               doPlayerAddItem(cid,8881,1)
+               doPlayerSendTextMessage(cid,22,"You have found a Mega Bow.")
+               doPlayerAddItem(cid,8855,1)
                setPlayerStorageValue(cid,8560,1)
            else
                doPlayerSendTextMessage(cid,22,"It is empty.")
@@ -50,8 +50,8 @@ function onUse(cid, item, frompos, item2, topos)
        elseif item.uid == 8565 then
            queststatus = getPlayerStorageValue(cid,8560)
            if queststatus == -1 then
-               doPlayerSendTextMessage(cid,22,"You have found a Obsidian Truncheon.")
-               doPlayerAddItem(cid,8928,1)
+               doPlayerSendTextMessage(cid,22,"You have found a 10k de life.")
+               doPlayerAddItem(cid,11205,1)
                setPlayerStorageValue(cid,8560,1)
            else
                doPlayerSendTextMessage(cid,22,"It is empty.")
@@ -59,8 +59,8 @@ function onUse(cid, item, frompos, item2, topos)
        elseif item.uid == 8566 then
            queststatus = getPlayerStorageValue(cid,8560)
            if queststatus == -1 then
-               doPlayerSendTextMessage(cid,22,"You have found a Royal Crossbow.")
-               doPlayerAddItem(cid,8851,1)
+               doPlayerSendTextMessage(cid,22,"You have found a 10k de mana.")
+               doPlayerAddItem(cid,11213,1)
                setPlayerStorageValue(cid,8560,1)
            else
                doPlayerSendTextMessage(cid,22,"It is empty.")

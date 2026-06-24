@@ -1,87 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monster name="Diabolic Imp" nameDescription="a diabolic imp" race="blood" experience="2900" speed="320" manacost="0">
-	<health now="1950" max="1950"/>
-	<look type="237" corpse="6364"/>
-	<targetchange interval="5000" chance="8"/>
-	<strategy attack="100" defense="0"/>
-	<flags>
-		<flag summonable="0"/>
-		<flag attackable="1"/>
-		<flag hostile="1"/>
-		<flag illusionable="1"/>
-		<flag convinceable="0"/>
-		<flag pushable="0"/>
-		<flag canpushitems="1"/>
-		<flag canpushcreatures="1"/>
-		<flag targetdistance="4"/>
-		<flag staticattack="90"/>
-		<flag runonhealth="400"/>
-	</flags>
-	<script> 
-    	<event name="PreySystemDeath"/> 
-    	<event name="GMTkill"/> 
-	</script>
-	<attacks>
-		<attack name="melee" interval="2000" skill="70" attack="60" poison="160"/>
-		<attack name="fire" interval="2000" chance="30" range="7" radius="4" target="1" min="-100" max="-240">
-			<attribute key="shootEffect" value="fire"/>
-			<attribute key="areaEffect" value="firearea"/>
-		</attack>
-		<attack name="fire" interval="2000" chance="20" range="4" radius="2" target="1" min="-300" max="-430">
-			<attribute key="shootEffect" value="fire"/>
-			<attribute key="areaEffect" value="fireattack"/>
-		</attack>
-	</attacks>
-	<defenses armor="15" defense="15">
-		<defense name="healing" interval="2000" chance="10" min="195" max="395">
-			<attribute key="areaEffect" value="blueshimmer"/>
-		</defense>
-		<defense name="speed" interval="2000" chance="40" speedchange="800" duration="2000">
-			<attribute key="areaEffect" value="redshimmer"/>
-		</defense>
-		<defense name="invisible" interval="2000" chance="15" duration="1000">
-			<attribute key="areaEffect" value="redshimmer"/>
-		</defense>
-	</defenses>
+<monster name="Diabolic Imp" nameDescription="a Diabolic Imp" race="blood" experience="2900" speed="250" manacost="0">
+  <health now="1950" max="1950"/>
+  <look type="237" corpse="6364"/>
+  <targetchange interval="5000" chance="8"/>
+  <strategy attack="100" defense="0"/>
+  <flags>
+    <flag summonable="0"/>
+    <flag attackable="1"/>
+    <flag hostile="1"/>
+    <flag illusionable="1"/>
+    <flag convinceable="0"/>
+    <flag pushable="0"/>
+    <flag canpushitems="1"/>
+    <flag canpushcreatures="1"/>
+    <flag targetdistance="4"/>
+    <flag staticattack="90"/>
+    <flag runonhealth="0"/>
+  </flags>
+  <attacks>
+    <attack name="melee" interval="2000" skill="70" attack="80"/>
+    <attack name="fire" interval="1000" chance="8" range="7" radius="4" target="1" min="-50" max="-350">
+      <attribute key="shootEffect" value="fire"/>
+      <attribute key="areaEffect" value="firearea"/>
+    </attack>
+    <attack name="fire" interval="2000" chance="16" range="7" radius="2" target="1" min="-90" max="-500">
+      <attribute key="shootEffect" value="fire"/>
+      <attribute key="areaEffect" value="firearea"/>
+    </attack>
+  </attacks>
+  <defenses armor="15" defense="15">
+    <defense name="healing" interval="2000" chance="22" min="175" max="245">
+      <attribute key="areaEffect" value="blueshimmer"/>
+    </defense>
+    <defense name="speed" interval="2000" chance="18" speedchange="520" duration="4000">
+      <attribute key="areaEffect" value="redshimmer"/>
+    </defense>
+    <defense name="invisible" interval="3000" chance="18" duration="4000"> 
+      <attribute key="areaEffect" value="redshimmer"/>
+    </defense>
+  </defenses>
 	<elements>
-		<element earthPercent="50"/>
+		<element earthPercent="10"/>
+		<element icePercent="-20"/>
+		<element holyPercent="-15"/>
 		<element deathPercent="10"/>
-		<element icePercent="-10"/>
-		<element holyPercent="-5"/>
 	</elements>
-	<immunities>
-		<immunity lifedrain="1"/>
-		<immunity fire="1"/>
-		<immunity paralyze="1"/>
-		<immunity invisible="1"/>
-	</immunities>
-	<voices interval="5000" chance="10">
-		<voice sentence="Muahaha!"/>
-		<voice sentence="He he he!"/>
-	</voices>
-	<loot>
-    <item id="2185" chance="1300" /><!-- necrotic rod -->
-    <item id="2568" chance="10325" /><!-- cleaver -->
-    <item id="2419" chance="7675" /><!-- scimitar -->
-    <item id="6558" countmax="2" chance="20550" /><!-- concentrated demonic blood -->
-    <item id="6500" chance="8350" /><!-- demonic essence -->
-    <item id="2260" countmax="2" chance="11300" /><!-- blank rune -->
-    <item id="2148" countmax="100" chance="47525" /><!-- gold coin -->
-    <item id="2148" countmax="99" chance="47525" /><!-- gold coin -->
-    <item id="2548" chance="49850" /><!-- pitchfork -->
-    <item id="2150" countmax="3" chance="2150" /><!-- small amethyst -->
-    <item id="2152" countmax="7" chance="2275" /><!-- platinum coin -->
-    <item id="1987" chance="100000"><!-- bag -->
-        <inside>
-            <item id="5944" chance="7775" /><!-- soul orb -->
-            <item id="2515" chance="7325" /><!-- guardian shield -->
-            <item id="2387" chance="2575" /><!-- double axe -->
-            <item id="2165" chance="2925" /><!-- stealth ring -->
-            <item id="7899" chance="850" /><!-- magma coat -->
-            <item id="7900" chance="850" /><!-- magma monocle -->
-            <item id="6300" chance="725" /><!-- death ring -->
-        </inside>
-    </item>
-</loot>
-	 
+  <immunities>
+    <immunity fire="1"/>
+    <immunity lifedrain="1"/>
+    <immunity paralyze="1"/>
+    <immunity invisible="1"/>
+  </immunities>
+  <voices interval="5000" chance="10">
+    <voice sentence="Muahaha!"/>
+    <voice sentence="He he he!"/>
+  </voices>
+  <loot>
+   <item id="2148" countmax="95" chance1="100000" chancemax="0"/> --Gold Coins
+   <item id="2148" countmax="90" chance1="100000" chancemax="0"/> --Gold Coins
+   <item id="2152" countmax="7" chance1="35000" chancemax="0"/> --Platinum
+   <item id="2050" chance="15000"/> --Torch
+   <item id="6558" chance="11000"/> --Concentrated Demonic Blood
+   <item id="6558" chance="13000"/> --^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ 
+   <item id="2260" chance="18000"/> --Blank Rune
+   <item id="2465" chance="6577"/> --Brass Armor
+   <item id="1987" chance="100000"> --Bag
+         <inside>
+         <item id="2548" chance="25000"/> --Pitchfork
+		 <item id="6558" chance="6666"/> --Concentrated Demonic Blood
+		 <item id="6529" countmax="5" chance1="5000" chancemax="0"/> --Infernal Bolts
+         <item id="2465" chance="6577"/> --Brass Armor
+         <item id="2185" chance="3500" /> -- volcanic rod
+         <item id="2464" chance="7887"/> --Chain Armor
+         <item id="5944" chance="5666"/> --Soul Orb                  
+         <item id="6500" countmax="1" chance1="7777" chancemax="0"/> --Demonic Essence
+         <item id="2150" countmax="3" chance1="9999" chancemax="0"/> --Small Amethyst
+         <item id="2165" chance="4555"/> --Stealth Ring
+         </inside>
+       </item>
+ </loot>
 </monster>

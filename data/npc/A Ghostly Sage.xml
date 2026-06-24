@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<npc name="A Ghostly Sage" script="poi.lua" walkinterval="2000" floorchange="0">
-	<health now="100" max="100"/>
-	<look type="130" head="9" body="85" legs="9" feet="0" addons="3"/>
-    <parameters>
-        <parameter key="module_travel" value="1"/>
-		<parameter key="message_greet" value="Hello |PLAYERNAME|. If you don't know where to flow, say {join}."/>
+<npc name="A Ghostly Sage" script="data/npc/scripts/A Ghostly Sage.lua" walkinterval="2000" floorchange="0">
+<health now="100" max="100"/>
+<look type="130" head="9" body="85" legs="9" feet="85" addons="1"/>
+	<parameters>
+		<parameter key="message_greet" value="Ah, I feel a mortal walks these ancient halls again. Pardon me, I barely notice you. I am so lost in my thoughts."/>
+        <parameter key="message_farewell" value="Good bye."/>
+		<parameter key="message_walkaway" value="Farewell then.." />
     </parameters>
 </npc>

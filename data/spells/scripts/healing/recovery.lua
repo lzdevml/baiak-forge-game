@@ -1,6 +1,3 @@
-local exausted = 30 -- exhausted em segundos
-local storage = 15482 -- storage do exausted
-
 local combat = createCombatObject()
 setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_MAGIC_BLUE)
 setCombatParam(combat, COMBAT_PARAM_AGGRESSIVE, false)

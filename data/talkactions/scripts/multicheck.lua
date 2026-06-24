@@ -39,13 +39,13 @@ function onSay(cid, words, param, channel)
 
 	local total = table.maxn(list)
 	if(total > 0) then
-		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Currently online players with same IP address(es):")
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Atualmente jogadores online com o mesmo endereço IP(es):")
 		for pid, ip in pairs(list) do
 			doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, getCreatureName(pid) .. " (" .. doConvertIntegerToIp(ip) .. ")")
 		end
-		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Total: " .. total .. " clients with more than one connection.")
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Total: " .. total .. " clientes com mais de uma conexão.")
 	else
-		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Currently there aren't any players with same IP address(es).")
+		doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Atualmente não há jogadores com o mesmo endereço IP.")
 	end
 
 	return true

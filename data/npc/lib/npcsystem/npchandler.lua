@@ -3,8 +3,6 @@
 -- Modified by The OTX Server Team.
 
 if(NpcHandler == nil) then
-	local storage = 35418 -- For exhaustion in Seconds
-	local eventSay, eventSayInDefault = {}, 0
 	-- Constant talkdelay behaviors.
 	TALKDELAY_NONE = 0 -- No talkdelay. Npc will reply immedeatly.
 	TALKDELAY_ONTHINK = 1 -- Talkdelay handled through the onThink callback function. (Default)
@@ -74,8 +72,8 @@ if(NpcHandler == nil) then
 		focuses = nil,
 		talkStart = nil,
 		idleTime = 300,
-		talkRadius = 3,
-		talkDelayTime = 0.1, -- Seconds to delay outgoing messages.
+		talkRadius = 4,
+		talkDelayTime = 350, -- Seconds to delay outgoing messages.
 		queue = nil,
 		talkDelay = nil,
 		callbackFunctions = nil,
@@ -117,7 +115,6 @@ if(NpcHandler == nil) then
 		if(NPCHANDLER_CONVBEHAVIOR ~= CONVERSATION_DEFAULT) then
 			obj.focuses = {}
 			obj.talkStart = {}
-			obj.topic = {}
 		else
 			obj.queue = Queue:new(obj)
 			obj.focuses = 0
@@ -511,7 +508,7 @@ if(NpcHandler == nil) then
 	end
 
 	-- Handles onSell events. If you wish to handle this yourself, use the CALLBACK_ONSELL callback.
-	function NpcHandler:onSell(cid, itemid, subType, amount, ignoreCap, inBackpacks)		
+	function NpcHandler:onSell(cid, itemid, subType, amount, ignoreCap, inBackpacks)
 		local callback = self:getCallback(CALLBACK_ONSELL)
 		if(callback == nil or callback(cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
 			if(self:processModuleCallback(CALLBACK_ONSELL, cid, itemid, subType, amount, ignoreCap, inBackpacks)) then
@@ -646,59 +643,26 @@ if(NpcHandler == nil) then
 
 	-- Makes the npc represented by this instance of NpcHandler say something.
 	--	This implements the currently set type of talkdelay.
-	--	shallDelay is a boolean value. If it is false, the message is not delayed. Default value is false.
-	_say = function(message, focus, publicize, shallDelay, delay)
-		if not focus then
-			stopEvent(eventSayInDefault)
-			eventSayInDefault = addEvent(function(z) doCreatureSay(z[1], z[2], TALKTYPE_SAY) end, NpcHandler.talkDelayTime * 1000, {getNpcCid(), message})
-			return
-		elseif type(message) == "table" then
-			return doNPCTalkALot(message, delay or 4000, focus)
-		elseif eventDelayedSay[focus] then
-			cancelNPCTalk(eventDelayedSay[focus])
-		end
-		local shallDelay = not shallDelay and true or shallDelay
-		if(NPCHANDLER_TALKDELAY == TALKDELAY_NONE or not shallDelay) then
+	function NpcHandler:say(message, focus, delay, force)
+		local delay = delay or 0
+		if(NPCHANDLER_TALKDELAY == TALKDELAY_NONE or delay <= 0) then
 			if(NPCHANDLER_CONVBEHAVIOR ~= CONVERSATION_DEFAULT) then
-				self:say(message, focus, publicize and TRUE or FALSE)
-				return
+				selfSay(message, focus)
 			else
-				self:say(message)
-				return
+				selfSay(message)
 			end
+
+			return
 		end
 
-		if NPCHANDLER_CONVBEHAVIOR ~= CONVERSATION_DEFAULT then
-			stopEvent(eventSay[focus])
-			eventSay[focus] = addEvent(function(x)
-				if isPlayer(x[3]) == TRUE then
-					doCreatureSay(x[1], x[2], TALKTYPE_PRIVATE_NP, false, x[3], getCreaturePosition(x[1]))
-				end
-			end, NpcHandler.talkDelayTime * 1000, {getNpcCid(), message, focus})
-			
-			if(publicize) then
-				addEvent(function(y)
-					local spectators = getSpectators(getCreaturePosition(y[1]), 7, 5, false) 
-					for i = 1, #spectators do
-						if spectators[i] == y[3] then 
-							table.remove(spectators, i) 
-							break 
-						end 
-					end
-				end, NpcHandler.talkDelayTime * 1000, {getNpcCid(), message, focus})
-			end
-		else
-			addEvent(function(x)
-				doCreatureSay(x[1], x[2], TALKTYPE_SAY)
-			end, NpcHandler.talkDelayTime * 1000, {getNpcCid(), message})
-		end
-		
+		-- TODO: Add an event handling method for delayed messages
+		table.insert(self.talkDelay, {
+			id = getNpcId(),
+			cid = focus,
+			message = message,
+			time = os.mtime() + (delay and delay or self.talkDelayTime),
+			start = os.time(),
+			force = force or false
+		})
 	end
-	function NpcHandler:say(message, focus, publicize, shallDelay, delay)
-		_say(message, focus, publicize, shallDelay, delay)
-		
-	end
-	_selfSay = selfSay
-	selfSay = _say
-
 end

@@ -10,18 +10,18 @@ local CTF = CTF_LIB
 function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, actor)
 	local team = getItemAttribute(item.uid, "team")
 
-	if team ~= getPlayerStorageValue(cid, 45990) then
+	if team ~= getPlayerStorageValue(cid, 16700) then
 		return doTeleportThing(cid, fromPosition)
 	end
 
-	if getPlayerStorageValue(cid, 45992) == -1 then
+	if getPlayerStorageValue(cid, 16702) == -1 then
 		doPlayerSendCancel(cid, "Você não está com a bandeira.")
 		return doTeleportThing(cid, fromPosition)
 	end
 
-	if CTF.addPoint(cid) ~= "close" then
-		doTeleportThing(cid, fromPosition)
-	end
+	CTF.addPoint(cid)
+	doTeleportThing(cid, fromPosition)
 
+	CTF.returnFlag(cid)
 	return true
 end

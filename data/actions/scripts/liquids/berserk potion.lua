@@ -1,18 +1,31 @@
-local condition = createConditionObject(CONDITION_ATTRIBUTES)
-setConditionParam(condition, CONDITION_PARAM_TICKS, 300000)
-setConditionParam(condition, CONDITION_PARAM_SKILL_MELEE, 30)
-setConditionParam(condition, CONDITION_PARAM_SKILL_CLUB, 30)
-setConditionParam(condition, CONDITION_PARAM_SKILL_SWORD, 30)
-setConditionParam(condition, CONDITION_PARAM_SKILL_AXE, 30)
-setConditionParam(condition, CONDITION_PARAM_SKILL_SHIELD, -60)
+local MIN = 1350
+local MAX = 1700
+local EMPTY_POTION = 7635
 
-function onUse(cid, item, frompos, item2, topos)
-if(isInArray({4,8}, getPlayerVocation(cid)) == TRUE) then
-var = numberToVariant(cid)
-doTargetCombatCondition(0, cid, condition, CONST_ME_MAGIC_RED)
-doRemoveItem(item.uid, 1)
-else
-doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR,"This potion can only be consumed by knights.")
-return 1
-end
+local exhaust = createConditionObject(CONDITION_EXHAUST)
+setConditionParam(exhaust, CONDITION_PARAM_TICKS, (getConfigInfo('timeBetweenExActions') - 100))
+
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+	if isPlayer(itemEx.uid) == FALSE then
+		return FALSE
+	end
+
+	if hasCondition(cid, CONDITION_EXHAUST_HEAL) == TRUE then
+		doPlayerSendDefaultCancel(cid, RETURNVALUE_YOUAREEXHAUSTED)
+		return TRUE
+	end
+
+	if((not(isKnight(itemEx.uid)) or getPlayerLevel(itemEx.uid) < 100) and getPlayerCustomFlagValue(itemEx.uid, PlayerCustomFlag_GamemasterPrivileges) == FALSE) then
+		doCreatureSay(itemEx.uid, "Only knights of level 100 or above may drink this fluid.", TALKTYPE_ORANGE_1)
+		return TRUE
+	end
+
+	if doCreatureAddHealth(itemEx.uid, math.random(MIN, MAX)) == LUA_ERROR then
+		return FALSE
+	end
+
+	doAddCondition(cid, exhaust)
+	doSendMagicEffect(getThingPos(itemEx.uid), CONST_ME_MAGIC_BLUE)
+	doCreatureSay(itemEx.uid, "Aaaah...", TALKTYPE_ORANGE_1)
+	return TRUE
 end

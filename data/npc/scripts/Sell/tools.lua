@@ -42,6 +42,5 @@ shopModule:addBuyableItem({'rope'}, 2120, 50, 'rope')
 shopModule:addBuyableItem({'scythe'}, 2550, 50, 'scythe')
 shopModule:addBuyableItem({'pick'}, 2553, 50, 'pick')
 shopModule:addBuyableItem({'shovel'}, 2554, 50, 'shovel')
-shopModule:addBuyableItem({'machete'}, 2420, 50, 'machete')
 
 npcHandler:addModule(FocusModule:new())

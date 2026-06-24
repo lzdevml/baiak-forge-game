@@ -1,6 +1,3 @@
-local exausted = 2 -- exhausted em segundos
-local storage = 15467 -- storage do exausted
-
 local combat = createCombatObject()
 setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_ENERGYDAMAGE)
 setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_ENERGYHIT)
@@ -12,5 +9,5 @@ addDamageCondition(condition, 25, 3000, -45)
 setCombatCondition(combat, condition)
 
 function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+       return doCombat(cid, combat, var)
 end

@@ -1,9 +1,0 @@
-<raid>
-<announce delay="1000" type="event" message="The hell have returned to protect the center of INVOCATION ROOM." />
-
-  <!--Area Spawns-->
-  <areaspawn delay="60000" fromx="1075" fromy="2293" fromz="7" tox="1076" toy="2094" toz="7">
-    <monster name="Undead Jester" amount="100" />
-  </areaspawn>
-
-</raid>

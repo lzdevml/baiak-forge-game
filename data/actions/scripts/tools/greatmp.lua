@@ -1,31 +1,20 @@
-function onUse(cid, item, fromPosition, itemEx, toPosition)
+        gmp_id = 7590 -- Item a ser vendido
+        backpackgmp_id = 9774 -- Backpack
+		custogmp_id = 2400 -- Valor
+		cargasgmp_id = 20 -- Cargas
 
--- APENAS SORC E DRUID
-if (getPlayerVocation(cid) == 1 or getPlayerVocation(cid) == 2 or getPlayerVocation(cid) == 5 or getPlayerVocation(cid) == 6) then
-	if getPlayerFreeCap(cid) > 6218.00 and getPlayerMoney(cid) >= 192000 then
-		if doPlayerRemoveMoney(cid, 192000) then
-			local purple_bp = doPlayerAddItem(cid, 21128, 1)
-			for i = 1, tonumber(getItemInfo(21128).maxItems) do
-				doAddContainerItem(purple_bp, 7590, 100 or 1)
-			end
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_DEFAULT, "Você comprou 1 BP de great mana potions por 192k.")
-			doSendAnimatedText(getPlayerPosition(cid), "$$$$", COLOR_DARKPINK)
-		else
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_DEFAULT, "Você precisa ter 192k em sua BP para fazer esta compra.")
-		end
-	elseif getPlayerFreeCap(cid) > 310.00 and getPlayerMoney(cid) >= 12000 then
-		if doPlayerRemoveMoney(cid, 12000) then
-			doPlayerAddItem(cid, 7590, 100)
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_DEFAULT, "Você comprou 100 de great mana potions por 12k.")
-			doSendAnimatedText(getPlayerPosition(cid), "$$$$", COLOR_DARKPINK)
-		else
-			doPlayerSendTextMessage(cid, MESSAGE_STATUS_DEFAULT, "Você precisa ter 12k em sua BP para fazer esta compra.")
-		end
-	else
-		doPlayerSendTextMessage(cid, MESSAGE_STATUS_DEFAULT, "Você precisa ter mais que '6218.00 oz' e '192k' para comprar BP ou '310.00 oz' e '12k' para comprar 100.")
-	end
-else
-	doPlayerSendTextMessage(cid, MESSAGE_STATUS_DEFAULT, "Sua vocação não utiliza este item.")
-end
-return doTransformItem(item.uid, item.itemid == 1945 and 1946 or 1945)
+local name = getItemNameById(gmp_id)
+----- End Config -----
+function onUse(cid, item, fromPosition, itemEx, toPosition)
+        if doPlayerRemoveMoney(cid, custogmp_id) == TRUE then
+                local bag = doPlayerAddItem(cid, backpackgmp_id, 1)
+                        doSendAnimatedText(fromPosition, "", TEXTCOLOR_YELLOW)
+                        doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "You have purchased a backpack of ".. name .."s for ".. custogmp_id .." gold.")
+						for i=1,20 do
+                        doAddContainerItem(bag, gmp_id, cargasgmp_id)
+                end
+                else
+                        doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_ORANGE, "You need ".. custogmp_id .." gold coins for a backpack of ".. name .."s.")
+                end
+        return FALSE
 end

@@ -1,10 +1,8 @@
 function onSay(cid, words, param, channel)
-local cur_time = os.time()
-if global_exhaust[cid] and global_exhaust[cid] > cur_time then
-    doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "Please wait a few seconds, then try command again.")
-    return true
-end
-global_exhaust[cid] = cur_time + 5
+	if(not checkExhausted(cid, 666, 10)) then
+		return false
+	end
+
 	local strings, i, position, added, showGamemasters = {""}, 1, 1, false, getBooleanFromString(getConfigValue('displayGamemastersWithOnlineCommand'))
 	for _, pid in ipairs(getPlayersOnline()) do
 		if(added) then

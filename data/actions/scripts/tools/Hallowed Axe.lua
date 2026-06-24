@@ -12,7 +12,7 @@ local monster5 = "giant spider"
 local boss1 = "Blightwalker"
 local boss2 = "Betrayed Wraith"
 local boss3 = "demon"
-local boss4 = "Orshabaal"
+local boss4 = "Demodras"
 
 basepos = {x=61, y=129, z=7} --Aqui é a posição do "rosto" da arvore
 local starting={x=53, y=122, z=7, stackpos=253} -- aqui é o mesma coisa da arena, pega a maior posição a noroeste

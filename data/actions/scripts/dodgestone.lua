@@ -1,19 +1,18 @@
-local limite = 100 -- limite de dodge
-local storagedodge = 98798644 -- storage do dodge
- 
-function onUse(cid, item, fromPosition, itemEx, toPosition)
-    local dodgeLevel = getPlayerStorageZero(cid, storagedodge)
-    local thingPos = getThingPos(cid)
-    if dodgeLevel < limite then
-        if doRemoveItem(item.uid, 1) then
-            doCreatureSetStorage(cid, storagedodge, dodgeLevel + 1)
-            doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_BLUE, "[DODGE] Você evoluiu para o nível [".. (dodgeLevel + 1) .."/"..limite.."] de dodge.")
-            doSendAnimatedText(thingPos, "+DODGE", COLOR_PINK)
-            doSendMagicEffect(thingPos, 29)
-        end
-    else
-        doPlayerSendTextMessage(cid, MESSAGE_STATUS_CONSOLE_RED, "[DODGE] Você já atingiu o nível máximo de dodge [100/100].")
-        doSendMagicEffect(thingPos, CONST_ME_POFF)
+local config = {
+   effectonuse = 29, -- efeito que sai
+   levelscrit = 100,  --- leveis que terão
+   storagecrit = 98798644 -- storage que será verificado
+   }
+   
+function onUse(cid, item, frompos, item2, topos)
+    if getPlayerStorageValue(cid, config.storagecrit) < config.levelscrit then
+   doRemoveItem(item.uid, 1)
+doSendMagicEffect(topos,config.effectonuse)
+doPlayerSendTextMessage(cid,22,"Voce elevou seus dodges para ["..(getPlayerStorageValue(cid, config.storagecrit)+1).."/100].")
+setPlayerStorageValue(cid, config.storagecrit, getPlayerStorageValue(cid, config.storagecrit)+1)
+elseif getPlayerStorageValue(cid, config.storagecrit) >= config.levelscrit then
+doPlayerSendTextMessage(cid,22,"Voce ja chegou no nivel Maximo de Dodges.\nParabéns.")
+    return 0
     end
-    return true
+return 1
 end

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-    <npc name="Amom" script="data/npc/scripts/runes.lua" access="5" lookdir="1">
-    <health now="1000" max="1000"/>
-	<look type="229" corpse="6078"/>
-</npc>

@@ -1,7 +1,0 @@
-<raid>
-  <!--Announcements-->
-  <announce delay="1000" type="Event" message="The Hornedfox has appeared INVOCATION ROOM." />
-<singlespawn delay="2000" name="Minotaur mage" x="1075" y="2293" z="7" />
-<singlespawn delay="20000" name="the Horned Fox" x="1075" y="2293" z="7" />
-</raid>
-

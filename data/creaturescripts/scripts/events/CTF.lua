@@ -1,61 +1,30 @@
-local deadOutfit = {lookType = 33, lookHead = 94, lookBody = 94, lookLegs = 94, lookFeet = 94, lookTypeEx = 0, lookAddons = 0}
+local conditionRedx = createConditionObject(CONDITION_OUTFIT)
+setConditionParam(conditionRedx, CONDITION_PARAM_TICKS, -1)
+addOutfitCondition(conditionRedx, {lookType = 143, lookHead = 94, lookBody = 94, lookLegs = 94, lookFeet = 94, lookTypeEx = 0, lookAddons = 3})
+local conditionGreen = createConditionObject(CONDITION_OUTFIT)
+setConditionParam(conditionGreen, CONDITION_PARAM_TICKS, -1)
+addOutfitCondition(conditionGreen, {lookType = 134, lookHead = 82, lookBody = 82, lookLegs = 82, lookFeet = 82, lookTypeEx = 0, lookAddons = 3})
 
-function onStatsChange(cid, attacker, type, combat, value)
-	if type == 1 and getCreatureHealth(cid) <= value then
-		if isPlayer(cid) then
-			if getCreatureStorage(cid, ctfConfig.red.storage) > 0 then
-				addEvent(doTeleportThing, 0, cid, ctfConfig.red.deathPos)
-				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'Você está morto e foi teleportado para a sala dos mortos. Depois de alguns segundos, você será teleportado novamente para a batalha.')
-				doSetCreatureOutfit(cid, deadOutfit, -1)
-				doRemoveConditions(cid)
-				doCreatureAddHealth(cid, -(getCreatureHealth(cid) - 1))
-				doCreatureAddMana(cid, -(getCreatureMana(cid) - 1))
-				doCreatureSetStorage(cid, ctfConfig.deathStorage, 1)
-
-				if getCreatureStorage(cid, ctfConfig.flag.storage) == 1 then
-					if getTileItemById(getThingPos(cid), 2019).uid > 0 then
-						doRemoveItem(getTileItemById(getThingPos(cid), 2019).uid)
-					end
-
-					doCreateItem(ctfConfig.flag.id, 1, getThingPos(cid))
-					doCreatureSetStorage(cid, ctfConfig.flag.storage, -1)
-					doBroadcastMessage('[CTF]\n' .. getCreatureName(cid) .. ' do [red team] perdeu a bandeira!', MESSAGE_STATUS_WARNING)
-					doChangeSpeed(cid, math.floor(getCreatureBaseSpeed(cid) / 2))
-				end
-				return false
-
-			elseif getCreatureStorage(cid, ctfConfig.blue.storage) > 0 then
-				addEvent(doTeleportThing, 0, cid, ctfConfig.blue.deathPos)
-				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'Você está morto e foi teleportado para o quarto da morte. Após alguns segundos, você será teleportado novamente para a batalha.')
-				doSetCreatureOutfit(cid, deadOutfit, -1)
-				doRemoveConditions(cid)
-				doCreatureAddHealth(cid, -(getCreatureHealth(cid) - 1))
-				doCreatureAddMana(cid, -(getCreatureMana(cid) - 1))
-				doCreatureSetStorage(cid, ctfConfig.deathStorage, 1)
-
-				if getCreatureStorage(cid, ctfConfig.flag.storage) > 0 then
-					if getTileItemById(getThingPos(cid), 2019).uid > 0 then
-						doRemoveItem(getTileItemById(getThingPos(cid), 2019).uid)
-					end
-
-					doCreateItem(ctfConfig.flag.id, 1, getThingPos(cid))
-					doCreatureSetStorage(cid, ctfConfig.flag.storage, -1)
-					doBroadcastMessage('[CTF]\n' .. getCreatureName(cid) .. ' do [blue team] perdeu a bandeira!', MESSAGE_STATUS_WARNING)
-					doChangeSpeed(cid, math.floor(getCreatureBaseSpeed(cid) / 2))
-				end
-				return false
+function onPrepareDeath(cid, deathList, lastHitKiller, mostDamageKiller)
+	if getPlayerStorageValue(cid, 82) >= os.time() then
+		setPlayerStorageValue(cid, 82, 0)	
+		doAddCondition(cid, conditionRedx)
+		setGlobalStorageValue(11, 0)		
+		doItemSetAttribute(doCreateItem(1437, 1, {x = 1180, y = 444, z = 6, stackpos = 1}), "uid", 2499)	
+		for _, pid in ipairs(getPlayersOnline()) do
+			if getPlayerStorageValue(pid, 71) == 1 or getPlayerStorageValue(pid, 72) == 1 then
+				doPlayerSendTextMessage(pid, MESSAGE_STATUS_WARNING, "[CTF] O " .. getCreatureName(cid) .. " morreu com a bandeira verde e ela foi devolvida para sua base.")
 			end
 		end
-	end
-	return true
-end
-
-function onCombat(cid, target)
-	if isPlayer(cid) and isPlayer(target) then
-		if getCreatureStorage(cid, ctfConfig.red.storage) == 1 and getCreatureStorage(target, ctfConfig.red.storage) == 1 then
-			return doPlayerSendCancel(cid, 'Você não pode atacar seus companheiros de equipe.') and false
-		elseif getCreatureStorage(cid, ctfConfig.blue.storage) == 1 and getCreatureStorage(target, ctfConfig.blue.storage) == 1 then
-			return doPlayerSendCancel(cid, 'Você não pode atacar seus companheiros de equipe.') and false
+	elseif getPlayerStorageValue(cid, 83) >= os.time() then
+		doItemSetAttribute(doCreateItem(1435, 1, {x = 1234, y = 444, z = 6, stackpos = 1}), "uid", 2500)
+		setPlayerStorageValue(cid, 83, 0)
+		setGlobalStorageValue(12, 0)		
+		doAddCondition(cid, conditionGreen)
+		for _, pid in ipairs(getPlayersOnline()) do
+			if getPlayerStorageValue(pid, 71) == 1 or getPlayerStorageValue(pid, 72) == 1 then
+				doPlayerSendTextMessage(pid, MESSAGE_STATUS_WARNING, "[CTF] O " .. getCreatureName(cid) .. " morreu com a bandeira vermelha e ela foi devolvida para sua base.")
+			end
 		end
 	end
 	return true

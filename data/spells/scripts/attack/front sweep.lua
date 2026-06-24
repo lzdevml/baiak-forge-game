@@ -1,6 +1,3 @@
-local exausted = 6 -- exhausted em segundos
-local storage = 15440 -- storage do exausted
-
 local combat = createCombatObject()
 setCombatParam(combat, COMBAT_PARAM_TYPE, COMBAT_PHYSICALDAMAGE)
 setCombatParam(combat, COMBAT_PARAM_EFFECT, CONST_ME_HITAREA)

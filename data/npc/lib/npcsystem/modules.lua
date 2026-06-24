@@ -1183,7 +1183,7 @@ if(Modules == nil) then
 	end
 
 	-- Callback onBuy() function. If you wish, you can change certain Npc to use your onBuy().
-	function ShopModule:callbackOnBuy(cid, itemid, subType, amount, ignoreCap, inBackpacks)		
+	function ShopModule:callbackOnBuy(cid, itemid, subType, amount, ignoreCap, inBackpacks)
 		local shopItem = nil
 		for _, item in ipairs(self.npcHandler.shopItems) do
 			if(item.id == itemid and item.subType == subType) then
@@ -1191,9 +1191,6 @@ if(Modules == nil) then
 				break
 			end
 		end
-		
-		-- Add it to the parseable module list.
-	Modules.parseableModules['module_shop'] = ShopModule
 
 		if(shopItem == nil) then
 			print('[Warning - ' .. getCreatureName(getNpcId()) .. '] NpcSystem:', 'ShopModule.onBuy - Item not found on shopItems list')
@@ -1210,10 +1207,10 @@ if(Modules == nil) then
 			return false
 		end
 
-		local backpack = 12951
-		local totalCost = amount * shopItem.buy
+		local subType, count = shopItem.subType or 0, amount
+		local backpack, backpackPrice, totalCost = 1988, 20, amount * shopItem.buy
 		if(inBackpacks) then
-			totalCost = totalCost + 20 or totalCost + (math.max(1, math.floor(amount / getContainerCapById(backpack))) * 20)
+			totalCost = totalCost + (math.max(1, math.floor(count / getContainerCapById(backpack))) * backpackPrice)
 		end
 
 		local parseInfo = {
@@ -1222,15 +1219,13 @@ if(Modules == nil) then
 			[TAG_TOTALCOST] = totalCost,
 			[TAG_ITEMNAME] = shopItem.name
 		}
-
 		if(getPlayerMoney(cid) < totalCost) then
 			local msg = self.npcHandler:getMessage(MESSAGE_NEEDMONEY)
 			doPlayerSendCancel(cid, self.npcHandler:parseMessage(msg, parseInfo))
 			return false
 		end
 
-		local subType = shopItem.subType or 1
-		local a, b = doNpcSellItem(cid, itemid, amount, subType, ignoreCap, inBackpacks, backpack)
+		local a, b = doNpcSellItem(cid, itemid, count, subType, ignoreCap, inBackpacks, backpack)
 		if(a < amount) then
 			local msgId = MESSAGE_NEEDMORESPACE
 			if(a == 0) then
@@ -1248,25 +1243,24 @@ if(Modules == nil) then
 			end
 
 			if(a > 0) then
-				doPlayerRemoveMoney(cid, ((a * shopItem.buy) + (b * 20)))
-				parseInfo[TAG_TOTALCOST] = a * shopItem.buy
-				local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
-				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
+				doPlayerRemoveMoney(cid, ((a * shopItem.buy) + (b * backpackPrice)))
 				return true
 			end
 
 			return false
-		else
-			local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
-			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
-			doPlayerRemoveMoney(cid, totalCost)
-			if(NPCHANDLER_CONVBEHAVIOR ~= CONVERSATION_DEFAULT) then
-				self.npcHandler.talkStart[cid] = os.time()
-			else
-				self.npcHandler.talkStart = os.time()
-			end
-			return true
 		end
+
+		local msg = self.npcHandler:getMessage(MESSAGE_BOUGHT)
+		doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, self.npcHandler:parseMessage(msg, parseInfo))
+
+		doPlayerRemoveMoney(cid, totalCost)
+		if(NPCHANDLER_CONVBEHAVIOR ~= CONVERSATION_DEFAULT) then
+			self.npcHandler.talkStart[cid] = os.time()
+		else
+			self.npcHandler.talkStart = os.time()
+		end
+
+		return true
 	end
 
 	-- Callback onSell() function. If you wish, you can change certain Npc to use your onSell().
@@ -1347,7 +1341,7 @@ if(Modules == nil) then
 
 		local parseInfo = { [TAG_PLAYERNAME] = getPlayerName(cid) }
 		local msg = module.npcHandler:parseMessage(module.npcHandler:getMessage(MESSAGE_SENDTRADE), parseInfo)
-		addEvent(openShopWindow, 500, cid, module.npcHandler.shopItems,
+		addEvent(openShopWindow, 100, cid, module.npcHandler.shopItems,
 			function(cid, itemid, subType, amount, ignoreCap, inBackpacks)
 				module.npcHandler:onBuy(cid, itemid, subType, amount, ignoreCap, inBackpacks)
 			end,
@@ -1470,5 +1464,4 @@ if(Modules == nil) then
 
 		return true
 	end
-
 end

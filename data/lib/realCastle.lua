@@ -1,34 +1,39 @@
+--[[
+
+				Real Castle Event
+	Desenvolvido por Vítor Bertolucci (Killua)
+
+]]
+
 realCastle = {
 	
-	open_storage = 722374,
-	guild_storage = 722375,
-	date_storages = {722376,722377,722378},
-	open_days = {"Sunday", "Tuesday", "Thursday", "Saturday"},
-	frompos = {x = 2162, y = 520, z = 6},
-	topos = {x = 2308, y = 610, z = 6}
+	open_storage = 100005,
+	guild_storage = 100006,
+	date_storages = {100007,100008,100009},
+	frompos = {x = 3166, y = 260, z = 7},
+	topos = {x = 3293, y = 337, z = 7}
 
 }
 
+realCastle.notice = function()
+	if not realCastle.isOpen() then
+		return true
+	end
+
+	doBroadcastMessage("[Invictor Castle] O acesso à área de dominar do castelo está liberado até as 21:30. Boa sorte a todas as guilds!")
+	return addEvent(realCastle.notice, 3 * 60 * 1000)
+end
+
 realCastle.removePlayers = function()
-	local first_cave = getPlayersInArea({x = 1501, y = 1214, z = 6},{x = 1586, y = 1293, z = 6})
-	local second_cave = getPlayersInArea({x = 1592, y = 1212, z = 6},{x = 1679, y = 1291, z = 6})
-	local third_cave = getPlayersInArea({x = 1616, y = 1293, z = 6},{x = 1699, y = 1369, z = 6})
-	local fourth_cave = getPlayersInArea({x = 1382, y = 1059, z = 7},{x = 1447, y = 1123, z = 4})
-	local fifith_cave = getPlayersInArea({x = 1305, y = 1033, z = 7},{x = 1372, y = 1103, z = 4})
-	local sixth_cave = getPlayersInArea({x = 1272, y = 963, z = 7},{x = 1345, y = 1028, z = 4})
-	local area7 = getPlayersInArea({x = 1350, y = 980, z = 7}, {x = 1419, y = 1043, z = 4})
-	local area8 = getPlayersInArea({x = 1289, y = 1142, z = 7}, {x = 1462, y = 1290, z = 7})
-	local area9 = getPlayersInArea({x = 1328, y = 479, z = 7}, {x = 1668, y = 709, z = 7})
-	local area10 = getPlayersInArea({x = 1501, y = 1216, z = 6}, {x = 1707, y = 1374, z = 6})
-	
-	local area11 = getPlayersInArea({x = 2277, y = 613, z = 7}, {x = 2462, y = 716, z = 7})
-	local area12 = getPlayersInArea({x = 2277, y = 613, z = 6}, {x = 2462, y = 716, z = 6})
-	local area13 = getPlayersInArea({x = 2277, y = 613, z = 5}, {x = 2462, y = 716, z = 5})
-	local area14 = getPlayersInArea({x = 2277, y = 613, z = 4}, {x = 2462, y = 716, z = 4})
-	local area15 = getPlayersInArea({x = 2242, y = 723, z = 6}, {x = 2442, y = 894, z = 6})
-	local area16 = getPlayersInArea({x = 2255, y = 804, z = 7}, {x = 2282, y = 832, z = 7})
-	local area17 = getPlayersInArea({x = 2103, y = 638, z = 6}, {x = 2262, y = 740, z = 6})
-	local area18 = getPlayersInArea({x = 2103, y = 638, z = 7}, {x = 2262, y = 740, z = 7})
+	local first_cave = getPlayersInArea({x = 2829, y = 7, z = 7},{x = 3118, y = 467, z = 7})
+	local second_cave = getPlayersInArea({x = 2902, y = 340, z = 7},{x = 3445, y = 585, z = 7})
+	local fifith_cave = getPlayersInArea({x = 3304, y = 192, z = 7},{x = 3687, y = 340, z = 7})
+	local sixth_cave = getPlayersInArea({x = 3595, y = 260, z = 8},{x = 3689, y = 338, z = 8})
+	local seventh_cave = getPlayersInArea({x = 3616, y = 270, z = 9},{x = 3680, y = 341, z = 9})
+	local eight_cave = getPlayersInArea({x = 3445, y = 175, z = 6},{x = 3515, y = 241, z = 6})
+	local ninth_cave = getPlayersInArea({x = 3445, y = 175, z = 5},{x = 3515, y = 241, z = 5})
+	local tenth_cave = getPlayersInArea({x = 3445, y = 175, z = 4},{x = 3515, y = 241, z = 4})
+	local eleventh_cave = getPlayersInArea({x = 3143, y = 342, z = 8},{x = 3246, y = 423, z = 8})
 	local castle_area = getPlayersInArea(realCastle.frompos,realCastle.topos)
 	if first_cave then
 		for _, pid in pairs(first_cave) do
@@ -42,35 +47,23 @@ realCastle.removePlayers = function()
 			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
 		end
 	end
-	if third_cave then
-		for _, pid in pairs(third_cave) do
-			doTeleportThing(pid,getTownTemplePosition(1))
-			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
-		end
-	end
-	if fourth_cave then
-		for _, pid in pairs(fourth_cave) do
-			doTeleportThing(pid,getTownTemplePosition(1))
-			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
-		end
-	end
 	for _, tid in pairs(getPlayersOnline()) do
 		local pos = getThingPos(tid)
-		if pos.x >= 2288 and pos.x <= 2364 and pos.y >= 433 and pos.y <= 509 then
+		if pos.x >= 2829 and pos.x <= 3118 and pos.y >= 7 and pos.y <= 467 then
 			doTeleportThing(pid,getTownTemplePosition(1))
 			doPlayerPopupFYI(tid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
 		end
 	end
 	for _, tid in pairs(getPlayersOnline()) do
 		local pos = getThingPos(tid)
-		if pos.x >= 2148 and pos.x <= 2189 and pos.y >= 641 and pos.y <= 679 then
+		if pos.x >= 2902 and pos.x <= 3445 and pos.y >= 340 and pos.y <= 585 then
 			doTeleportThing(pid,getTownTemplePosition(1))
 			doPlayerPopupFYI(tid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
 		end
 	end
 	for _, tid in pairs(getPlayersOnline()) do
 		local pos = getThingPos(tid)
-		if pos.x >= 2229 and pos.x <= 622 and pos.y >= 2320 and pos.y <= 704 then
+		if pos.x >= 3304 and pos.x <= 3687 and pos.y >= 192 and pos.y <= 340 then
 			doTeleportThing(pid,getTownTemplePosition(1))
 			doPlayerPopupFYI(tid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
 		end
@@ -87,61 +80,36 @@ realCastle.removePlayers = function()
 			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
 		end
 	end
-	if area10 then
-		for _, pid in pairs(area10) do
+	if seventh_cave then
+		for _, pid in pairs(seventh_cave) do
 			doTeleportThing(pid,getTownTemplePosition(1))
 			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
 		end
 	end
-	if area11 then
-		for _, pid in pairs(area11) do
+	if eight_cave then
+		for _, pid in pairs(eight_cave) do
 			doTeleportThing(pid,getTownTemplePosition(1))
 			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
 		end
 	end
-	if area12 then
-		for _, pid in pairs(area12) do
+	if ninth_cave then
+		for _, pid in pairs(ninth_cave) do
 			doTeleportThing(pid,getTownTemplePosition(1))
 			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
 		end
 	end
-	if area13 then
-		for _, pid in pairs(area13) do
+	if tenth_cave then
+		for _, pid in pairs(tenth_cave) do
 			doTeleportThing(pid,getTownTemplePosition(1))
 			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
 		end
 	end
-	if area14 then
-		for _, pid in pairs(area14) do
+	if eleventh_cave then
+		for _, pid in pairs(eleventh_cave) do
 			doTeleportThing(pid,getTownTemplePosition(1))
 			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
 		end
 	end
-	if area15 then
-		for _, pid in pairs(area15) do
-			doTeleportThing(pid,getTownTemplePosition(1))
-			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
-		end
-	end
-	if area16 then
-		for _, pid in pairs(area16) do
-			doTeleportThing(pid,getTownTemplePosition(1))
-			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
-		end
-	end
-	if area17 then
-		for _, pid in pairs(area17) do
-			doTeleportThing(pid,getTownTemplePosition(1))
-			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
-		end
-	end
-	if area18 then
-		for _, pid in pairs(area18) do
-			doTeleportThing(pid,getTownTemplePosition(1))
-			doPlayerPopupFYI(pid,"O domínio de sua guild sob o castelo acabou e uma nova batalha está se iniciando.")
-		end
-	end
-
 	if castle_area then
 		for _, pid in pairs(castle_area) do
 			doTeleportThing(pid,getTownTemplePosition(1))
@@ -151,22 +119,14 @@ realCastle.removePlayers = function()
 end
 
 realCastle.open = function()
-	setGlobalStorageValue(realCastle.open_storage, 1)
-	setGlobalStorageValue(realCastle.guild_storage, -1)
-	realCastle.removePlayers()
-end
-
-realCastle.release = function()
+	setGlobalStorageValue(realCastle.open_storage,1)
 	setGlobalStorageValue(realCastle.guild_storage,-1)
 	realCastle.removePlayers()
+	realCastle.notice()
 end
 
 realCastle.close = function()
-	setGlobalStorageValue(realCastle.open_storage, -1)
-	local tomorrow = getTomorrowsDate(getTomorrowsDate()[1])
-	for i = 1,3 do
-		setGlobalStorageValue(realCastle.date_storages[i],tomorrow[i])
-	end
+	setGlobalStorageValue(realCastle.open_storage,-1)
 	local players = getPlayersInArea(realCastle.frompos, realCastle.topos)
 	if players then
 		for _, pid in pairs(players) do
@@ -174,9 +134,9 @@ realCastle.close = function()
 		end
 	end
 	if getGlobalStorageValue(realCastle.guild_storage) == -1 then
-		doBroadcastMessage("[Real Castle] A batalha terminou e nenhuma guild conseguiu dominar o castelo! Amanhã às 19:00 vocês podem tentar novamente!")
+		doBroadcastMessage("[Invictor Castle] A batalhar terminou e nenhuma guild conseguiu dominar o castelo! Amanhã às 21:00 vocês podem tentar novamente!")
 	else
-		doBroadcastMessage("[Real Castle] A batalha terminou e a guild vencedora foi "..getGuildNameByID(getGlobalStorageValue(realCastle.guild_storage)).."! Todos os jogadores dessa guild agora podem aproveitar o castelo até amanhâ às 19:00!")
+		doBroadcastMessage("[Invictor Castle] A batalha terminou e a guild vencedora foi "..getGuildNameByID(getGlobalStorageValue(realCastle.guild_storage)).."! Todos os jogadores dessa guild agora podem aproveitar o castelo até amanhâ às 20:00!")
 	end
 	doSaveServer()
 end
@@ -193,7 +153,7 @@ end
 realCastle.domain = function(cid)
 	local guild_id = getPlayerGuildId(cid)
 	setGlobalStorageValue(realCastle.guild_storage,guild_id)
-	realCastle.broadcast("[Real Castle] O jogador "..getPlayerName(cid).." da guild "..getPlayerGuildName(cid).." dominou o castelo! As outras guilds têm até às 20:00 para conseguir tirar o domínio deles, não desistam!")
+	realCastle.broadcast("[Invictor Castle] O jogador "..getPlayerName(cid).." da guild "..getPlayerGuildName(cid).." dominou o castelo! As outras guilds têm até às 21:30 para conseguir tirar o domínio deles, não desistam!")
 end
 
 realCastle.isDominating = function(cid)

@@ -1,22 +1,35 @@
+--[[	
+
+			Real Team Battle Event
+	Desenvolvido por Vítor Bertolucci (Killua)
+
+]]
+
 function onCombat(cid, target)
     if isPlayer(cid) and isPlayer(target) then
-        local a,b = getPlayerStorageValue(cid, realTeamBattle.teamStorage),getPlayerStorageValue(target, realTeamBattle.teamStorage)
-        if a > 0 and b > 0 and a == b then
+        local sto = getPlayerStorageValue(cid, realTeamBattle.teamStorage)
+        if sto > 0 then
+            if sto == getPlayerStorageValue(target, realTeamBattle.teamStorage) then
                 return false
+            end
         end
     end
     return true
 end
+
 function onTarget(cid, target)
     if isPlayer(cid) and isPlayer(target) then
-       local a,b = getPlayerStorageValue(cid, realTeamBattle.teamStorage),getPlayerStorageValue(target, realTeamBattle.teamStorage)
-            if a > 0 and b > 0 and a == b then
+        local sto = getPlayerStorageValue(cid, realTeamBattle.teamStorage)
+        if sto > 0 then
+            if sto == getPlayerStorageValue(target, realTeamBattle.teamStorage) then
                 doPlayerSendCancel(cid,"Você não pode atacar seu companheiro de time.")
                 return false
             end
+        end
     end
     return true
 end
+
 function onPrepareDeath(cid, deathList)
     if isPlayer(cid) then
         local sto = getPlayerStorageValue(cid,realTeamBattle.teamStorage)
@@ -30,6 +43,7 @@ function onPrepareDeath(cid, deathList)
     end
     return true
 end
+
 function onLogin(cid)
     doPlayerSetStorageValue(cid, realTeamBattle.teamStorage,-1)
     registerCreatureEvent(cid, "realTeamBattleDeath")

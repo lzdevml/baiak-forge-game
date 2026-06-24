@@ -1,8 +1,14 @@
-local pos = {x = 101, y = 55, z = 12}
-function onStepIn(cid, item, position, fromPosition)
-    if isPlayer(cid) == TRUE then
-             doTeleportThing(cid, pos, TRUE)
-             doSendMagicEffect(pos, 10)
-    return TRUE
-end  
+--function by Armageddom--
+function onStepIn(cid, item, frompos, item2, topos) 
+
+playerpos = getPlayerPosition(cid) 
+novapos = {x=398, y=1384, z=9} 
+
+if item.uid == 10202 then
+
+getThingfromPos(playerpos) 
+doSendMagicEffect(playerpos,2) 
+doTeleportThing(cid,novapos) 
+doSendMagicEffect(novapos,10)
+end 
 end

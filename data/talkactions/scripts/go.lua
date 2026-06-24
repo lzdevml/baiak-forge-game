@@ -1,5 +1,14 @@
 ---- Script By Daian ----
+local config = {
+exhaustionInSeconds = 30,
+storage = 34534
+}
+
 function onSay(cid, words, param)
+if(exhaustion.check(cid, config.storage) == TRUE) then
+doPlayerSendCancel(cid, "Voçê só pode alterar o Outfit da guild a cada " .. config.exhaustionInSeconds .. " segundos.")
+return TRUE
+end
 
 local playerGuild = getPlayerGuildId(cid)
 if(playerGuild == FALSE) then
@@ -34,6 +43,7 @@ members = members + 1
 end
 end
 
+exhaustion.set(cid, config.storage, config.exhaustionInSeconds)
 doPlayerSendCancel(cid, "Outfit da guild foi mudado com sucesso. (Total de Mudanças: " .. members .. ")")
 return TRUE
 end

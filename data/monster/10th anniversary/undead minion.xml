@@ -40,8 +40,7 @@
     <item id="2260" chance="10000"/> --Blank Rune
     <item id="2417" chance="5000"/> --Battle Hammer
     <item id="2513" chance="1000"/> --Battle Shield
-    <item id="6570" chance="5538"/> --Blue Surprise Bag
-    <item id="6571" chance="1538" /> --Red Surprise Bag
+    <item id="6570" chance="5538"/> --Blue Surprise Bag    
     <item id="2515" chance="5000"/> --Guardian Shield
   </loot>
 </monster>

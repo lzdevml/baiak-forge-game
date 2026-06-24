@@ -19,8 +19,7 @@ function onUse(cid, item, frompos, item2, topos)
 			setPlayerStorageValue(cid,5003,1)
    		else
    			doPlayerSendTextMessage(cid,22,"It is empty.")
-   		end
-	elseif item.uid == 5017 then
+   		end	elseif item.uid == 5017 then
    		queststatus = getPlayerStorageValue(cid,5003)
    		if queststatus == -1 then
 			doPlayerSendTextMessage(cid,22,"You have found a Giant Sword.")

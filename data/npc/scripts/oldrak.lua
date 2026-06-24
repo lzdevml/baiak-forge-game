@@ -19,7 +19,7 @@ function creatureSayCallback(cid, type, msg)
                 npcHandler:say('Do you want to buy a Hallowed Axe from me?', cid)
                 talk_state = 1
         elseif msgcontains(msg, 'yes') and talk_state == 1 then
-                local price = 10000
+                local price = 1000
             if getPlayerItemCount(cid, 2386) >= 1 and getPlayerMoney(cid) >= price then
                 if doPlayerRemoveMoney(cid, price) == true then
                     npcHandler:say('Here you are. You can now defeat the demon oak with this axe.', cid)
@@ -35,8 +35,9 @@ function creatureSayCallback(cid, type, msg)
                 npcHandler:say('Did you defeat the demon oak?', cid)
                 talk_state = 2
         elseif msgcontains(msg, 'yes') and talk_state == 2 then
-            if getPlayerStorageValue(cid, 15000) == 1 then
+            if getPlayerStorageValue(cid, 35700) == 1 then
                 npcHandler:say('Good job!', cid)
+                doPlayerSetStorageValue(cid, 35700, 2)
                 talk_state = 0
             else
                 npcHandler:say('Go defeat the demon oak first.', cid)
@@ -50,6 +51,8 @@ function creatureSayCallback(cid, type, msg)
     -- Place all your code in here. Remember that hi, bye and all that stuff is already handled by the npcsystem, so you do not have to take care of that yourself.
     return true
 end
+
+
 
 npcHandler:setCallback(CALLBACK_MESSAGE_DEFAULT, creatureSayCallback)
 npcHandler:addModule(FocusModule:new())

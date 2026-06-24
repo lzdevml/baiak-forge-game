@@ -12,7 +12,7 @@
 					<![CDATA[
 						if(getPlayerLevel(cid)) >= 8 then
 							selfSay(getCreatureName(cid) .. ", ARE YOU PREPARED O FACE YOUR DESTINY?")
-							_state.b1 = (isPremium(cid) == true)
+							_state.b1 = (isPremium(cid) == TRUE)
 							_state.topic = 1
 						else
 							selfSay("CHILD! COME BACK WHEN YOU HAVE GROWN UP!")

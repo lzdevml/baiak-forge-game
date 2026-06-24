@@ -1,7 +1,8 @@
 local config = {
 	creationTime = 7 * 86400,
 	checkTime = 7 * 86400,
-	memberCount = 4
+	viceCount = 4,
+	memberCount = 10
 }
 
 function onStartup()
@@ -47,7 +48,7 @@ function onStartup()
 							result:free()
 
 							if(demote ~= "" and rank ~= 0) then
-								db.executeQuery("UPDATE `players` SET `rank_id` = " .. rank .. " WHERE `id` IN (" .. demote:sub(1, -2) .. ");")
+								db.query("UPDATE `players` SET `rank_id` = " .. rank .. " WHERE `id` IN (" .. demote:sub(1, -2) .. ");")
 							end
 						end
 					end
@@ -57,69 +58,32 @@ function onStartup()
 					members[4] = members[4] + members[i]
 				end
 
-				if(members[4] < config.memberCount) then
+				if(members[2] < config.viceCount or members[4] < config.memberCount) then
 					if(check == 0) then
-						db.executeQuery("UPDATE `guilds` SET `checkdata` = " .. (time + config.checkTime) .. " WHERE `id` = " .. id .. ";")
+						db.query("UPDATE `guilds` SET `checkdata` = " .. (time + config.checkTime) .. " WHERE `id` = " .. id .. ";")
 					elseif(check < time) then
 						local tmp = ""
 						for rank, _ in ipairs(ranks) do
 							tmp = tmp .. rank .. ","
 						end
 
-						db.executeQuery("UPDATE `players` SET `rank_id` = 0, `guildnick` = '' WHERE `rank_id` IN (" .. tmp:sub(1, -2) .. ");")
-						db.executeQuery("DELETE FROM `guilds` WHERE `id` = " .. id .. ";")
+						db.query("UPDATE `players` SET `rank_id` = 0, `guildnick` = '', `guildjoin` = 0 WHERE `rank_id` IN (" .. tmp:sub(1, -2) .. ");")
+						db.query("DELETE FROM `guilds` WHERE `id` = " .. id .. ";")
 					end
 				end
 			end
 		end
 	end
 
-	db.executeQuery("UPDATE `players` SET `online` = 0 WHERE `world_id` = " .. getConfigValue('worldId') .. " AND `online` > 0;")
-	db.executeQuery("UPDATE `bans` SET `active` = 0 WHERE `expires` <= " .. time .. " AND `expires` >= 0 AND `active` = 1")
-	db.executeQuery("DELETE FROM `guild_wars` WHERE `status` = 0 AND `begin` < " .. (time - 2 * 86400) .. ";")
-	db.executeQuery("UPDATE `players` SET `broadcasting` = 0, `viewers` = 0")
+	db.query("UPDATE `players` SET `online` = 0 WHERE `world_id` = " .. getConfigValue('worldId') .. " AND `online` > 0;")
+	db.query("UPDATE `bans` SET `active` = 0 WHERE `expires` <= " .. time .. " AND `expires` >= 0 AND `active` = 1")
+	db.query("DELETE FROM `guild_wars` WHERE `status` = 0 AND `begin` < " .. (time - 2 * 86400) .. ";")
 
 	if(getConfigValue("sqlType") ~= "sqlite") then
-		db.executeQuery("TRUNCATE TABLE `player_statements`;")
+		db.query("TRUNCATE TABLE `player_statements`;")
 	else
-		db.executeQuery("DELETE FROM `player_statements`;")
+		db.query("DELETE FROM `player_statements`;")
 	end
-
-	-- DEBUG: Bomberman Event
-	setGlobalStorageValue(722641, -1)
-
-	-- CS Battle Event
-	if getGlobalStorageValue(_Lib_Battle_Info.TeamOne.storage) == -1 then
-		setGlobalStorageValue(_Lib_Battle_Info.TeamOne.storage, 0)
-		setGlobalStorageValue(_Lib_Battle_Info.TeamTwo.storage, 0)
-		setGlobalStorageValue(_Lib_Battle_Info.storage_count, 0)
-	end
-
-	-- TheRain Event
-	ZerarStorFire()
-
-	-- CTF Event
-	for k, v in pairs(ctfConfig.bases) do
-		setGlobalStorageValue(v.controled, 0)
-		setGlobalStorageValue(v.points, 0)
-	end
-
-	setGlobalStorageValue(ctfConfig.red.scores, 0)
-	setGlobalStorageValue(ctfConfig.blue.scores, 0)
-	setGlobalStorageValue(ctfConfig.eventStorage, -1)
-	setGlobalStorageValue(ctfConfig.joinEventStorage, -1)
-	setGlobalStorageValue(ctfConfig.deathCountStorage, 0)
-	
-	resetAllCityWarStats()
-
-	if getGlobalStorageValue("castle02") > 0 then
-		setGlobalStorageValue("castle02", -1)
-	end
-
-	-- COLOCAR QUANDO LANCAR O OT SEU PNC
-	 ---doSetGameState(GAMESTATE_CLOSED)
-	
-
 
 	return true
 end
@@ -128,5 +92,6 @@ function onGlobalSave()
 	if(getGameState() ~= GAMESTATE_CLOSING) then
 		return onStartup()
 	end
-return true
+
+	return true
 end

@@ -9,13 +9,13 @@ setCombatParam(xCombat, COMBAT_PARAM_TYPE, COMBAT_EARTHDAMAGE)
 
 local condition = createConditionObject(CONDITION_POISON)
 setConditionParam(condition, CONDITION_PARAM_DELAYED, 1)
-addDamageCondition(condition, 4, 2000, -2)
-addDamageCondition(condition, 6, 2000, -1)
+addDamageCondition(condition, 4, 700, -2)
+addDamageCondition(condition, 6, 800, -1)
 setCombatCondition(xCombat, condition)
 
 function onUseWeapon(cid, var)
 	local ret = doCombat(cid, combat, var)
-	if(not ret) then
+	if(ret == false) then
 		return false
 	end
 
@@ -27,6 +27,5 @@ function onUseWeapon(cid, var)
 			ret = doCombat(cid, xCombat, var)
 		end
 	end
-
 	return ret
 end

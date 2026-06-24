@@ -1,28 +1,29 @@
-function onUse(cid, item, fromPosition, itemEx, toPosition)
-	if(getBooleanFromString(getConfigValue('enableProtectionQuestForGM'))) then
-		if(getPlayerCustomFlagValue(cid, PLAYERCUSTOMFLAG_GAMEMASTERPRIVILEGES)) then
-			doSendMagicEffect(getCreaturePosition(cid), CONST_ME_POFF, cid)
-			return true
-		end
-	end
+-- simple quests based on uniqueId
+-- to make quest create chest on map and set its uniqueId to id of quest item
 
-	if item.uid > 1000 and item.uid < 12660 then
-		local itemWeight = getItemWeightById(item.uid, 1)
-		local playerCap = getPlayerFreeCap(cid)
-		if getPlayerStorageValue(cid, item.uid) == -1 then
-			if playerCap >= itemWeight then
-				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'You have found a ' .. getItemNameById(item.uid) .. '.')
-				doPlayerAddItem(cid, item.uid ,1)
-				setPlayerStorageValue(cid, item.uid, 1)
+function onUse(cid, item, frompos, item2, topos)
+	prize = item.uid
+	count = item.actionid
+
+	if prize > 0 and prize < 9000 then
+		queststatus = getPlayerStorageValue(cid,prize)
+
+		if queststatus == -1 then
+			if count > 1 then
+				doPlayerSendTextMessage(cid,22,'You have found '.. count ..' of ' .. getItemName(prize) .. '.')
+				doPlayerAddItem(cid,prize,count)
+				setPlayerStorageValue(cid,prize,1)
 			else
-				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, 'You have found a ' .. getItemNameById(item.uid) .. ' weighing ' .. itemWeight .. ' oz it\'s too heavy.')
+				doPlayerSendTextMessage(cid,22,'You have found a ' .. getItemName(prize) .. '.')
+				doPlayerAddItem(cid,prize,1)
+				setPlayerStorageValue(cid,prize,1)
 			end
 		else
-			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "It is empty.")
+			doPlayerSendTextMessage(cid,22,"It is empty.")
 		end
-	else
-		return false
-	end
 
-	return true
+		return 1
+	else
+		return 0
+	end
 end

@@ -1,12 +1,12 @@
 function onSay(cid, words, param)
-         if pacc.haspacc(cid) == TRUE then
-            doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "Your pacc end in "..os.date("%d %B %Y %X ",pacc.getpacc(cid)))
-         else
-             if pacc.getpacc(cid) ~= 0 then
-                doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You're not a pacc player. Your pacc has finished in "..os.date("%d %B %Y %X ", pacc.getpacc(cid)).." and now is "..os.date("%d %B %Y %X ", os.time()))
-             else
-                doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You're not a pacc player. You naver has a pacc.")
-             end
-         end
-         return TRUE
+		 if vip.hasVip(cid) == TRUE then
+			doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "Your vip end in "..os.date("%d %B %Y %X ",vip.getVip(cid)))
+		 else
+			 if vip.getVip(cid) ~= 0 then
+				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "You're not a vip player. Your vip has finished in "..os.date("%d %B %Y %X ", vip.getVip(cid)).." and now is "..os.date("%d %B %Y %X ", os.time()))
+			 else
+				doPlayerSendTextMessage(cid, MESSAGE_INFO_DESCR, "Você não é um jogador vip. You naver has a vip.")
+			 end
+		 end
+		 return TRUE
 end

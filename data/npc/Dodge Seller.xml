@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<npc name="Constantine" script="default.lua" walkinterval="0" floorchange="0" emblem="red">
+<npc name="Stones Seller" script="data/npc/scripts/defau.lua" walkinterval="2000" floorchange="0">
 	<health now="100" max="100"/>
-	<look type="268" head="94" body="114" legs="94" feet="94" addons="3"/>
+	<look type="9" head="20" body="30" legs="40" feet="50" corpse="6080"/>
     <parameters> 
-		<parameter key="module_shop" value="1"/>	
-		<parameter key="message_greet" value="|PLAYERNAME|. Me chamo Constantine. E trouxe algumas coisinhas do inferno quando voltei de la!. diga {trade}."/>			
-        <parameter key="shop_buyable" value="letal dust,12640,10000000;protect dust,12426,10000000;slot free,12466,1000000"/> 	
-		<parameter key="shop_sellable" value="letal dust,12640,4500000;protect dust,12426,4500000;slot free,12466,500000"/> 
+        <parameter key="module_shop" value="1"/>
+        <parameter key="shop_buyable" value="Dodgestone,12575,60000000;CriticalStone,12396,60000000;RefineStone,8305,120000000;RefineWand,8303,120000000"/> 
+	<parameter key="shop_sellable" value="Dodgestone,12575,55000000;CriticalStone,12396,55000000;RefineStone,8305,90000000;RefineWand,8303,90000000"/> 
     </parameters> 
 </npc>

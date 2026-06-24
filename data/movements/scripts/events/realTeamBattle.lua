@@ -22,9 +22,9 @@ setConditionParam(conditionGreen, CONDITION_PARAM_TICKS, -1)
 addOutfitCondition(conditionGreen, {lookType = 153, lookHead = 81, lookBody = 119, lookLegs = 119, lookFeet = 119, lookAddons = 3})
 
 function onStepIn(cid, item, position, lastPosition, fromPosition, toPosition, actor)
-    if getPlayerLevel(cid) < 80 then
+    if getPlayerLevel(cid) < 100 then
         doTeleportThing(cid,lastPosition)
-        doCreatureSay(cid,"Somente level 80+",TALKTYPE_ORANGE_1)
+        doCreatureSay(cid,"Somente level 100+",TALKTYPE_ORANGE_1)
         return true
     end
 

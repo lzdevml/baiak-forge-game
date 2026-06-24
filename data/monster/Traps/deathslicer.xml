@@ -25,15 +25,15 @@
   </attacks>
   <defenses armor="1999" defense="1999"/>
   <immunities>
-    <immunity physical="1"/>
-    <immunity holy="1"/>
-    <immunity energy="1"/>
-    <immunity fire="1"/>
-    <immunity death="1"/>
-    <immunity earth="1"/>
-    <immunity ice="1"/>
-    <immunity poison="1"/>
-    <immunity lifedrain="1"/>
+    <immunity physical="0"/>
+    <immunity holy="0"/>
+    <immunity energy="0"/>
+    <immunity fire="0"/>
+    <immunity death="0"/>
+    <immunity earth="0"/>
+    <immunity ice="0"/>
+    <immunity poison="0"/>
+    <immunity lifedrain="0"/>
     <immunity paralyze="0"/>
     <immunity outfit="1"/>
     <immunity drunk="1"/>

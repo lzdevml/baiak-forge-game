@@ -8,5 +8,5 @@ local area = createCombatArea(AREA_WAVE4, AREADIAGONAL_WAVE4)
 setCombatArea(combat, area)
 
 function onCastSpell(cid, var)
-	return doCombat(cid, combat, var)
+    return doCombat(cid, combat, var)
 end

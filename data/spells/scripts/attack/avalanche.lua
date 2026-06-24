@@ -8,10 +8,5 @@ local area = createCombatArea(AREA_CIRCLE3X3)
 setCombatArea(combat, area)
 
 function onCastSpell(cid, var)
-	if getPlayerStorageValue(cid, WarConfigs.WarAreaRunesDisabled) == 1 then
-		doPlayerSendCancel(cid, "Rune blocked for war administrator.")
-		return false
-	else
-		return doCombat(cid, combat, var)
-	end
+	return doCombat(cid, combat, var)
 end
