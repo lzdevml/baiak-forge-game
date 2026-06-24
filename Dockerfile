@@ -11,7 +11,7 @@ RUN apt-get update -qq && apt-get install -y --no-install-recommends \
       g++ make python3 ca-certificates \
       liblua5.1-0-dev libxml2-dev \
       libboost-system-dev libboost-thread-dev libboost-filesystem-dev libboost-regex-dev \
-      libgmp-dev libmysqlclient-dev libssl-dev libsqlite3-dev libgoogle-perftools-dev \
+      libgmp-dev libmysqlclient-dev libssl-dev libsqlite3-dev libunwind-dev libgoogle-perftools-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /engine

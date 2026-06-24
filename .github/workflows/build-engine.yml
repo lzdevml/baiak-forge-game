@@ -21,7 +21,7 @@ jobs:
             libmysqlclient-dev \
             libssl-dev \
             libsqlite3-dev \
-            libgoogle-perftools-dev
+            libunwind-dev libgoogle-perftools-dev
 
       - name: Apply u32 patch
         run: python3 infra/u32-patch.py src/protocolgame.cpp
