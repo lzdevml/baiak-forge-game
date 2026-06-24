@@ -47,6 +47,15 @@ else
   echo "[forge-otx] DB ja tem players (pula import)."
 fi
 
+# TESTE: senha conhecida na conta '1' (forge123) p/ o dono validar login no cliente.
+# salt vazio -> password = sha1('forge123'). Remover/desligar via TEST_RESET_ACC=0 no cutover.
+if [ "${TEST_RESET_ACC:-1}" = "1" ]; then
+  echo "[forge-otx] Setando senha de teste na conta '1' (forge123)..."
+  mysql --skip-ssl -h"$DB_HOST" -P"$DB_PORT" -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" \
+    -e "UPDATE accounts SET password='ac729774beb50cf3cf307ae155e16c1d42962752', salt='' WHERE name='1' OR id=1;" 2>/dev/null \
+    && echo "[forge-otx] conta 1 / forge123 pronta." || echo "[forge-otx] reset conta falhou (segue)."
+fi
+
 echo "[forge-otx] Subindo OTX..."
 cd /srv
 exec ./theotxserver
