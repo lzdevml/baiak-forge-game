@@ -25,7 +25,10 @@ jobs:
         run: |
           chmod +x autogen.sh 2>/dev/null || true
           ./autogen.sh || autoreconf -vfi --warnings=none
-          ./configure --enable-mysql --enable-root-permission --enable-otserv-allocator CXXFLAGS="-O2 -w -fpermissive -DOPENSSL_API_COMPAT=0x10100000L"
+          MYSQL_INC=$(mysql_config --include 2>/dev/null || echo "-I/usr/include/mysql")
+          ./configure --enable-mysql --enable-root-permission --enable-otserv-allocator \
+            CXXFLAGS="-O2 -w -fpermissive -DOPENSSL_API_COMPAT=0x10100000L $MYSQL_INC -I/usr/include/mysql -I/usr/include/lua5.1" \
+            CPPFLAGS="$MYSQL_INC -I/usr/include/mysql -I/usr/include/lua5.1"
           make -j$(nproc) 2>&1 | tee /tmp/build.log | grep -iE "error:|fatal error|undefined reference" | head -100 || true
           test -f theotxserver && echo "BINARY OK" || (echo "===BUILD FAILED==="; tail -40 /tmp/build.log; exit 1)
 
