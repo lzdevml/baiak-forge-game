@@ -201,21 +201,16 @@ void Container::onAddContainerItem(Item* item)
 	SpectatorVec list;
 
 	SpectatorVec::iterator it;
-	g_game.getSpectators(list, cylinderMapPos, false, false, 2, 2, 2, 2);
+	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send to client
-	Player* player = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->sendAddContainerItem(this, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendAddContainerItem(this, item);
 	}
 
 	//event methods
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->onAddContainerItem(this, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->onAddContainerItem(this, item);
 	}
 }
 
@@ -226,21 +221,16 @@ void Container::onUpdateContainerItem(uint32_t index, Item* oldItem, const ItemT
 	SpectatorVec list;
 
 	SpectatorVec::iterator it;
-	g_game.getSpectators(list, cylinderMapPos, false, false, 2, 2, 2, 2);
+	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send to client
-	Player* player = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->sendUpdateContainerItem(this, index, oldItem, newItem);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendUpdateContainerItem(this, index, oldItem, newItem);
 	}
 
 	//event methods
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->onUpdateContainerItem(this, index, oldItem, oldType, newItem, newType);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->onUpdateContainerItem(this, index, oldItem, oldType, newItem, newType);
 	}
 }
 
@@ -250,21 +240,16 @@ void Container::onRemoveContainerItem(uint32_t index, Item* item)
 	SpectatorVec list;
 
 	SpectatorVec::iterator it;
-	g_game.getSpectators(list, cylinderMapPos, false, false, 2, 2, 2, 2);
+	g_game.getSpectators(list, cylinderMapPos, false, true, 2, 2, 2, 2);
 
 	//send change to client
-	Player* player = NULL;
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->sendRemoveContainerItem(this, index, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->sendRemoveContainerItem(this, index, item);
 	}
 
 	//event methods
-	for(it = list.begin(); it != list.end(); ++it)
-	{
-		if((player = (*it)->getPlayer()))
-			player->onRemoveContainerItem(this, index, item);
+	for (Creature* spectator : list) {
+		spectator->getPlayer()->onRemoveContainerItem(this, index, item);
 	}
 }
 
@@ -344,7 +329,7 @@ ReturnValue Container::__queryMaxCount(int32_t index, const Thing* thing, uint32
 		}
 		else
 		{
-			const Thing* destThing = __getThing(index);
+			const Thing* destThing = __getThing(index-1);
 			const Item* destItem = NULL;
 			if(destThing)
 				destItem = destThing->getItem();

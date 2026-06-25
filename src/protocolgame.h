@@ -38,21 +38,10 @@ class Depot;
 class Spectators;
 
 typedef std::list<std::pair<uint16_t, std::string> > ChannelsList;
-
-class ProtocolGame;
-typedef std::shared_ptr<ProtocolGame> ProtocolGame_ptr;
-
+typedef boost::shared_ptr<NetworkMessage> NetworkMessage_ptr;
 class ProtocolGame : public Protocol
 {
 	public:
-		// static protocol information
-		enum {server_sends_first = true};
-		enum {protocol_identifier = 0}; // Not required as we send first
-		enum {use_checksum = true};
-		static const char* protocol_name() {
-			return "gameworld protocol";
-		}
-
 		time_t lastCastMsg;
 
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
@@ -67,7 +56,7 @@ class ProtocolGame : public Protocol
 #endif
 			player = NULL;
 			m_eventConnect = m_packetCount = m_packetTime = 0;
-			m_debugAssertSent = m_acceptPackets = m_spectator = is_spectating = false;
+			m_debugAssertSent = m_acceptPackets = m_spectator = false;
 		}
 		virtual ~ProtocolGame()
 		{
@@ -75,32 +64,33 @@ class ProtocolGame : public Protocol
 			protocolGameCount--;
 #endif
 		}
+
+		enum {protocolId = 0x0A};
+		enum {isSingleSocket = true};
+		enum {hasChecksum = true};
+		static const char* protocolName() {return "game protocol";}
+
 		void spectate(const std::string& name, const std::string& password);
-		void login(const std::string& name, uint32_t id, const std::string& password,
+		bool login(const std::string& name, uint32_t id, const std::string& password,
 			OperatingSystem_t operatingSystem, uint16_t version, bool gamemaster);
 		bool logout(bool displayEffect, bool forceLogout);
 		void chat(uint16_t channelId);
 
-		
 		void setPlayer(Player* p);
 		Player* getPlayer() const {return player;}
-		int64_t getSequence() {return sequence++;}
-	
 
 	private:
-		
-		ProtocolGame_ptr getThis() {
-			return std::static_pointer_cast<ProtocolGame>(shared_from_this());
-		}
 		void disconnectClient(uint8_t error, const char* message);
 
 		std::unordered_set<uint32_t> knownCreatureSet;
 		void checkCreatureAsKnown(uint32_t id, bool& known, uint32_t& removedKnown);
 
 		bool connect(uint32_t playerId, OperatingSystem_t operatingSystem, uint16_t version);
+		void disconnect();
 
-		void release() final;
-		
+		virtual void releaseProtocol();
+		virtual void deleteProtocolTask();
+
 		bool canSee(uint16_t x, uint16_t y, uint16_t z) const;
 		bool canSee(const Creature*) const;
 		bool canSee(const Position& pos) const;
@@ -159,10 +149,6 @@ class ProtocolGame : public Protocol
 		void parseLeaveParty(NetworkMessage& msg);
 		void parseSharePartyExperience(NetworkMessage& msg);
 
-		// mount methods
-		void parseToggleMount(NetworkMessage &msg);
-
-
 		//trade methods
 		void parseRequestTrade(NetworkMessage& msg);
 		void parseLookInTrade(NetworkMessage& msg);
@@ -211,7 +197,6 @@ class ProtocolGame : public Protocol
 		void sendCreatureHealth(const Creature* creature);
 		void sendSkills();
 		void sendPing();
-		void sendDllCheck();
 		void sendCreatureTurn(const Creature* creature, int16_t stackpos);
 		void sendCreatureSay(const Creature* creature, MessageClasses type, const std::string& text, Position* pos, uint32_t statementId);
 		void sendCreatureChannelSay(const Creature* creature, MessageClasses type, const std::string& text, uint16_t channelId, uint32_t statementId);
@@ -245,7 +230,6 @@ class ProtocolGame : public Protocol
 		void sendHouseWindow(uint32_t windowTextId, House* house, uint32_t listId, const std::string& text);
 
 		void sendOutfitWindow();
-		void sendOutfitWindowOldVersion();
 		void sendQuests();
 		void sendQuestInfo(Quest* quest);
 
@@ -289,56 +273,56 @@ class ProtocolGame : public Protocol
 		void reloadCreature(const Creature* creature);
 
 		//translate a tile to clientreadable format
-		void GetTileDescription(const Tile* tile, OutputMessage_ptr msg);
+		void GetTileDescription(const Tile* tile, NetworkMessage_ptr msg);
 
 		//translate a floor to clientreadable format
-		void GetFloorDescription(OutputMessage_ptr msg, int32_t x, int32_t y, int32_t z,
+		void GetFloorDescription(NetworkMessage_ptr msg, int32_t x, int32_t y, int32_t z,
 			int32_t width, int32_t height, int32_t offset, int32_t& skip);
 
 		//translate a map area to clientreadable format
 		void GetMapDescription(int32_t x, int32_t y, int32_t z,
-			int32_t width, int32_t height, OutputMessage_ptr msg);
+			int32_t width, int32_t height, NetworkMessage_ptr msg);
 
-		void AddMapDescription(OutputMessage_ptr msg, const Position& pos);
-		void AddTextMessage(OutputMessage_ptr msg, MessageClasses mclass, const std::string& message,
+		void AddMapDescription(NetworkMessage_ptr msg, const Position& pos);
+		void AddTextMessage(MessageClasses mclass, const std::string& message,
 			Position* pos = NULL, MessageDetails* details = NULL);
-		void AddAnimatedText(OutputMessage_ptr msg, const Position& pos,
+		void AddAnimatedText(NetworkMessage_ptr msg, const Position& pos,
 			uint8_t color, const std::string& text);
-		void AddMagicEffect(OutputMessage_ptr msg, const Position& pos, uint8_t type);
-		void AddDistanceShoot(OutputMessage_ptr msg, const Position& from, const Position& to, uint8_t type);
-		void AddCreature(OutputMessage_ptr msg, const Creature* creature, bool known, uint32_t remove);
-		void AddPlayerStats(OutputMessage_ptr msg);
-		void AddCreatureSpeak(OutputMessage_ptr msg, const Creature* creature, MessageClasses type,
+		void AddMagicEffect(NetworkMessage_ptr msg, const Position& pos, uint8_t type);
+		void AddDistanceShoot(NetworkMessage_ptr msg, const Position& from, const Position& to, uint8_t type);
+		void AddCreature(NetworkMessage_ptr msg, const Creature* creature, bool known, uint32_t remove);
+		void AddPlayerStats(NetworkMessage_ptr msg);
+		void AddCreatureSpeak(NetworkMessage_ptr msg, const Creature* creature, MessageClasses type,
 			std::string text, uint16_t channelId, Position* pos, uint32_t statementId);
-		void AddCreatureHealth(OutputMessage_ptr msg, const Creature* creature);
-		void AddCreatureOutfit(OutputMessage_ptr msg, const Creature* creature, const Outfit_t& outfit, bool outfitWindow = false);
-		void AddPlayerSkills(OutputMessage_ptr msg);
-		void AddWorldLight(OutputMessage_ptr msg, const LightInfo& lightInfo);
-		void AddCreatureLight(OutputMessage_ptr msg, const Creature* creature);
+		void AddCreatureHealth(NetworkMessage_ptr msg, const Creature* creature);
+		void AddCreatureOutfit(NetworkMessage_ptr msg, const Creature* creature, const Outfit_t& outfit, bool outfitWindow = false);
+		void AddPlayerSkills(NetworkMessage_ptr msg);
+		void AddWorldLight(NetworkMessage_ptr msg, const LightInfo& lightInfo);
+		void AddCreatureLight(NetworkMessage_ptr msg, const Creature* creature);
 
 		//tiles
-		void AddTileItem(OutputMessage_ptr msg, const Position& pos, uint32_t stackpos, const Item* item);
-		void AddTileCreature(OutputMessage_ptr msg, const Position& pos, uint32_t stackpos, const Creature* creature);
-		void UpdateTileItem(OutputMessage_ptr msg, const Position& pos, uint32_t stackpos, const Item* item);
-		void RemoveTileItem(OutputMessage_ptr msg, const Position& pos, uint32_t stackpos);
+		void AddTileItem(NetworkMessage_ptr msg, const Position& pos, uint32_t stackpos, const Item* item);
+		void AddTileCreature(NetworkMessage_ptr msg, const Position& pos, uint32_t stackpos, const Creature* creature);
+		void UpdateTileItem(NetworkMessage_ptr msg, const Position& pos, uint32_t stackpos, const Item* item);
+		void RemoveTileItem(NetworkMessage_ptr msg, const Position& pos, uint32_t stackpos);
 
-		void MoveUpCreature(OutputMessage_ptr msg, const Creature* creature,
+		void MoveUpCreature(const Creature* creature,
 			const Position& newPos, const Position& oldPos, uint32_t oldStackpos);
-		void MoveDownCreature(OutputMessage_ptr msg, const Creature* creature,
+		void MoveDownCreature(const Creature* creature,
 			const Position& newPos, const Position& oldPos, uint32_t oldStackpos);
 
 		//container
-		void AddContainerItem(OutputMessage_ptr msg, uint8_t cid, const Item* item);
-		void UpdateContainerItem(OutputMessage_ptr msg, uint8_t cid, uint8_t slot, const Item* item);
-		void RemoveContainerItem(OutputMessage_ptr msg, uint8_t cid, uint8_t slot);
+		void AddContainerItem(NetworkMessage_ptr msg, uint8_t cid, const Item* item);
+		void UpdateContainerItem(NetworkMessage_ptr msg, uint8_t cid, uint8_t slot, const Item* item);
+		void RemoveContainerItem(NetworkMessage_ptr msg, uint8_t cid, uint8_t slot);
 
 		//inventory
-		void AddInventoryItem(OutputMessage_ptr msg, slots_t slot, const Item* item);
-		void UpdateInventoryItem(OutputMessage_ptr msg, slots_t slot, const Item* item);
-		void RemoveInventoryItem(OutputMessage_ptr msg, slots_t slot);
+		void AddInventoryItem(NetworkMessage_ptr msg, slots_t slot, const Item* item);
+		void UpdateInventoryItem(NetworkMessage_ptr msg, slots_t slot, const Item* item);
+		void RemoveInventoryItem(NetworkMessage_ptr msg, slots_t slot);
 
 		//shop
-		void AddShopItem(OutputMessage_ptr msg, const ShopInfo& item);
+		void AddShopItem(NetworkMessage_ptr msg, const ShopInfo& item);
 
 		void parseExtendedOpcode(NetworkMessage& msg);
 		void sendExtendedOpcode(uint8_t opcode, const std::string& buffer);
@@ -352,9 +336,7 @@ class ProtocolGame : public Protocol
 		friend class Spectators;
 		Player* player;
 
-		int64_t sequence;
 		uint32_t m_eventConnect, m_maxSizeCount, m_packetCount, m_packetTime;
-		bool m_debugAssertSent, m_acceptPackets, m_spectator, is_spectating;
-		uint16_t otclientV8 = 0;
+		bool m_debugAssertSent, m_acceptPackets, m_spectator;
 };
 #endif

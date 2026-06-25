@@ -166,7 +166,7 @@ class FrozenPathingConditionCall
 		Position targetPos;
 };
 
-class Creature : public AutoId, virtual public Thing
+class Creature : virtual public Thing
 {
 	protected:
 		Creature();
@@ -189,21 +189,11 @@ class Creature : public AutoId, virtual public Thing
 		virtual std::string getDescription(int32_t lookDistance) const;
 
 		uint32_t getID() const {return id;}
-		void setID()
-		{
-			/*
-			 * 0x10000000 - Player
-			 * 0x40000000 - Monster
-			 * 0x80000000 - NPC
-			 */
-			if(!id)
-				id = autoId | rangeId();
-		}
+		virtual void setID() = 0;
 
 		void setRemoved() {removed = true;}
 		virtual bool isRemoved() const {return removed;}
 
-		virtual uint32_t rangeId() = 0;
 		virtual void removeList() = 0;
 		virtual void addList() = 0;
 
@@ -412,13 +402,10 @@ class Creature : public AutoId, virtual public Thing
 		virtual void onTargetDisappear(bool) {}
 		virtual void onFollowCreatureDisappear(bool) {}
 
-		virtual void onCreatureTurn(const Creature*) {}
 		virtual void onCreatureSay(const Creature*, MessageClasses, const std::string&,
 			Position* = NULL) {}
 
-		virtual void onCreatureChangeOutfit(const Creature*, const Outfit_t&) {}
 		virtual void onCreatureConvinced(const Creature*, const Creature*) {}
-		virtual void onCreatureChangeVisible(const Creature*, Visible_t) {}
 		virtual void onPlacedCreature() {}
 		virtual void onRemovedCreature();
 
@@ -453,14 +440,18 @@ class Creature : public AutoId, virtual public Thing
 		bool unregisterCreatureEvent(const std::string& name);
 		void unregisterCreatureEvent(CreatureEventType_t type);
 		CreatureEventList getCreatureEvents(CreatureEventType_t type);
+		bool hasEventRegistered(CreatureEventType_t event) const {
+			return (0 != (scriptEventsBitField & (static_cast<uint64_t>(1) << event)));
+		}
 
 		virtual void setParent(Cylinder* cylinder)
 		{
 			_tile = dynamic_cast<Tile*>(cylinder);
+			_position = _tile->getPosition();
 			Thing::setParent(cylinder);
 		}
 
-		virtual Position getPosition() const {return _tile->getPosition();}
+		virtual Position getPosition() const {return _position;}
 		virtual Tile* getTile() {return _tile;}
 		virtual const Tile* getTile() const {return _tile;}
 		int32_t getWalkCache(const Position& pos) const;
@@ -476,6 +467,7 @@ class Creature : public AutoId, virtual public Thing
 
 		virtual bool useCacheMap() const {return false;}
 
+		Position _position;
 		Tile* _tile;
 		uint32_t id;
 		bool removed;
@@ -483,6 +475,8 @@ class Creature : public AutoId, virtual public Thing
 		bool isUpdatingPath;
 		bool checked;
 		StorageMap storageMap;
+
+		uint64_t scriptEventsBitField;
 
 		int32_t checkVector;
 		int32_t health, healthMax;

@@ -20,6 +20,7 @@
 #include "configmanager.h"
 #include "house.h"
 #include "tools.h"
+#include "resources.h"
 
 ConfigManager::ConfigManager()
 {
@@ -160,7 +161,6 @@ bool ConfigManager::load()
 	m_confBool[ACCOUNT_MANAGER] = getGlobalBool("accountManager", true);
 	m_confBool[NAMELOCK_MANAGER] = getGlobalBool("namelockManager", false);
 	m_confNumber[START_LEVEL] = getGlobalNumber("newPlayerLevel", 1);
-	m_confNumber[LOOT_CHANNEL] = getGlobalNumber("lootChannelId", 11);
 	m_confNumber[START_MAGICLEVEL] = getGlobalNumber("newPlayerMagicLevel", 0);
 	m_confBool[START_CHOOSEVOC] = getGlobalBool("newPlayerChooseVoc", false);
 	m_confNumber[HOUSE_PRICE] = getGlobalNumber("housePriceEachSquare", 1000);
@@ -298,7 +298,7 @@ bool ConfigManager::load()
 	m_confNumber[TRADE_LIMIT] = getGlobalNumber("tradeLimit", 100);
 	m_confString[MAILBOX_DISABLED_TOWNS] = getGlobalString("mailboxDisabledTowns", "");
 	m_confNumber[SQUARE_COLOR] = getGlobalNumber("squareColor", 0);
-	m_confBool[USE_BLACK_SKULL] = getGlobalBool("useBlackSkull", true);
+	m_confBool[USE_BLACK_SKULL] = getGlobalBool("useBlackSkull", false);
 	m_confBool[USE_FRAG_HANDLER] = getGlobalBool("useFragHandler", true);
 	m_confNumber[LOOT_MESSAGE] = getGlobalNumber("monsterLootMessage", 3);
 	m_confNumber[LOOT_MESSAGE_TYPE] = getGlobalNumber("monsterLootMessageType", 19);
@@ -334,6 +334,7 @@ bool ConfigManager::load()
 	m_confNumber[DEFAULT_DEPOT_SIZE] = getGlobalNumber("defaultDepotSize", 2000);
 	m_confBool[USE_CAPACITY] = getGlobalBool("useCapacity", true);
 	m_confBool[DAEMONIZE] = getGlobalBool("daemonize", false);
+	m_confBool[TIBIA_SLOTS] = getGlobalBool("tibiaClassicSlots", true);
 	m_confBool[SKIP_ITEMS_VERSION] = getGlobalBool("skipItemsVersionCheck", false);
 	m_confBool[SILENT_LUA] = getGlobalBool("disableLuaErrors", false);
 	m_confNumber[MAIL_ATTEMPTS] = getGlobalNumber("mailMaxAttempts", 20);
@@ -351,7 +352,6 @@ bool ConfigManager::load()
 	m_confNumber[FOLLOW_EXHAUST] = getGlobalNumber("playerFollowExhaust", 2000);
 	m_confBool[MULTIPLE_NAME] = getGlobalBool("multipleNames", false);
 	m_confNumber[PACKETS_PER_SECOND] = getGlobalNumber("packetsPerSecond", 50);
-	m_confString[ADVERTISING_BLOCK] = getGlobalString("advertisingBlock", ""); //antidivulgação
 	m_confBool[SAVE_STATEMENT] = getGlobalBool("logPlayersStatements", true);
 	m_confNumber[GUI_PREMIUM_DAYS] = getGlobalNumber("premiumDaysToAddByGui", 30);
 	m_confBool[MANUAL_ADVANCED_CONFIG] = getGlobalBool("manualVersionConfig", false);
@@ -361,10 +361,7 @@ bool ConfigManager::load()
 	m_confBool[USE_RUNE_REQUIREMENTS] = getGlobalBool("useRunesRequirements", true);
 	m_confNumber[HIGHSCORES_TOP] = getGlobalNumber("highscoreDisplayPlayers", 10);
 	m_confNumber[HIGHSCORES_UPDATETIME] = getGlobalNumber("updateHighscoresAfterMinutes", 60);
-	m_confNumber[LOGIN_PROTECTION_TIME] = getGlobalNumber("loginProtectionTime", 10);
-	m_confBool[CLASSIC_EQUIPMENT_SLOTS] = getGlobalBool("classicEquipmentSlots", false);
-	m_confBool[PUSH_CRUZADO] = getGlobalBool("PushCruzado", false);
-	m_confBool[NO_ATTACKHEALING_SIMULTANEUS] = getGlobalBool("noAttackHealingSimultaneus", false);
+	m_confBool[ATTACK_IMMEDIATELY_AFTER_LOGGING_IN] = getGlobalBool("attackImmediatelyAfterLoggingIn", false);
 
 	m_loaded = true;
 	return true;

@@ -20,6 +20,7 @@
 #include "definitions.h"
 #if defined(WINDOWS) && !defined(_CONSOLE)
 
+#include "resources.h"
 #include "playerbox.h"
 
 class GUI

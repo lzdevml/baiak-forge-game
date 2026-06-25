@@ -54,7 +54,11 @@ class Monster : public Creature
 		virtual const Monster* getMonster() const {return this;}
 		virtual CreatureType_t getType() const {return CREATURETYPE_MONSTER;}
 
-		virtual uint32_t rangeId() {return MONSTER_ID_RANGE;}
+		void setID() {
+			if (id == 0) {
+				id = monsterAutoID++;
+			}
+		}
 		static AutoList<Monster> autoList;
 
 		void addList() {autoList[id] = this;}
@@ -123,6 +127,8 @@ class Monster : public Creature
 
 		virtual BlockType_t blockHit(Creature* attacker, CombatType_t combatType, int32_t& damage,
 			bool checkDefense = false, bool checkArmor = false, bool reflect = true, bool field = false, bool element = false);
+
+		static uint32_t monsterAutoID;
 
 	private:
 		CreatureList targetList;

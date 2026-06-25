@@ -32,6 +32,8 @@ extern ConfigManager g_config;
 extern Monsters g_monsters;
 extern CreatureEvents* g_creatureEvents;
 
+uint32_t Monster::monsterAutoID = 0x40000000;
+
 AutoList<Monster>Monster::autoList;
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 uint32_t Monster::monsterCount = 0;
@@ -872,7 +874,7 @@ bool Monster::pushItem(Item* item, int32_t radius)
 	pairVector.push_back(PositionPair(1, 0));
 	pairVector.push_back(PositionPair(1, 1));
 
-	std::shuffle(pairVector.begin(), pairVector.end(), getRandomGenerator());
+	std::random_shuffle(pairVector.begin(), pairVector.end());
 	Position tryPos;
 	for(int32_t n = 1; n <= radius; ++n)
 	{
@@ -930,7 +932,7 @@ bool Monster::pushCreature(Creature* creature)
 	dirVector.push_back(WEST);
 	dirVector.push_back(EAST);
 
-	std::shuffle(dirVector.begin(), dirVector.end(), getRandomGenerator());
+	std::random_shuffle(dirVector.begin(), dirVector.end());
 	Position monsterPos = creature->getPosition();
 
 	Tile* tile = NULL;
@@ -1025,7 +1027,7 @@ bool Monster::getRandomStep(const Position& creaturePos, Direction& dir)
 	dirVector.push_back(WEST);
 	dirVector.push_back(EAST);
 
-	std::shuffle(dirVector.begin(), dirVector.end(), getRandomGenerator());
+	std::random_shuffle(dirVector.begin(), dirVector.end());
 	for(DirVector::iterator it = dirVector.begin(); it != dirVector.end(); ++it)
 	{
 		if(!canWalkTo(creaturePos, *it))
@@ -1109,7 +1111,7 @@ bool Monster::getDanceStep(const Position& creaturePos, Direction& dir,
 	if(dirVector.empty())
 		return false;
 
-	std::shuffle(dirVector.begin(), dirVector.end(), getRandomGenerator());
+	std::random_shuffle(dirVector.begin(), dirVector.end());
 	dir = dirVector[random_range(0, dirVector.size() - 1)];
 	return true;
 }
@@ -1439,8 +1441,8 @@ bool Monster::convinceCreature(Creature* creature)
 
 	//Notify surrounding about the change
 	SpectatorVec list;
-	g_game.getSpectators(list, getPosition(), false, true);
-	g_game.getSpectators(list, creature->getPosition(), true, true);
+	g_game.getSpectators(list, getPosition(), true, false);
+	g_game.getSpectators(list, creature->getPosition(), true, false);
 
 	isMasterInRange = true;
 	for(SpectatorVec::iterator it = list.begin(); it != list.end(); ++it)

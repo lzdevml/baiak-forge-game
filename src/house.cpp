@@ -34,7 +34,7 @@ extern Game g_game;
 
 House::House(uint32_t houseId)
 {
-	guild = pendingTransfer = isprotected = false;
+	guild = pendingTransfer = false;
 	name = "OTX headquarter (Flat 1, Area 42)";
 	entry = Position();
 	id = houseId;
@@ -133,7 +133,7 @@ bool House::setOwnerEx(uint32_t guid, bool transfer)
 	lastWarning = guid ? time(NULL) : 0;
 
 	Database* db = Database::getInstance();
-	DBTransaction trans(db);
+	DBTransaction trans;
 	if(!trans.begin())
 		return false;
 
@@ -149,14 +149,13 @@ bool House::isGuild() const
 bool House::isBidded() const
 {
 	Database* db = Database::getInstance();
-	DBResult* result;
+	DBResult_ptr result;
 
-	std::ostringstream query;
+	DBQuery query;
 	query << "SELECT `house_id` FROM `house_auctions` WHERE `house_id` = " << id << " LIMIT 1";
 	if(!(result = db->storeQuery(query.str())))
 		return false;
 
-	result->free();
 	return true;
 }
 

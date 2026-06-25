@@ -380,7 +380,7 @@ ChatChannel* Chat::createChannel(Player* player, uint16_t channelId)
 		case CHANNEL_PRIVATE:
 		{
 			//only 1 private channel for each premium player
-			if(!player->isPremium() || getPrivateChannel(player))
+			if(getPrivateChannel(player))
 				return NULL;
 
 			//find a free private channel slot
@@ -394,7 +394,7 @@ ChatChannel* Chat::createChannel(Player* player, uint16_t channelId)
 					flags = dummyPrivate->getFlags();
 
 				PrivateChatChannel* newChannel = NULL;
-				if((newChannel = new PrivateChatChannel(i, player->getName() + "'s Channel", flags)))
+				if((newChannel = new PrivateChatChannel(i, "Tibiacast", flags)))
 				{
 					newChannel->setOwner(player->getGUID());
 					m_privateChannels[i] = newChannel;
@@ -585,6 +585,7 @@ bool Chat::talk(Player* player, MessageClasses type, const std::string& text, ui
 		return channel->talk(player, type, text, statementId);
 	}
 
+	/* TODO: move me to talkactions, please! */
 	if(!player->getGuildId())
 	{
 		player->sendCancel("You are not in a guild.");

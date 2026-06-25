@@ -375,7 +375,7 @@ class MagicField : public Item
 			return it.combatType;
 		}
 
-		void onStepInField(Creature* creature);
+		void onStepInField(Creature* creature, bool purposeful = true);
 
 	private:
 		uint64_t createTime;

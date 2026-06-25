@@ -84,6 +84,7 @@ class Dispatcher
 			STATE_CLOSING,
 			STATE_TERMINATED
 		};
+		int64_t lastSendAll;
 
 		boost::thread m_thread;
 		boost::mutex m_taskLock;

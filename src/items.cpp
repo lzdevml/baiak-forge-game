@@ -25,15 +25,13 @@
 #include "movement.h"
 #include "weapons.h"
 #include "spells.h"
-/*ESPELHAMENTO*/
- #include "game.h"
+
+#include "resources.h"
 
 extern Spells* g_spells;
 extern ConfigManager g_config;
 extern MoveEvents* g_moveEvents;
 extern Weapons* g_weapons;
-/*ESPELHAMENTO*/
-extern Game g_game;
 
 uint32_t Items::dwMajorVersion = 0;
 uint32_t Items::dwMinorVersion = 0;
@@ -71,7 +69,6 @@ ItemType::ItemType()
 	attack = extraAttack = 0;
 	defense = extraDefense = 0;
 	attackSpeed = 0;
-	lifeLeech = manaLeech = 0;
 	armor = 0;
 	decayTo = -1;
 	decayTime = 0;
@@ -283,10 +280,9 @@ int32_t Items::loadFromOtb(std::string file)
 					if(!props.getShort(serverId))
 						return ERROR_INVALID_FORMAT;
 
-					/*if(serverId > 20000 && serverId < 20100)
+					if(serverId > 20000 && serverId < 20100)
 						serverId = serverId - 20000;
-					else */
-					if(lastId > 99 && lastId != serverId - 1)
+					else if(lastId > 99 && lastId != serverId - 1)
 					{
 						static ItemType dummyItemType;
 						while(lastId != serverId - 1)
@@ -295,6 +291,7 @@ int32_t Items::loadFromOtb(std::string file)
 							items.addElement(&dummyItemType, lastId);
 						}
 					}
+
 					iType->id = serverId;
 					lastId = serverId;
 					break;
@@ -382,8 +379,10 @@ int32_t Items::loadFromOtb(std::string file)
 
 		// store the found item
 		items.addElement(iType, iType->id);
-		if(iType->clientId)
-			reverseItemMap[iType->clientId] = iType->id;
+		if(iType->clientId) {
+			if (reverseItemMap.find(iType->clientId) == reverseItemMap.end())
+				reverseItemMap[iType->clientId] = iType->id;
+		}
 	}
 
 	return ERROR_NONE;
@@ -545,7 +544,7 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 {
 	int32_t intValue;
 	std::string strValue;
-	/*if(id > 20000 && id < 20100)
+	if(id > 20000 && id < 20100)
 	{
 		id -= 20000;
 		ItemType* iType = new ItemType();
@@ -553,7 +552,7 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 		iType->id = id;
 		items.addElement(iType, iType->id);
 	}
-*/
+
 	bool override = readXMLString(itemNode, "override", strValue) && booleanString(strValue);
 	ItemType& it = Item::items.getItemType(id);
 	if(it.loaded)
@@ -583,13 +582,6 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 
 	if(readXMLString(itemNode, "plural", strValue))
 		it.pluralName = strValue;
-
-//Espelhamento
-
-	 if(readXMLInteger(itemNode, "oldId", intValue)) {
-	 g_game.setNewItem(id, intValue);
-	 }
-
 
 	for(xmlNodePtr itemAttributesNode = itemNode->children; itemAttributesNode; itemAttributesNode = itemAttributesNode->next)
 	{
@@ -739,16 +731,6 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 				it.extraDefenseRndMin = intValue;
 			if(readXMLInteger(itemAttributesNode, "random_max", intValue))
 				it.extraDefenseRndMax = intValue;
-		}
-		else if(tmpStrValue == "lifeleech")
-		{
-			if(readXMLInteger(itemAttributesNode, "value", intValue))
-				it.lifeLeech = intValue;
-		}
-		else if(tmpStrValue == "manaleech")
-		{
-			if(readXMLInteger(itemAttributesNode, "value", intValue))
-				it.manaLeech = intValue;
 		}
 		else if(tmpStrValue == "attack")
 		{
@@ -1466,7 +1448,7 @@ void Items::parseItemNode(xmlNodePtr itemNode, uint32_t id)
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
 				it.getAbilities()->reflect[REFLECT_PERCENT][COMBAT_FIREDAMAGE] += intValue;
 		}
-		else if(tmpStrValue == "reflectpercentpoison" || tmpStrValue == "reflectpercentearth")
+		else if(tmpStrValue == "reflectpercentpoison" ||	tmpStrValue == "reflectpercentearth")
 		{
 			if(readXMLInteger(itemAttributesNode, "value", intValue))
 				it.getAbilities()->reflect[REFLECT_PERCENT][COMBAT_EARTHDAMAGE] += intValue;
@@ -2045,14 +2027,11 @@ const ItemType& Items::getItemType(int32_t id) const
 
 const ItemType& Items::getItemIdByClientId(int32_t spriteId) const
 {
-	uint32_t i = 100;
-	ItemType* iType;
-	do
-	{
-		if((iType = items.getElement(i++)) && iType->clientId == spriteId)
-			return *iType;
+	auto it = reverseItemMap.find(spriteId);
+	if (it != reverseItemMap.end()) {
+		return getItemType(it->second);
 	}
-	while(iType);
+
 	static ItemType dummyItemType; // use this for invalid ids
 	return dummyItemType;
 }

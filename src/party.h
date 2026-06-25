@@ -48,7 +48,6 @@ class Party
 		void updateAllIcons();
 		void updateIcons(Player* player);
 		void broadcastMessage(MessageClasses messageClass, const std::string& text, bool sendToInvitations = false);
-		void broadcastPartyLoot(MessageClasses messageClass, const std::string& loot);
 
 		void shareExperience(double experience, Creature* target, bool multiplied);
 		bool setSharedExperience(Player* player, bool _sharedExpActive);

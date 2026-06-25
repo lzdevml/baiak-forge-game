@@ -44,6 +44,8 @@
 #include "gui.h"
 #endif
 
+uint32_t Player::playerAutoID = 0x10000000;
+
 extern ConfigManager g_config;
 extern Game g_game;
 extern Chat g_chat;
@@ -57,13 +59,12 @@ uint32_t Player::playerCount = 0;
 #endif
 MuteCountMap Player::muteCountMap;
 
-Player::Player(const std::string& _name, ProtocolGame_ptr p):
+Player::Player(const std::string& _name, ProtocolGame* p):
 	Creature(), transferContainer(ITEM_LOCKER), name(_name), nameDescription(_name), client(new Spectators(p))
 {
 	if(client->getOwner())
 		p->setPlayer(this);
 
-	//pvpBlessing = pzLocked = isConnecting = addAttackSkillPoint = requestedOutfit = outfitAttributes = sentChat = wasMounted = false;
 	pvpBlessing = pzLocked = isConnecting = addAttackSkillPoint = requestedOutfit = outfitAttributes = sentChat = false;
 	saving = true;
 
@@ -88,7 +89,7 @@ Player::Player(const std::string& _name, ProtocolGame_ptr p):
 	soulMax = 100;
 	capacity = 400.00;
 	stamina = STAMINA_MAX;
-	lastLoad = lastPing = lastPong = lastAttack = lastMail = lastToggleMount = OTSYS_TIME();
+	lastLoad = lastPing = lastPong = lastAttack = lastMail = OTSYS_TIME();
 
 	writeItem = NULL;
 	group = NULL;
@@ -316,7 +317,7 @@ Item* Player::getWeapon(bool ignoreAmmo)
 		if(!ignoreAmmo && item->getAmmoType() != AMMO_NONE)
 		{
 			Item* ammoItem = getInventoryItem(SLOT_AMMO);
-			if(ammoItem && ammoItem->getAmmoType() == item->getAmmoType() && ammoItem->getWeaponType() != WEAPON_DIST)
+			if(ammoItem && ammoItem->getAmmoType() == item->getAmmoType())
 			{
 				if(g_weapons->getWeapon(ammoItem))
 					return ammoItem;
@@ -348,7 +349,7 @@ ItemVector Player::getWeapons() const
 				if(item->getAmmoType() != AMMO_NONE)
 				{
 					Item* ammoItem = getInventoryItem(SLOT_AMMO);
-					if(ammoItem && ammoItem->getAmmoType() == item->getAmmoType() && ammoItem->getWeaponType() != WEAPON_DIST)
+					if(ammoItem && ammoItem->getAmmoType() == item->getAmmoType())
 						item = ammoItem;
 					else
 						break;
@@ -432,30 +433,6 @@ int32_t Player::getArmor() const
 		return int32_t(armor * vocation->getMultiplier(MULTIPLIER_ARMOR));
 
 	return armor;
-}
-
-int32_t Player::getLifeLeech() const
-{
-	int32_t i = SLOT_FIRST, life = 0;
-	for(; i < SLOT_LAST; ++i)
-	{
-		if(Item* item = getInventoryItem((slots_t)i))
-		life += item->getLifeLeech();
-	}
-
-	return life;
-}
-
-int32_t Player::getManaLeech() const
-{
-	int32_t i = SLOT_FIRST, mana = 0;
-	for(; i < SLOT_LAST; ++i)
-	{
-		if(Item* item = getInventoryItem((slots_t)i))
-		mana += item->getManaLeech();
-	}
-
-	return mana;
 }
 
 void Player::getShieldAndWeapon(const Item* &_shield, const Item* &_weapon) const
@@ -879,9 +856,6 @@ bool Player::setStorage(const std::string& key, const std::string& value)
 			std::clog << "[Warning - Player::setStorage] Invalid addons value key: " << key
 				<< ", value: " << value << " for player: " << getName() << std::endl;
 	}
-		else if(IS_IN_KEYRANGE(numericKey, MOUNTS_RANGE))
-		storageMap[key] = value;
-	
 	else if(IS_IN_KEYRANGE(numericKey, OUTFITSID_RANGE))
 	{
 		uint32_t outfitId = atoi(value.c_str()) >> 16, addons = atoi(value.c_str()) & 0xFF;
@@ -935,10 +909,10 @@ bool Player::canWalkthrough(const Creature* creature) const
 		return false;
 
 	if(((g_game.getWorldType() == WORLDTYPE_OPTIONAL && !player->isEnemy(this, true) &&
-			!player->isProtected()) || player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || player->isProtected()) && player->getTile()->ground
-			&& Item::items[player->getTile()->ground->getID()].walkStack && (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)
-			|| player->getAccess() <= getAccess()))
-			return true;
+		!player->isProtected()) || player->getTile()->hasFlag(TILESTATE_PROTECTIONZONE) || player->isProtected()) && player->getTile()->ground
+		&& Item::items[player->getTile()->ground->getID()].walkStack && (!player->hasCustomFlag(PlayerCustomFlag_GamemasterPrivileges)
+		|| player->getAccess() <= getAccess()))
+		return true;
 
 	return (player->isGhost() && getGhostAccess() < player->getGhostAccess())
 		|| (isGhost() && getGhostAccess() > player->getGhostAccess());
@@ -1097,10 +1071,6 @@ void Player::sendCancelMessage(ReturnValue message) const
 
 		case RET_PLAYERISNOTINVITED:
 			sendCancel("You are not invited.");
-			break;
-			
-		case RET_HOUSEPROTECTED:
-			sendCancel("Essa casa está protegida, você não pode mover ou jogar items!");
 			break;
 
 		case RET_CREATUREDOESNOTEXIST:
@@ -1269,10 +1239,6 @@ void Player::sendCancelMessage(ReturnValue message) const
 
 		case RET_YOUMAYNOTATTACKIMMEDIATELYAFTERLOGGINGIN:
 			sendCancel("You may not attack immediately after logging in.");
-			break;
-
-		case RET_YOUHAVETOWAIT:
-			sendCancel("Sorry, you have to wait.");
 			break;
 
 		case RET_YOUCANONLYTRADEUPTOX:
@@ -1620,33 +1586,12 @@ void Player::onFollowCreatureDisappear(bool isLogout)
 
 void Player::onChangeZone(ZoneType_t zone)
 {
-	if(!hasFlag(PlayerFlag_IgnoreProtectionZone))
+	if(zone == ZONE_PROTECTION && !hasFlag(PlayerFlag_IgnoreProtectionZone))
 	{
-		if(zone == ZONE_PROTECTION)
+		if(attackedCreature)
 		{
-			if(attackedCreature)
-			{
-				setAttackedCreature(NULL);
-				onTargetDisappear(false);
-			}
-
-			removeCondition(CONDITION_INFIGHT);
-
-			if(!getAccess() && isMounted())
-			{
-				dismount();
-				g_game.internalCreatureChangeOutfit(this, defaultOutfit);
-				wasMounted = true;
-			}
-		}
-		else
-		{
-			if(wasMounted)
-			{
-				toggleMount(true);
-				wasMounted = false;
-			}
-   
+			setAttackedCreature(NULL);
+			onTargetDisappear(false);
 		}
 	}
 
@@ -1808,6 +1753,12 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 	const Tile* oldTile, const Position& oldPos, bool teleport)
 {
 	Creature::onCreatureMove(creature, newTile, newPos, oldTile, oldPos, teleport);
+
+	if (hasFollowPath && (creature == followCreature || (creature == this && followCreature))) {
+		isUpdatingPath = false;
+		Dispatcher::getInstance().addTask(createTask(std::bind(&Game::updateCreatureWalk, &g_game, getID())));
+	}
+
 	if(creature != this)
 		return;
 
@@ -1829,10 +1780,6 @@ void Player::onCreatureMove(const Creature* creature, const Tile* newTile, const
 				addCondition(condition);
 		}
 	}
-
-	// unset editing house
-	if (editHouse && !newTile->hasFlag(TILESTATE_HOUSE))
-		editHouse = NULL;
 
 	if(getZone() == ZONE_PROTECTION && newTile->ground && oldTile->ground &&
 		Item::items[newTile->ground->getID()].walkStack != Item::items[oldTile->ground->getID()].walkStack)
@@ -2016,14 +1963,8 @@ void Player::onThink(uint32_t interval)
 	if(timeNow - lastPing >= 5000)
 	{
 		lastPing = timeNow;
-			if(hasClient()){
+		if(hasClient())
 			client->sendPing();
-			if(getOTCv8Version()){
-				// do nothing
-			}else{
-				client->sendDllCheck();
-			}
-		}
 		else if(g_config.getBool(ConfigManager::STOP_ATTACK_AT_EXIT))
 			setAttackedCreature(NULL);
 	}
@@ -2729,7 +2670,7 @@ Item* Player::createCorpse(DeathList deathList)
 					ss << " summoned by " << deathList[1].getKillerCreature()->getMaster()->getNameDescription();
 			}
 		}
-		else if(asLowerCaseString(deathList[0].getKillerName()) != asLowerCaseString(deathList[1].getKillerName()))
+		else if(strcasecmp(deathList[0].getKillerName().c_str(), deathList[1].getKillerName().c_str()) != 0)
 			ss << " and by " << deathList[1].getKillerName();
 	}
 
@@ -2949,17 +2890,12 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 	if((item->getSlotPosition() & SLOTP_HEAD) || (item->getSlotPosition() & SLOTP_NECKLACE) ||
 		(item->getSlotPosition() & SLOTP_BACKPACK) || (item->getSlotPosition() & SLOTP_ARMOR) ||
 		(item->getSlotPosition() & SLOTP_LEGS) || (item->getSlotPosition() & SLOTP_FEET) ||
-		(item->getSlotPosition() & SLOTP_RING))
+		(item->getSlotPosition() & SLOTP_RING) || (item->getSlotPosition() & SLOTP_AMMO))
 		ret = RET_CANNOTBEDRESSED;
 	else if(item->getSlotPosition() & SLOTP_TWO_HAND)
 		ret = RET_PUTTHISOBJECTINBOTHHANDS;
 	else if((item->getSlotPosition() & SLOTP_RIGHT) || (item->getSlotPosition() & SLOTP_LEFT))
-	{
-		if(!g_config.getBool(ConfigManager::CLASSIC_EQUIPMENT_SLOTS))
-			ret = RET_CANNOTBEDRESSED;
-		else
-			ret = RET_PUTTHISOBJECTINYOURHAND;
-	}
+		ret = RET_PUTTHISOBJECTINYOURHAND;
 
 	switch(index)
 	{
@@ -2982,23 +2918,14 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 		case SLOT_RIGHT:
 			if(item->getSlotPosition() & SLOTP_RIGHT)
 			{
-				if(!g_config.getBool(ConfigManager::CLASSIC_EQUIPMENT_SLOTS))
+				if(!g_config.getBool(ConfigManager::TIBIA_SLOTS))
 				{
 					if(!item->isWeapon() || (item->getWeaponType() != WEAPON_SHIELD && !item->isDualWield()))
-						ret = RET_CANNOTBEDRESSED;
+						ret = RET_NOTPOSSIBLE;
+					else if(inventory[SLOT_LEFT] && inventory[SLOT_LEFT]->getSlotPosition() & SLOTP_TWO_HAND)
+						ret = RET_DROPTWOHANDEDITEM;
 					else
-					{
-						const Item* leftItem = inventory[SLOT_LEFT];
-						if(leftItem)
-						{
-							if((leftItem->getSlotPosition() | item->getSlotPosition()) & SLOTP_TWO_HAND)
-								ret = RET_BOTHHANDSNEEDTOBEFREE;
-							else
-								ret = RET_NOERROR;
-						}
-						else
-							ret = RET_NOERROR;
-					}
+						ret = RET_NOERROR;
 				}
 				else if(item->getSlotPosition() & SLOTP_TWO_HAND)
 				{
@@ -3013,13 +2940,13 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 					WeaponType_t type = item->getWeaponType(), leftType = leftItem->getWeaponType();
 					if(leftItem->getSlotPosition() & SLOTP_TWO_HAND)
 						ret = RET_DROPTWOHANDEDITEM;
-					else if(item == leftItem && count == item->getItemCount())
+					else if(item == leftItem && item->getItemCount() == count)
 						ret = RET_NOERROR;
 					else if(leftType == WEAPON_SHIELD && type == WEAPON_SHIELD)
 						ret = RET_CANONLYUSEONESHIELD;
 					else if(!leftItem->isWeapon() || !item->isWeapon() ||
-						leftType == WEAPON_SHIELD || leftType == WEAPON_AMMO ||
-						type == WEAPON_SHIELD || type == WEAPON_AMMO ||
+						leftType == WEAPON_AMMO || type == WEAPON_AMMO ||
+						leftType == WEAPON_SHIELD || type == WEAPON_SHIELD ||
 						(leftItem->isDualWield() && item->isDualWield()))
 						ret = RET_NOERROR;
 					else
@@ -3032,11 +2959,11 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 		case SLOT_LEFT:
 			if(item->getSlotPosition() & SLOTP_LEFT)
 			{
-				if(!g_config.getBool(ConfigManager::CLASSIC_EQUIPMENT_SLOTS))
+				if(!g_config.getBool(ConfigManager::TIBIA_SLOTS))
 				{
 					if(!item->isWeapon() || item->getWeaponType() == WEAPON_SHIELD)
-						ret = RET_CANNOTBEDRESSED;
-					else if(inventory[SLOT_RIGHT] && (item->getSlotPosition() & SLOTP_TWO_HAND))
+						ret = RET_NOTPOSSIBLE;
+					else if(inventory[SLOT_RIGHT] && item->getSlotPosition() & SLOTP_TWO_HAND)
 						ret = RET_BOTHHANDSNEEDTOBEFREE;
 					else
 						ret = RET_NOERROR;
@@ -3054,13 +2981,13 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 					WeaponType_t type = item->getWeaponType(), rightType = rightItem->getWeaponType();
 					if(rightItem->getSlotPosition() & SLOTP_TWO_HAND)
 						ret = RET_DROPTWOHANDEDITEM;
-					else if(item == rightItem && count == item->getItemCount())
+					else if(item == rightItem && item->getItemCount() == count)
 						ret = RET_NOERROR;
 					else if(rightType == WEAPON_SHIELD && type == WEAPON_SHIELD)
 						ret = RET_CANONLYUSEONESHIELD;
 					else if(!rightItem->isWeapon() || !item->isWeapon() ||
-						rightType == WEAPON_SHIELD || rightType == WEAPON_AMMO ||
-						type == WEAPON_SHIELD || type == WEAPON_AMMO ||
+						rightType == WEAPON_AMMO || type == WEAPON_AMMO ||
+						rightType == WEAPON_SHIELD || type == WEAPON_SHIELD ||
 						(rightItem->isDualWield() && item->isDualWield()))
 						ret = RET_NOERROR;
 					else
@@ -3083,7 +3010,7 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 				ret = RET_NOERROR;
 			break;
 		case SLOT_AMMO:
-			if((item->getSlotPosition() & SLOTP_AMMO) || g_config.getBool(ConfigManager::CLASSIC_EQUIPMENT_SLOTS))
+			if(item->getSlotPosition() & SLOTP_AMMO || g_config.getBool(ConfigManager::TIBIA_SLOTS))
 				ret = RET_NOERROR;
 			break;
 		case SLOT_WHEREEVER:
@@ -3096,37 +3023,19 @@ ReturnValue Player::__queryAdd(int32_t index, const Thing* thing, uint32_t count
 	}
 
 	Player* self = const_cast<Player*>(this);
-	if(ret == RET_NOERROR || ret == RET_NOTENOUGHROOM)
+	if(ret == RET_NOERROR)
 	{
 		//need an exchange with source?
 		Item* tmpItem = NULL;
 		if((tmpItem = getInventoryItem((slots_t)index)) && (!tmpItem->isStackable() || tmpItem->getID() != item->getID()))
 			return RET_NEEDEXCHANGE;
 
-		if(!hasCapacity(item, count)) //check if enough capacity
-			return RET_NOTENOUGHCAPACITY;
-
 		if(!g_moveEvents->onPlayerEquip(self, const_cast<Item*>(item), (slots_t)index, true))
 			return RET_CANNOTBEDRESSED;
 	}
 
-	if(index == SLOT_LEFT || index == SLOT_RIGHT)
-	{
-		if(ret == RET_NOERROR && item->getWeaponType() != WEAPON_NONE)
-			self->setLastAttack(OTSYS_TIME());
-
-		Item* tmpItem = inventory[(slots_t)index];
-		if(ret == RET_NOTENOUGHROOM && g_game.internalAddItem(NULL, self, tmpItem, INDEX_WHEREEVER) == RET_NOERROR)
-		{
-			self->sendRemoveInventoryItem((slots_t)index, tmpItem);
-			self->onRemoveInventoryItem((slots_t)index, tmpItem);
-
-			self->inventory[(slots_t)index] = NULL;
-			self->updateWeapon();
-			self->inventoryWeight -= tmpItem->getWeight();
-			self->sendStats();
-		}
-	}
+	if((ret == RET_NOERROR || ret == RET_NOTENOUGHROOM) && !hasCapacity(item, count)) //check if enough capacity
+		return RET_NOTENOUGHCAPACITY;
 
 	return ret;
 }
@@ -3674,7 +3583,7 @@ void Player::postAddNotification(Creature*, Thing* thing, const Cylinder* oldPar
 		std::vector<Container*> containers;
 		for(ContainerVector::iterator it = containerVec.begin(); it != containerVec.end(); ++it)
 		{
-			if(!Position::areInRange<3,3,0>(it->second->getPosition(), getPosition()))
+			if(!Position::areInRange<1,1,0>(it->second->getPosition(), getPosition()))
 				containers.push_back(it->second);
 		}
 
@@ -3987,9 +3896,7 @@ void Player::onAddCondition(ConditionType_t type, bool hadCondition)
 	Creature::onAddCondition(type, hadCondition);
 	if(type == CONDITION_GAMEMASTER)
 		return;
-	if(type == CONDITION_OUTFIT && isMounted())
-		dismount();
-	
+
 	if(getLastPosition().x) // don't send if player have just logged in (its already done in protocolgame), or condition have no icons
 		sendIcons();
 }
@@ -4133,7 +4040,7 @@ void Player::onTarget(Creature* target)
 				sendIcons();
 			}
 
-			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(this, false))
+			if(!Combat::isInPvpZone(this, targetPlayer) && !isEnemy(targetPlayer, false))
 			{
 				addAttacked(targetPlayer);
 
@@ -4314,7 +4221,7 @@ bool Player::onKilledCreature(Creature* target, DeathEntry& entry)
 		entry.setUnjustified();
 
 	if(entry.isLast())
-		addInFightTicks(true, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
+		addInFightTicks(false, g_config.getNumber(ConfigManager::WHITE_SKULL_TIME));
 	return true;
 }
 
@@ -4441,34 +4348,6 @@ bool Player::changeOutfit(Outfit_t outfit, bool checkList)
 	uint32_t outfitId = Outfits::getInstance()->getOutfitId(outfit.lookType);
 	if(checkList && (!canWearOutfit(outfitId, outfit.lookAddons) || !requestedOutfit))
 		return false;
-	
-	if(outfit.lookMount != 0)
-	{
-		Mount* mount = g_game.mounts.getMountByClientID(outfit.lookMount);
-		if(!mount)
-			return false;
-
-		if(!hasMount(mount))
-			return false;
-
-		if(isMounted())
-		{
-			Mount* prevMount = g_game.mounts.getMountByID(getCurrentMount());
-			if(prevMount)
-				g_game.changeSpeed(this, mount->speed - prevMount->speed);
-
-			setCurrentMount(mount->id);
-		}
-		else
-		{
-			setCurrentMount(mount->id);
-			outfit.lookMount = 0;
-		}
-	}
-	else if(isMounted())
-		dismount();
-	
-	
 
 	requestedOutfit = false;
 	if(outfitAttributes)
@@ -4601,15 +4480,17 @@ Skulls_t Player::getSkull() const
 
 Skulls_t Player::getSkullType(const Creature* creature) const
 {
-	if(const Player* player = creature->getPlayer())
-	{
-		if(g_game.getWorldType() != WORLDTYPE_OPEN)
-			return SKULL_NONE;
+	const Player* player = creature->getPlayer();
+	if(!player || g_game.getWorldType() != WORLDTYPE_OPEN)
+		return SKULL_NONE;
 
-		if((player == this || (skull != SKULL_NONE && player->getSkull() < SKULL_RED)) && player->hasAttacked(this) && !player->isEnemy(this, false))
+	if(player->getSkull() == SKULL_NONE)
+	{
+
+		if(player->hasAttacked(this) && !player->isEnemy(this, false))
 			return SKULL_YELLOW;
 
-		if(player->getSkull() == SKULL_NONE && (isPartner(player) || isAlly(player)) &&
+		if((isPartner(player) || isAlly(player)) &&
 			g_game.getWorldType() != WORLDTYPE_OPTIONAL)
 			return SKULL_GREEN;
 	}
@@ -4619,27 +4500,17 @@ Skulls_t Player::getSkullType(const Creature* creature) const
 
 bool Player::hasAttacked(const Player* attacked) const
 {
-	if(hasFlag(PlayerFlag_NotGainInFight) || !attacked)
-		return false;
-
-	AttackedSet::const_iterator it;
-	uint32_t attackedId = attacked->getID();
-	it = attackedSet.find(attackedId);
-	if(it != attackedSet.end())
-		return true;
-
-	return false;
+	return !hasFlag(PlayerFlag_NotGainInFight) && attacked &&
+		attackedSet.find(attacked->getID()) != attackedSet.end();
 }
 
 void Player::addAttacked(const Player* attacked)
 {
-	if(hasFlag(PlayerFlag_NotGainInFight) || !attacked || attacked == this)
+	if(hasFlag(PlayerFlag_NotGainInFight) || !attacked)
 		return;
 
-	AttackedSet::iterator it;
 	uint32_t attackedId = attacked->getID();
-	it = attackedSet.find(attackedId);
-	if(it == attackedSet.end())
+	if(attackedSet.find(attackedId) == attackedSet.end())
 		attackedSet.insert(attackedId);
 }
 
@@ -5142,7 +5013,7 @@ void Player::manageAccount(const std::string &text)
 					for(VocationsMap::iterator it = Vocations::getInstance()->getFirstVocation(); it != Vocations::getInstance()->getLastVocation(); ++it)
 					{
 						if(it->first == it->second->getFromVocation() && it->first != 0)
-							vocations.push_back(asLowerCaseString(it->second->getName()));
+							vocations.push_back(it->second->getName());
 					}
 
 					msg << "What would you like to be... ";
@@ -5187,6 +5058,9 @@ void Player::manageAccount(const std::string &text)
 						talkState[12] = true;
 					}
 				}
+
+				if(msg.str().length() == 17)
+					msg << "I don't understand what vocation you would like to be... could you please repeat it?";
 			}
 			else if(checkText(text, "yes") && talkState[12])
 			{
@@ -5817,179 +5691,4 @@ bool Player::addOfflineTrainingTries(skills_t skill, int32_t tries)
 	ss << std::fixed << std::setprecision(2) << "Your " << ucwords(getSkillName(skill)) << " skill changed from level " << oldSkillValue << " (with " << oldPercentToNextLevel << "% progress towards level " << (oldSkillValue + 1) << ") to level " << newSkillValue << " (with " << newPercentToNextLevel << "% progress towards level " << (newSkillValue + 1) << ")";
 	sendTextMessage(MSG_EVENT_ADVANCE, ss.str().c_str());
 	return true;
-}
-
-uint8_t Player::getCurrentMount() const
-{
-	std::string value;
-	const std::string keyStr = std::to_string(PSTRG_MOUNTS_CURRENTMOUNT);
-	if (getStorage(keyStr, value))
-		return std::stoi(value);
-
-	return 0;
-}
-
-void Player::setCurrentMount(uint8_t mountId)
-{
-	const std::string keyStr = std::to_string(PSTRG_MOUNTS_CURRENTMOUNT);
-	const std::string valueStorage = std::to_string(mountId);
-	setStorage(keyStr, valueStorage);
-}
-
-bool Player::toggleMount(bool mount)
-{
-	if((OTSYS_TIME() - lastToggleMount) < 500 && !wasMounted)
-	{
-		sendCancelMessage(RET_YOUAREEXHAUSTED);
-		return false;
-	}
-
-	if(mount)
-	{
-		if(isMounted())
-			return false;
-
-		const Tile* playerTile = getTile();
-		if(!getAccess() && (playerTile && playerTile->hasFlag(TILESTATE_PROTECTIONZONE)))
-		{
-			sendCancelMessage(RET_ACTIONNOTPERMITTEDINPROTECTIONZONE);
-			return false;
-		}
-
-		Outfit playerOutfit;
-		if(!Outfits::getInstance()->getOutfit(defaultOutfit.lookType, playerOutfit))
-			return false;
-
-		uint8_t currentMountId = getCurrentMount();
-		if(currentMountId == 0)
-		{
-			sendOutfitWindow();
-			return false;
-		}
-
-		Mount* currentMount = g_game.mounts.getMountByID(currentMountId);
-		if(!currentMount)
-			return false;
-
-		if(!hasMount(currentMount))
-		{
-			setCurrentMount(0);
-			sendOutfitWindow();
-			return false;
-		}
-
-		if(currentMount->premium && !isPremium())
-		{
-			sendCancelMessage(RET_YOUNEEDPREMIUMACCOUNT);
-			return false;
-		}
-
-		if(hasCondition(CONDITION_OUTFIT))
-		{
-			sendCancelMessage(RET_NOTPOSSIBLE);
-			return false;
-		}
-
-		defaultOutfit.lookMount = currentMount->clientId;
-		if(currentMount->speed != 0)
-			g_game.changeSpeed(this, currentMount->speed);
-	}
-	else
-	{
-		if(!isMounted())
-			return false;
-
-		dismount();
-	}
-
-	g_game.internalCreatureChangeOutfit(this, defaultOutfit);
-	lastToggleMount = OTSYS_TIME();
-	return true;
-}
-
-bool Player::tameMount(uint8_t mountId)
-{
-	if(!g_game.mounts.getMountByID(mountId))
-		return false;
-
-	const uint8_t tmpMountId = mountId - 1;
-	const uint32_t key = PSTRG_MOUNTS_RANGE_START + (tmpMountId / 31);
-
-	int32_t value;
-	std::string valueStr;
-
-	const std::string keyStr = std::to_string(key);
-	if(getStorage(keyStr, valueStr))
-	{
-		value = std::stoi(valueStr);
-		value |= (1 << (tmpMountId % 31));
-	}
-	else
-		value = (1 << (tmpMountId % 31));
-
-	const std::string valueStorageStr = std::to_string(value);
-	setStorage(keyStr, valueStorageStr);
-	return true;
-}
-
-bool Player::untameMount(uint8_t mountId)
-{
-	if(!g_game.mounts.getMountByID(mountId))
-		return false;
-
-	const uint8_t tmpMountId = mountId - 1;
-	const uint32_t key = PSTRG_MOUNTS_RANGE_START + (tmpMountId / 31);
-
-	int32_t value;
-	std::string valueStr;
-	const std::string keyStr = std::to_string(key);
-	if(!getStorage(keyStr, valueStr))
-		return true;
-
-	value = std::stoi(valueStr);
-	value &= ~(1 << (tmpMountId % 31));
-
-	const std::string valueStorageStr = std::to_string(value);
-	setStorage(keyStr, valueStorageStr);
-
-	if(getCurrentMount() == mountId)
-	{
-		if(isMounted())
-		{
-			dismount();
-			g_game.internalCreatureChangeOutfit(this, defaultOutfit);
-		}
-
-		setCurrentMount(0);
-	}
-
-	return true;
-}
-
-bool Player::hasMount(const Mount* mount) const
-{
-	if(getAccess())
-		return true;
-
-	if(mount->premium && !isPremium())
-		return false;
-
-	const uint8_t tmpMountId = mount->id - 1;
-	std::string value;
-
-	const std::string keyStr = std::to_string(PSTRG_MOUNTS_RANGE_START + (tmpMountId / 31));
-	if(!getStorage(keyStr, value))
-		return false;
-
-	int32_t valueInt = std::stoi(value);
-	return ((1 << (tmpMountId % 31)) & valueInt) != 0;
-}
-
-void Player::dismount()
-{
-	Mount* mount = g_game.mounts.getMountByID(getCurrentMount());
-	if(mount && mount->speed > 0)
-		g_game.changeSpeed(this, -mount->speed);
-
-	defaultOutfit.lookMount = 0;
 }

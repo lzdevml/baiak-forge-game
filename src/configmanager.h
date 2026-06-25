@@ -69,7 +69,6 @@ class ConfigManager
 			ADMIN_ENCRYPTION,
 			ADMIN_ENCRYPTION_DATA,
 			GAME_PORT,
-			ADVERTISING_BLOCK, //antidivulgação
 			VERSION_MSG,
 			LAST_STRING_CONFIG /* this must be the last one */
 		};
@@ -101,7 +100,6 @@ class ConfigManager
 			GLOBALSAVE_H,
 			GLOBALSAVE_M,
 			START_LEVEL,
-			LOOT_CHANNEL,
 			START_MAGICLEVEL,
 			HOUSE_PRICE,
 			MAX_MESSAGEBUFFER,
@@ -203,7 +201,6 @@ class ConfigManager
 			VERSION_MAX,
 			HIGHSCORES_TOP,
 			HIGHSCORES_UPDATETIME,
-			LOGIN_PROTECTION_TIME,
 			LAST_NUMBER_CONFIG /* this must be the last one */
 		};
 
@@ -235,10 +232,8 @@ class ConfigManager
 
 		enum bool_config_t
 		{
-			PUSH_CRUZADO,
 			GLOBALSAVE_ENABLED = 0,
 			SCRIPT_SYSTEM,
-			NO_ATTACKHEALING_SIMULTANEUS,
 			START_CLOSED,
 			START_CHOOSEVOC,
 			ON_OR_OFF_CHARLIST,
@@ -322,6 +317,7 @@ class ConfigManager
 			MONSTER_SPAWN_WALKBACK,
 			USE_CAPACITY,
 			DAEMONIZE,
+			TIBIA_SLOTS,
 			SKIP_ITEMS_VERSION,
 			SILENT_LUA,
 			HOUSE_SKIP_INIT_RENT,
@@ -333,7 +329,7 @@ class ConfigManager
 			SAVE_STATEMENT,
 			MANUAL_ADVANCED_CONFIG,
 			USE_RUNE_REQUIREMENTS,
-			CLASSIC_EQUIPMENT_SLOTS,
+			ATTACK_IMMEDIATELY_AFTER_LOGGING_IN,
 			LAST_BOOL_CONFIG /* this must be the last one */
 		};
 

@@ -104,9 +104,8 @@ enum ReloadInfo_t
 	RELOAD_VOCATIONS = 19,
 	RELOAD_WEAPONS = 20,
 	RELOAD_MODS = 21,
-	RELOAD_MOUNTS = 22,
-	RELOAD_ALL = 23,
-	RELOAD_LAST = RELOAD_MOUNTS
+	RELOAD_ALL = 22,
+	RELOAD_LAST = RELOAD_MODS
 };
 
 struct RuleViolation
@@ -350,17 +349,19 @@ class Game
 		uint32_t getMonstersOnline() {return (uint32_t)Monster::autoList.size();}
 		uint32_t getNpcsOnline() {return (uint32_t)Npc::autoList.size();}
 		uint32_t getCreaturesOnline() {return (uint32_t)autoList.size();}
-		
-		//uint32_t getPlayersWithMcLimit(); //antimc
 
 		uint32_t getPlayersRecord() const {return playersRecord;}
 		void getWorldLightInfo(LightInfo& lightInfo);
 
-		void getSpectators(SpectatorVec& list, const Position& centerPos, bool checkforduplicate = false, bool multifloor = false,
+		void getSpectators(SpectatorVec& list, const Position& centerPos, bool multifloor = false, bool onlyPlayers = false,
 			int32_t minRangeX = 0, int32_t maxRangeX = 0,
 			int32_t minRangeY = 0, int32_t maxRangeY = 0)
-			{map->getSpectators(list, centerPos, checkforduplicate, multifloor, minRangeX, maxRangeX, minRangeY, maxRangeY);}
-		const SpectatorVec& getSpectators(const Position& centerPos) {return map->getSpectators(centerPos);}
+			{map->getSpectators(list, centerPos, multifloor, onlyPlayers, minRangeX, maxRangeX, minRangeY, maxRangeY);}
+		SpectatorVec getSpectators(const Position& centerPos) {
+			SpectatorVec list;
+			map->getSpectators(list, centerPos, true, false);
+			return list;
+		}
 		void clearSpectatorCache() {if(map) map->clearSpectatorCache();}
 
 		ReturnValue internalMoveCreature(Creature* creature, Direction direction, uint32_t flags = 0);
@@ -379,7 +380,7 @@ class Game
 		ReturnValue internalRemoveItem(Creature* actor, Item* item, int32_t count = -1, bool test = false, uint32_t flags = 0);
 
 		ReturnValue internalPlayerAddItem(Creature* actor, Player* player, Item* item,
-			bool dropOnMap = true, slots_t slot = SLOT_WHEREEVER);
+			bool dropOnMap = false, slots_t slot = SLOT_WHEREEVER);
 		ReturnValue internalPlayerAddItem(Creature* actor, Player* player, Item* item,
 			bool dropOnMap, slots_t slot, Item** toItem);
 
@@ -537,9 +538,8 @@ class Game
 		bool playerTurn(uint32_t playerId, Direction dir);
 		bool playerRequestOutfit(uint32_t playerId);
 		bool playerSay(uint32_t playerId, uint16_t channelId, MessageClasses type,
-		const std::string& receiver, const std::string& text);
+			const std::string& receiver, const std::string& text);
 		bool playerChangeOutfit(uint32_t playerId, Outfit_t outfit);
-		void playerToggleMount(uint32_t playerId, bool mount);
 		bool playerInviteToParty(uint32_t playerId, uint32_t invitedId);
 		bool playerJoinParty(uint32_t playerId, uint32_t leaderId);
 		bool playerRevokePartyInvitation(uint32_t playerId, uint32_t invitedId);
@@ -583,7 +583,6 @@ class Game
 
 		void changeLight(const Creature* creature);
 		void changeSpeed(Creature* creature, int32_t varSpeedDelta);
-		void setSpeed(Creature* creature, const int32_t& varSpeedDelta);
 
 		void internalCreatureChangeOutfit(Creature* creature, const Outfit_t& oufit, bool forced = false);
 		void internalCreatureChangeVisible(Creature* creature, Visible_t visible);
@@ -655,34 +654,9 @@ class Game
 		Map* getMap() {return map;}
 		const Map* getMap() const {return map;}
 
-		bool isRunning() const {return services && services->is_running();}
+		bool isRunning() const {return services && services->isRunning();}
 		int32_t getLightHour() const {return lightHour;}
 		void startDecay(Item* item);
-		Mounts mounts;
-
-		/*  Espelhamento Outfit */
-		  void setNewType(int16_t lookType, int16_t newType) {
-		  newOutfit[lookType] = newType;
-		 }
-		 int16_t getNewType(int16_t lookType) {
-		 if(!newOutfit[lookType]){
-		 return lookType;
-		 }
-
-		 return newOutfit[lookType];
-		 }
-		
-		// Espelhamento Item
-		 void setNewItem(int16_t itemId, int16_t oldItemId) {
-		 newItemId[itemId] = oldItemId;
-		}
-		int16_t getNewItem(int16_t itemId) {
-		 if(!newItemId[itemId]){
-		 return itemId;
-		 }
-
-		 return newItemId[itemId];
-		 }
 
 #ifdef __GROUND_CACHE__
 		std::map<Item*, int32_t> grounds;
@@ -712,9 +686,6 @@ class Game
 		size_t checkCreatureLastIndex;
 		std::vector<Creature*> checkCreatureVectors[EVENT_CREATURECOUNT];
 		std::vector<Creature*> toAddCheckCreatureVector;
-		
-		 std::map<int16_t, int16_t> newOutfit;
-		 std::map<int16_t, int16_t> newItemId;
 
 		void checkDecay();
 		void internalDecayItem(Item* item);

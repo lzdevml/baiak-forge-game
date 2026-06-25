@@ -44,6 +44,7 @@
 #include "game.h"
 #include "chat.h"
 #include "tools.h"
+#include "resources.h"
 
 extern ConfigManager g_config;
 extern Game g_game;
@@ -172,9 +173,8 @@ bool TalkActions::onPlayerSay(Creature* creature, uint16_t channelId, const std:
 	if(!talkAction && defaultTalkAction)
 		talkAction = defaultTalkAction;
 
-  if(!talkAction || (talkAction->getChannel() != -1 && talkAction->getChannel() != channelId))
-
-return false;
+	if(!talkAction || (talkAction->getChannel() != -1 && talkAction->getChannel() != channelId))
+		return false;
 
 	Player* player = creature->getPlayer();
 	if(player)
@@ -1201,20 +1201,19 @@ bool TalkAction::diagnostics(Creature* creature, const std::string&, const std::
 #ifdef __OTADMIN__
 		<< "ProtocolAdmin: " << ProtocolAdmin::protocolAdminCount << std::endl
 #endif
-		<< "ProtocolManager: " << ProtocolManager::protocolManagerCount << std::endl;
-		/*
+		<< "ProtocolManager: " << ProtocolManager::protocolManagerCount << std::endl
 		<< "ProtocolStatus: " << ProtocolStatus::protocolStatusCount << std::endl
-		<< "ProtocolOld: " << ProtocolOld::protocolOldCount << std::endl << std::endl;*/
+		<< "ProtocolOld: " << ProtocolOld::protocolOldCount << std::endl << std::endl;
 	player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, s.str());
 
 	s.str("");
 	s << "Connections:" << std::endl
-		<< "--------------------" << std::endl;/*
+		<< "--------------------" << std::endl
 		<< "Active connections: " << Connection::connectionCount << std::endl
 		<< "Total message pool: " << OutputMessagePool::getInstance()->getTotalMessageCount() << std::endl
 		<< "Auto message pool: " << OutputMessagePool::getInstance()->getAutoMessageCount() << std::endl
 		<< "Queued message pool: " << OutputMessagePool::getInstance()->getQueuedMessageCount() << std::endl
-		<< "Free message pool: " << OutputMessagePool::getInstance()->getAvailableMessageCount() << std::endl;*/
+		<< "Free message pool: " << OutputMessagePool::getInstance()->getAvailableMessageCount() << std::endl;
 	player->sendTextMessage(MSG_STATUS_CONSOLE_BLUE, s.str());
 
 #else
@@ -1296,7 +1295,8 @@ bool TalkAction::software(Creature* creature, const std::string&, const std::str
 		return false;
 
 	std::stringstream s;
-		s << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << ")" << std::endl;
+		s << "The " << SOFTWARE_NAME << " Version: (" << SOFTWARE_VERSION << "." << MINOR_VERSION << "." << PATCH_VERSION << ")" << std::endl;
+		s << REVISION_VERSION << std::endl;
 		s << "Codename: (" << SOFTWARE_CODENAME << ")" << std::endl << std::endl;
 		s << "Server Developers: " << SOFTWARE_DEVELOPERS << "." << std::endl;
 

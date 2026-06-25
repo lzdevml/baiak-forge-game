@@ -23,13 +23,6 @@ class NetworkMessage;
 class ProtocolOld : public Protocol
 {
 	public:
-		// static protocol information
-		enum {server_sends_first = false};
-		enum {protocol_identifier = 0x01};
-		enum {use_checksum = false};
-		static const char* protocol_name() {
-			return "old login protocol";
-		}
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 		static uint32_t protocolOldCount;
 #endif

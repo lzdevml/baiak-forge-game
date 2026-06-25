@@ -31,10 +31,8 @@
 
 #include "configmanager.h"
 #include "game.h"
-#include "chat.h"
 
 extern Game g_game;
-extern Chat g_chat;
 extern Spells* g_spells;
 extern Monsters g_monsters;
 extern ConfigManager g_config;
@@ -203,22 +201,13 @@ void MonsterType::dropLoot(Container* corpse)
 	if(message < LOOTMSG_PLAYER)
 		return;
 
-std::stringstream ss;
-std::string nick;
-ss << "Loot of " << nameDescription << ": " << corpse->getContentDescription() << ".";
-if (owner->getParty() && message > LOOTMSG_PLAYER) {
-	owner->getParty()->broadcastPartyLoot((MessageClasses)MSG_CHANNEL, ss.str());
-	} else {
-		if (message == LOOTMSG_PLAYER || message == LOOTMSG_BOTH) {
-			if (!g_chat.getChannel(owner, g_config.getNumber(ConfigManager::LOOT_CHANNEL))->hasUser(owner)) {
-				owner->sendTextMessage((MessageClasses)g_config.getNumber(ConfigManager::LOOT_MESSAGE_TYPE), ss.str());
-			} else {
-				owner->sendChannelMessage(nick, ss.str(), (MessageClasses)MSG_CHANNEL, g_config.getNumber(ConfigManager::LOOT_CHANNEL));
-			}
-		}
-	}
+	std::stringstream ss;
+	ss << "Loot of " << nameDescription << ": " << corpse->getContentDescription() << ".";
+	if(owner->getParty() && message > LOOTMSG_PLAYER)
+		owner->getParty()->broadcastMessage((MessageClasses)g_config.getNumber(ConfigManager::LOOT_MESSAGE_TYPE), ss.str());
+	else if(message == LOOTMSG_PLAYER || message == LOOTMSG_BOTH)
+		owner->sendTextMessage((MessageClasses)g_config.getNumber(ConfigManager::LOOT_MESSAGE_TYPE), ss.str());
 }
-
 
 bool Monsters::loadFromXml(bool reloading /*= false*/)
 {
@@ -519,20 +508,11 @@ bool Monsters::deserializeSpell(xmlNodePtr node, spellBlock_t& sb, const std::st
 			{
 				if(xmlStrcmp(tmpNode->name,(const xmlChar*)"outfit"))
 					continue;
-				
-				
+
 				if(readXMLInteger(tmpNode, "type", intValue))
 				{
 					Outfit_t outfit;
 					outfit.lookType = intValue;
-					
-					/*ESPELHAMENTO*/
-					 int16_t looktype = intValue;
-
-					 if(readXMLInteger(tmpNode, "oldType", intValue)) {
-					 g_game.setNewType(looktype, intValue);
-					}
-					
 					if(readXMLInteger(tmpNode, "head", intValue))
 						outfit.lookHead = intValue;
 
@@ -598,14 +578,6 @@ bool Monsters::deserializeSpell(xmlNodePtr node, spellBlock_t& sb, const std::st
 				{
 					Outfit_t outfit;
 					outfit.lookType = intValue;
-										
-										/*ESPELHAMENTO*/
-					int16_t looktype = intValue;
-
-					if(readXMLInteger(tmpNode, "oldType", intValue)) {
-					 g_game.setNewType(looktype, intValue);
-					 }
-					 
 					if(readXMLInteger(tmpNode, "head", intValue))
 						outfit.lookHead = intValue;
 
@@ -1161,14 +1133,6 @@ bool Monsters::loadMonster(const std::string& file, const std::string& monsterNa
 			if(readXMLInteger(p, "type", intValue))
 			{
 				mType->outfit.lookType = intValue;
-				
-							/*ESPELHAMENTO*/
-				 int16_t looktype = intValue;
-				 if(readXMLInteger(p, "oldType", intValue)) {
-				 g_game.setNewType(looktype, intValue);
-				 }
-				
-
 				if(readXMLInteger(p, "head", intValue))
 					mType->outfit.lookHead = intValue;
 

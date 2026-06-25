@@ -15,15 +15,11 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ////////////////////////////////////////////////////////////////////////
 
-#ifndef FS_OTPCH_H_F00C737DA6CA4C8D90F57430C614367F
-#define FS_OTPCH_H_F00C737DA6CA4C8D90F57430C614367F
-
-#define BOOST_BIND_NO_PLACEHOLDERS
-
-#ifdef _MSC_VER
-#define strncasecmp _strnicmp
-#define strcasecmp _stricmp
+#ifdef __OTPCH__
+#error "Precompiled header should be included only once."
 #endif
+
+#define __OTPCH__
 
 #if defined WINDOWS
 #include <winerror.h>
@@ -48,6 +44,3 @@
 #include "gui.h"
 #include "inputbox.h"
 #include "playerbox.h"
-
-
-#endif

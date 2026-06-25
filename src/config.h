@@ -27,7 +27,7 @@
 
 /* Define to 1 if you have the `boost_date_time' library (-lboost_date_time).
    */
-#define HAVE_LIBBOOST_DATE_TIME 1
+/* #undef HAVE_LIBBOOST_DATE_TIME */
 
 /* Define to 1 if you have the `boost_date_time-gcc-mt' library
    (-lboost_date_time-gcc-mt). */
@@ -35,11 +35,11 @@
 
 /* Define to 1 if you have the `boost_date_time-mt' library
    (-lboost_date_time-mt). */
-/* #undef HAVE_LIBBOOST_DATE_TIME_MT */
+#define HAVE_LIBBOOST_DATE_TIME_MT 1
 
 /* Define to 1 if you have the `boost_filesystem' library
    (-lboost_filesystem). */
-#define HAVE_LIBBOOST_FILESYSTEM 1
+/* #undef HAVE_LIBBOOST_FILESYSTEM */
 
 /* Define to 1 if you have the `boost_filesystem-gcc-mt' library
    (-lboost_filesystem-gcc-mt). */
@@ -47,20 +47,20 @@
 
 /* Define to 1 if you have the `boost_filesystem-mt' library
    (-lboost_filesystem-mt). */
-/* #undef HAVE_LIBBOOST_FILESYSTEM_MT */
+#define HAVE_LIBBOOST_FILESYSTEM_MT 1
 
 /* Define to 1 if you have the `boost_regex' library (-lboost_regex). */
-#define HAVE_LIBBOOST_REGEX 1
+/* #undef HAVE_LIBBOOST_REGEX */
 
 /* Define to 1 if you have the `boost_regex-gcc-mt' library
    (-lboost_regex-gcc-mt). */
 /* #undef HAVE_LIBBOOST_REGEX_GCC_MT */
 
 /* Define to 1 if you have the `boost_regex-mt' library (-lboost_regex-mt). */
-/* #undef HAVE_LIBBOOST_REGEX_MT */
+#define HAVE_LIBBOOST_REGEX_MT 1
 
 /* Define to 1 if you have the `boost_system' library (-lboost_system). */
-#define HAVE_LIBBOOST_SYSTEM 1
+/* #undef HAVE_LIBBOOST_SYSTEM */
 
 /* Define to 1 if you have the `boost_system-gcc-mt' library
    (-lboost_system-gcc-mt). */
@@ -68,10 +68,10 @@
 
 /* Define to 1 if you have the `boost_system-mt' library (-lboost_system-mt).
    */
-/* #undef HAVE_LIBBOOST_SYSTEM_MT */
+#define HAVE_LIBBOOST_SYSTEM_MT 1
 
 /* Define to 1 if you have the `boost_thread' library (-lboost_thread). */
-#define HAVE_LIBBOOST_THREAD 1
+/* #undef HAVE_LIBBOOST_THREAD */
 
 /* Define to 1 if you have the `boost_thread-gcc-mt' library
    (-lboost_thread-gcc-mt). */
@@ -79,7 +79,7 @@
 
 /* Define to 1 if you have the `boost_thread-mt' library (-lboost_thread-mt).
    */
-/* #undef HAVE_LIBBOOST_THREAD_MT */
+#define HAVE_LIBBOOST_THREAD_MT 1
 
 /* Define to 1 if you have the `crypto' library (-lcrypto). */
 #define HAVE_LIBCRYPTO 1

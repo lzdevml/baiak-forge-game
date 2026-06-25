@@ -60,12 +60,7 @@ struct Outfit
 	int32_t skills[SKILL_LAST + 1], skillsPercent[SKILL_LAST + 1], stats[STAT_LAST + 1], statsPercent[STAT_LAST + 1],
 		speed, attackSpeed, healthGain, healthTicks, manaGain, manaTicks, conditionSuppressions;
 
-	// uint32_t outfitId, lookType;
-	
-	/*espelhamento*/
-	 uint32_t outfitId, lookType, newType;
-	
-	
+	uint32_t outfitId, lookType;
 	std::string name, storageId, storageValue;
 	IntegerVec groups;
 };

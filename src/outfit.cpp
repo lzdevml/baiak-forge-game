@@ -98,17 +98,7 @@ bool Outfits::parseOutfitNode(xmlNodePtr p)
 			continue;
 		}
 
-				outfit.lookType = intValue;
-				// /*ESPELHAMENTO*/
-		 int16_t looktype = intValue;
-		 if(readXMLInteger(listNode, "oldType", intValue))
-		 {
-		 g_game.setNewType(looktype, intValue);
-		 }
-
-		
-
-
+		outfit.lookType = intValue;
 		if(!readXMLString(listNode, "gender", strValue) && !readXMLString(listNode, "type", strValue) && !readXMLString(listNode, "sex", strValue))
 		{
 			std::clog << "[Error - Outfits::parseOutfitNode] Missing gender(s) for an outfit with id " << outfit.outfitId

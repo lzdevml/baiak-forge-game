@@ -32,6 +32,7 @@ Dispatcher::Dispatcher()
 {
 	Dispatcher::m_threadState = Dispatcher::STATE_RUNNING;
 	m_thread = boost::thread(boost::bind(&Dispatcher::dispatcherThread, this));
+	lastSendAll = 0;
 }
 
 void Dispatcher::dispatcherThread()
@@ -41,6 +42,7 @@ void Dispatcher::dispatcherThread()
 	dispatcherExceptionHandler.InstallHandler();
 	#endif
 
+	OutputMessagePool* outputPool = OutputMessagePool::getInstance();
 	boost::unique_lock<boost::mutex> taskLockUnique(m_taskLock, boost::defer_lock);
 	while(Dispatcher::m_threadState != Dispatcher::STATE_TERMINATED)
 	{
@@ -58,8 +60,14 @@ void Dispatcher::dispatcherThread()
 
 			if(!task->hasExpired())
 			{
+				outputPool->startExecutionFrame();
 				(*task)();
 
+				const int64_t sysTime = OTSYS_TIME();
+				if ((sysTime - lastSendAll) > 30) {
+					outputPool->sendAll();
+					lastSendAll = sysTime;
+				}
 				g_game.clearSpectatorCache();
 			}
 			delete task;
@@ -99,6 +107,7 @@ void Dispatcher::addTask(Task* task, bool front/* = false*/)
 void Dispatcher::flush()
 {
 	Task* task = NULL;
+	OutputMessagePool* outputPool = OutputMessagePool::getInstance();
 	while(!m_taskList.empty())
 	{
 		task = m_taskList.front();
@@ -106,6 +115,8 @@ void Dispatcher::flush()
 
 		(*task)();
 		delete task;
+		if(outputPool)
+			outputPool->sendAll();
 
 		g_game.clearSpectatorCache();
 	}

@@ -20,48 +20,113 @@
 #include <iostream>
 #include <iomanip>
 
-#include "sha1.h"
+#include <openssl/sha.h>
+#include <openssl/md5.h>
 
 #include "vocation.h"
 #include "configmanager.h"
-#include <boost/filesystem.hpp>
 
 extern ConfigManager g_config;
 
+std::string transformToMD5(std::string plainText, bool upperCase)
+{
+	MD5_CTX c;
+	MD5_Init(&c);
+	MD5_Update(&c, plainText.c_str(), plainText.length());
+
+	uint8_t md[MD5_DIGEST_LENGTH];
+	MD5_Final(md, &c);
+
+	char output[(MD5_DIGEST_LENGTH << 1) + 1];
+	for(int32_t i = 0; i < (int32_t)sizeof(md); ++i)
+		sprintf(output + (i << 1), "%.2X", md[i]);
+
+	if(upperCase)
+		return std::string(output);
+
+	return asLowerCaseString(std::string(output));
+}
+
 std::string transformToSHA1(std::string plainText, bool upperCase)
 {
-	SHA1 sha1;
-	unsigned sha1Hash[5];
-	std::ostringstream hexStream;
+	SHA_CTX c;
+	SHA1_Init(&c);
+	SHA1_Update(&c, plainText.c_str(), plainText.length());
 
-	sha1.Input((const uint8_t*)plainText.c_str(), plainText.length());
-	sha1.Result(sha1Hash);
+	uint8_t md[SHA_DIGEST_LENGTH];
+	SHA1_Final(md, &c);
 
-	hexStream.flags(std::ios::hex | std::ios::uppercase);
-	for (uint32_t i = 0; i < 5; ++i)
-		hexStream << std::setw(8) << std::setfill('0') << (uint32_t)sha1Hash[i];
+	char output[(SHA_DIGEST_LENGTH << 1) + 1];
+	for(int32_t i = 0; i < (int32_t)sizeof(md); ++i)
+		sprintf(output + (i << 1), "%.2X", md[i]);
 
-	std::string hexStr = hexStream.str();
-	if (!upperCase)
-		toLowerCaseString(hexStr);
+	if(upperCase)
+		return std::string(output);
 
-	return hexStr;
+	return asLowerCaseString(std::string(output));
+}
+
+std::string transformToSHA256(std::string plainText, bool upperCase)
+{
+	SHA256_CTX c;
+	SHA256_Init(&c);
+	SHA256_Update(&c, plainText.c_str(), plainText.length());
+
+	uint8_t md[SHA256_DIGEST_LENGTH];
+	SHA256_Final(md, &c);
+
+	char output[(SHA256_DIGEST_LENGTH << 1) + 1];
+	for(int32_t i = 0; i < (int32_t)sizeof(md); ++i)
+		sprintf(output + (i << 1), "%.2X", md[i]);
+
+	if(upperCase)
+		return std::string(output);
+
+	return asLowerCaseString(std::string(output));
+}
+
+std::string transformToSHA512(std::string plainText, bool upperCase)
+{
+	SHA512_CTX c;
+	SHA512_Init(&c);
+	SHA512_Update(&c, plainText.c_str(), plainText.length());
+
+	uint8_t md[SHA512_DIGEST_LENGTH];
+	SHA512_Final(md, &c);
+
+	char output[(SHA512_DIGEST_LENGTH << 1) + 1];
+	for(int32_t i = 0; i < (int32_t)sizeof(md); ++i)
+		sprintf(output + (i << 1), "%.2X", md[i]);
+
+	if(upperCase)
+		return std::string(output);
+
+	return asLowerCaseString(std::string(output));
 }
 
 void _encrypt(std::string& str, bool upperCase)
 {
-	switch (g_config.getNumber(ConfigManager::ENCRYPTION))
+	switch(g_config.getNumber(ConfigManager::ENCRYPTION))
 	{
-	case ENCRYPTION_SHA1:
-		str = transformToSHA1(str, upperCase);
-		break;
-	default:
-	{
-		if (upperCase)
-			std::transform(str.begin(), str.end(), str.begin(), upchar);
+		case ENCRYPTION_MD5:
+			str = transformToMD5(str, upperCase);
+			break;
+		case ENCRYPTION_SHA1:
+			str = transformToSHA1(str, upperCase);
+			break;
+		case ENCRYPTION_SHA256:
+			str = transformToSHA256(str, upperCase);
+			break;
+		case ENCRYPTION_SHA512:
+			str = transformToSHA512(str, upperCase);
+			break;
+		default:
+		{
+			if(upperCase)
+				std::transform(str.begin(), str.end(), str.begin(), upchar);
 
-		break;
-	}
+			break;
+		}
 	}
 }
 
@@ -373,67 +438,6 @@ uint32_t rand24b()
 	return ((rand() << 12) ^ rand()) & 0xFFFFFF;
 }
 
-std::mt19937& getRandomGenerator()
-{
-	static std::random_device rd;
-	static std::mt19937 generator(rd());
-	return generator;
-}
-
-int32_t normal_random(int32_t minNumber, int32_t maxNumber)
-{
-	static std::normal_distribution<float> normalRand(0.45f, 0.22f);
-
-	if (minNumber == maxNumber) {
-		return minNumber;
-	}
-	else if (minNumber > maxNumber) {
-		std::swap(minNumber, maxNumber);
-	}
-
-	int32_t increment;
-	const int32_t diff = maxNumber - minNumber;
-	const float v = normalRand(getRandomGenerator());
-	if (v < 0.0) {
-		increment = diff / 2;
-	}
-	else if (v > 1.0) {
-		increment = (diff + 1) / 2;
-	}
-	else {
-		increment = round(v * diff);
-	}
-	return minNumber + increment;
-}
-
-int32_t uniform_random(int32_t minNumber, int32_t maxNumber)
-{
-	static std::uniform_int_distribution<int32_t> uniformRand;
-	if (minNumber == maxNumber) {
-		return minNumber;
-	}
-	else if (minNumber > maxNumber) {
-		std::swap(minNumber, maxNumber);
-	}
-	return uniformRand(getRandomGenerator(), std::uniform_int_distribution<int32_t>::param_type(minNumber, maxNumber));
-}
-
-int32_t random_range(int32_t lowestNumber, int32_t highestNumber, DistributionType_t type /*= DISTRO_UNIFORM*/)
-{
-	switch (type)
-	{
-	case DISTRO_UNIFORM:
-		return uniform_random(lowestNumber, highestNumber);
-	case DISTRO_NORMAL:
-		return normal_random(lowestNumber, highestNumber);
-	default:
-		break;
-	}
-
-	const float randMax = 16777216;
-	return (lowestNumber + int32_t(float(highestNumber - lowestNumber) * float(1.f - sqrt((1.f * rand24b()) / randMax))));
-}
-
 float box_muller(float m, float s)
 {
 	// normal random variate generator
@@ -466,6 +470,28 @@ float box_muller(float m, float s)
 
 	useLast = true;
 	return (m + y1 * s);
+}
+
+int32_t random_range(int32_t lowestNumber, int32_t highestNumber, DistributionType_t type /*= DISTRO_UNIFORM*/)
+{
+	if(highestNumber == lowestNumber)
+		return lowestNumber;
+
+	if(lowestNumber > highestNumber)
+		std::swap(lowestNumber, highestNumber);
+
+	switch(type)
+	{
+		case DISTRO_UNIFORM:
+			return (lowestNumber + ((int32_t)rand24b() % (highestNumber - lowestNumber + 1)));
+		case DISTRO_NORMAL:
+			return (lowestNumber + int32_t(float(highestNumber - lowestNumber) * (float)std::min((float)1, std::max((float)0, box_muller(0.5, 0.25)))));
+		default:
+			break;
+	}
+
+	const float randMax = 16777216;
+	return (lowestNumber + int32_t(float(highestNumber - lowestNumber) * float(1.f - sqrt((1.f * rand24b()) / randMax))));
 }
 
 char upchar(char character)
@@ -603,7 +629,7 @@ bool isNumbers(std::string text)
 bool checkText(std::string text, std::string str)
 {
 	trimString(text);
-	return asLowerCaseString(text) == str;
+	return strcasecmp(text.c_str(), str.c_str()) == 0;
 }
 
 std::string generateRecoveryKey(int32_t fieldCount, int32_t fieldLenght, bool mixCase/* = false*/)
@@ -689,7 +715,7 @@ std::string formatDate(time_t _time/* = 0*/)
 		_time = time(NULL);
 
 	const tm* tms = localtime(&_time);
-	std::ostringstream s;
+	std::stringstream s;
 	if(tms)
 		s << tms->tm_mday << "/" << (tms->tm_mon + 1) << "/" << (tms->tm_year + 1900) << " " << tms->tm_hour << ":" << tms->tm_min << ":" << tms->tm_sec;
 	else
@@ -715,19 +741,39 @@ std::string formatDateEx(time_t _time/* = 0*/, std::string format/* = "%d %b %Y,
 
 std::string formatTime(time_t _time/* = 0*/, bool ms/* = false*/)
 {
-	using namespace std::chrono;
+	if(!_time)
+		_time = time(NULL);
+	else if(ms)
+		ms = false;
 
-	auto now = system_clock::now();
-	auto millisec = duration_cast<milliseconds>(now.time_since_epoch()) % 1000;
-	auto timer = system_clock::to_time_t(now);
+	const tm* tms = localtime(&_time);
+	std::stringstream s;
+	if(tms)
+	{
+		s << tms->tm_hour << ":" << tms->tm_min << ":";
+		if(tms->tm_sec < 10)
+			s << "0";
 
-	std::tm bt = *std::localtime(&timer);
-	std::ostringstream oss;
+		s << tms->tm_sec;
+		if(ms)
+		{
+			timeb t;
+			ftime(&t);
 
-	oss << std::put_time(&bt, "%H:%M:%S"); // HH:MM:SS
-	oss << '.' << std::setfill('0') << std::setw(3) << millisec.count();
+			s << "."; // make it format zzz
+			if(t.millitm < 10)
+				s << "0";
 
-	return oss.str();
+			if(t.millitm < 100)
+				s << "0";
+
+			s << t.millitm;
+		}
+	}
+	else
+		s << "UNIX Time: " << (int32_t)_time;
+
+	return s.str();
 }
 
 std::string convertIPAddress(uint32_t ip)
@@ -876,29 +922,27 @@ Direction getDirectionTo(Position pos1, Position pos2, bool extended/* = true*/)
 
 Direction getReverseDirection(Direction dir)
 {
-    switch(dir)
-    {
-        case NORTH:
-            return SOUTH;
-        case SOUTH:
-            return NORTH;
-        case WEST:
-            return EAST;
-        case EAST:
-            return WEST;
-        case SOUTHWEST:
-            return NORTHEAST;
-        case NORTHWEST:
-            return SOUTHEAST;
-        case NORTHEAST:
-            return SOUTHWEST;
-        case SOUTHEAST:
-            return NORTHWEST;
-        case NODIR:
-            return NODIR;
-    }
+	switch(dir)
+	{
+		case NORTH:
+			return SOUTH;
+		case SOUTH:
+			return NORTH;
+		case WEST:
+			return EAST;
+		case EAST:
+			return WEST;
+		case SOUTHWEST:
+			return NORTHEAST;
+		case NORTHWEST:
+			return SOUTHEAST;
+		case NORTHEAST:
+			return SOUTHWEST;
+		case SOUTHEAST:
+			return NORTHWEST;
+	}
 
-    return SOUTH;
+	return SOUTH;
 }
 
 Position getNextPosition(Direction direction, Position pos)
@@ -933,9 +977,6 @@ Position getNextPosition(Direction direction, Position pos)
 			pos.x++;
 			pos.y--;
 			break;
-		default:
-			// caso a direção seja desconhecida, retorna a posição atual
-			return pos;
 	}
 
 	return pos;
@@ -1719,9 +1760,14 @@ bool parseIntegerVec(std::string str, IntegerVec& intVector)
 	return true;
 }
 
-bool fileExists(const std::string& filename)
+bool fileExists(const char* filename)
 {
-	return boost::filesystem::exists(filename);
+	FILE* f = fopen(filename, "rb");
+	if(!f)
+		return false;
+
+	fclose(f);
+	return true;
 }
 
 uint32_t adlerChecksum(uint8_t* data, size_t length)

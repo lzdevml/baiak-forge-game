@@ -163,7 +163,6 @@ class Spell : public BaseSpell
 		bool enabled;
 
 		int32_t mana;
-		std::string exhaustedGroup;
 		int32_t manaPercent;
 		int32_t soul;
 		int32_t range;

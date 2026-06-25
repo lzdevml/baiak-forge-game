@@ -18,7 +18,6 @@
 #ifndef __CONST__
 #define __CONST__
 #include "definitions.h"
-#define NETWORKMESSAGE_MAXSIZE 24590
 
 enum OperatingSystem_t
 {
@@ -27,14 +26,7 @@ enum OperatingSystem_t
 
 	CLIENTOS_OTCLIENT_LINUX = 10,
 	CLIENTOS_OTCLIENT_WINDOWS = 11,
-	CLIENTOS_OTCLIENT_MAC = 12, 
-	CLIENTOS_OTCLIENTV8_LINUX = 20,
-	CLIENTOS_OTCLIENTV8_WINDOWS = 21,
-	CLIENTOS_OTCLIENTV8_MAC = 22,
-	CLIENTOS_OTCLIENTV8_ANDROID = 23,
-	CLIENTOS_OTCLIENTV8_IOS = 24,
-	CLIENTOS_OTCLIENTV8_WEB = 25
-	
+	CLIENTOS_OTCLIENT_MAC = 12
 };
 
 enum ReportType_t
@@ -514,11 +506,11 @@ enum SpellGroup_t
 
 enum item_t
 {
-	ITEM_FIREFIELD = 1487,
+	ITEM_FIREFIELD = 1492,
 	ITEM_FIREFIELD_SAFE = 1500,
-	ITEM_POISONFIELD = 1490,
+	ITEM_POISONFIELD = 1496,
 	ITEM_POISONFIELD_SAFE = 1503,
-	ITEM_ENERGYFIELD = 1491,
+	ITEM_ENERGYFIELD = 1495,
 	ITEM_ENERGYFIELD_SAFE = 1504,
 	ITEM_MAGICWALL = 1497,
 	ITEM_MAGICWALL_SAFE = 11098,
@@ -637,127 +629,6 @@ struct MessageDetails
 		value(value), color(color), sub(NULL) {}
 };
 
-enum GameFeature : uint8_t {
-	GameProtocolChecksum = 1,
-	GameAccountNames = 2,
-	GameChallengeOnLogin = 3,
-	GamePenalityOnDeath = 4,
-	GameNameOnNpcTrade = 5,
-	GameDoubleFreeCapacity = 6,
-	GameDoubleExperience = 7,
-	GameTotalCapacity = 8,
-	GameSkillsBase = 9,
-	GamePlayerRegenerationTime = 10,
-	GameChannelPlayerList = 11,
-	GamePlayerMounts = 12,
-	GameEnvironmentEffect = 13,
-	GameCreatureEmblems = 14,
-	GameItemAnimationPhase = 15,
-	GameMagicEffectU16 = 16,
-	GamePlayerMarket = 17,
-	GameSpritesU32 = 18,
-	GameTileAddThingWithStackpos = 19,
-	GameOfflineTrainingTime = 20,
-	GamePurseSlot = 21,
-	GameFormatCreatureName = 22,
-	GameSpellList = 23,
-	GameClientPing = 24,
-	GameExtendedClientPing = 25,
-	GameDoubleHealth = 28,
-	GameDoubleSkills = 29,
-	GameChangeMapAwareRange = 30,
-	GameMapMovePosition = 31,
-	GameAttackSeq = 32,
-	GameBlueNpcNameColor = 33,
-	GameDiagonalAnimatedText = 34,
-	GameLoginPending = 35,
-	GameNewSpeedLaw = 36,
-	GameForceFirstAutoWalkStep = 37,
-	GameMinimapRemove = 38,
-	GameDoubleShopSellAmount = 39,
-	GameContainerPagination = 40,
-	GameThingMarks = 41,
-	GameLooktypeU16 = 42,
-	GamePlayerStamina = 43,
-	GamePlayerAddons = 44,
-	GameMessageStatements = 45,
-	GameMessageLevel = 46,
-	GameNewFluids = 47,
-	GamePlayerStateU16 = 48,
-	GameNewOutfitProtocol = 49,
-	GamePVPMode = 50,
-	GameWritableDate = 51,
-	GameAdditionalVipInfo = 52,
-	GameBaseSkillU16 = 53,
-	GameCreatureIcons = 54,
-	GameHideNpcNames = 55,
-	GameSpritesAlphaChannel = 56,
-	GamePremiumExpiration = 57,
-	GameBrowseField = 58,
-	GameEnhancedAnimations = 59,
-	GameOGLInformation = 60,
-	GameMessageSizeCheck = 61,
-	GamePreviewState = 62,
-	GameLoginPacketEncryption = 63,
-	GameClientVersion = 64,
-	GameContentRevision = 65,
-	GameExperienceBonus = 66,
-	GameAuthenticator = 67,
-	GameUnjustifiedPoints = 68,
-	GameSessionKey = 69,
-	GameDeathType = 70,
-	GameIdleAnimations = 71,
-	GameKeepUnawareTiles = 72,
-	GameIngameStore = 73,
-	GameIngameStoreHighlights = 74,
-	GameIngameStoreServiceType = 75,
-	GameAdditionalSkills = 76,
-	GameDistanceEffectU16 = 77,
-	GamePrey = 78,
-	GameDoubleMagicLevel = 79,
-
-	GameExtendedOpcode = 80,
-	GameMinimapLimitedToSingleFloor = 81,
-	GameSendWorldName = 82,
-
-	GameDoubleLevel = 83,
-	GameDoubleSoul = 84,
-	GameDoublePlayerGoodsMoney = 85,
-	GameCreatureWalkthrough = 86,
-	GameDoubleTradeMoney = 87,
-	GameSequencedPackets = 88,
-	GameTibia12Protocol = 89,
-
-	// 90-99 otclientv8 features
-	GameNewWalking = 90,
-	GameSlowerManualWalking = 91,
-
-	GameItemTooltip = 93,
-
-	GameBot = 95,
-	GameBiggerMapCache = 96,
-	GameForceLight = 97,
-	GameNoDebug = 98,
-	GameBotProtection = 99,
-
-	// Custom features for customer
-	GameFasterAnimations = 101,
-	GameCenteredOutfits = 102,
-	GameSendIdentifiers = 103,
-	GameWingsAndAura = 104,
-	GamePlayerStateU32 = 105,
-	GameOutfitShaders = 106,
-
-	// advanced features
-	GamePacketSizeU32 = 110,
-	GamePacketCompression = 111,
-
-	LastGameFeature = 120
-};
-
-
-
-
 //Reserved player storage key ranges
 //[10000000 - 20000000]
 #define PSTRG_RESERVED_RANGE_START 10000000
@@ -767,31 +638,21 @@ enum GameFeature : uint8_t {
 #define PSTRG_OUTFITS_RANGE_START (PSTRG_RESERVED_RANGE_START + 1000)
 #define PSTRG_OUTFITS_RANGE_SIZE 500
 
-
 //[1500 - 2000]
 #define PSTRG_OUTFITSID_RANGE_START (PSTRG_RESERVED_RANGE_START + 1500)
 #define PSTRG_OUTFITSID_RANGE_SIZE 500
 
-
-//[2001 - 2011]; MountSystem
-#define PSTRG_MOUNTS_RANGE_START (PSTRG_RESERVED_RANGE_START + 2001)
-#define PSTRG_MOUNTS_RANGE_SIZE 11
-#define PSTRG_MOUNTS_CURRENTMOUNT (PSTRG_MOUNTS_RANGE_START + 10)
-
-
+#define NETWORK_CRYPTOHEADER_SIZE 8
 #define NETWORK_RETRY_TIMEOUT 5000
 #define NETWORK_DEFAULT_SIZE 4096
-
 #define NETWORK_HEADER_SIZE 2
-
 #define NETWORK_MAX_SIZE 24590
-#define NETWORK_BODY_SIZE (NETWORK_MAX_SIZE - NETWORK_CRYPTOHEADER_SIZE - 6)
 
 #define IPBAN_FLAG 128
 #define LOCALHOST 2130706433
 #define SWIMMING_OUTFIT 267
 #define GRATIS_PREMIUM 65535
-#define OUTFITS_MAX_NUMBER 25
+#define OUTFITS_MAX_NUMBER 26
 
 #define IS_IN_KEYRANGE(key, range) (key >= PSTRG_##range##_START && ((key - PSTRG_##range##_START) < PSTRG_##range##_SIZE))
 #endif

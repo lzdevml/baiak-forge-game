@@ -292,8 +292,11 @@ ReturnValue Combat::canDoCombat(const Creature* attacker, const Creature* target
 	}
 	else if(target->getMonster())
 	{
-		if(attacker->getMonster() && !target->getPlayerMaster() && !attacker->getPlayerMaster())
-			return RET_YOUMAYNOTATTACKTHISCREATURE;
+        	if(attacker->getMonster() && !target->getPlayerMaster() && !attacker->getPlayerMaster())
+            		return RET_YOUMAYNOTATTACKTHISCREATURE;
+           
+        	if(!target->isAttackable())
+            		return RET_YOUMAYNOTATTACKTHISCREATURE;
 
 		const Player* attackerPlayer = NULL;
 		if((attackerPlayer = attacker->getPlayer()) || (attackerPlayer = attacker->getPlayerMaster()))
@@ -364,11 +367,14 @@ ReturnValue Combat::canTargetCreature(const Player* player, const Creature* targ
 		if(player->getSecureMode() == SECUREMODE_ON)
 			return RET_TURNSECUREMODETOATTACKUNMARKEDPLAYERS;
 
-		if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-		{
-			if(player->getSkull() == SKULL_BLACK)
-				return RET_YOUMAYNOTATTACKTHISPLAYER;
-		}
+		if(player->getSkull() == SKULL_BLACK)
+			return RET_YOUMAYNOTATTACKTHISPLAYER;
+	}
+
+	if(!g_config.getBool(ConfigManager::ATTACK_IMMEDIATELY_AFTER_LOGGING_IN))
+	{
+		if(player->checkLoginDelay())
+			return RET_YOUMAYNOTATTACKIMMEDIATELYAFTERLOGGINGIN;
 	}
 
 	return Combat::canDoCombat(player, target, true);
@@ -552,23 +558,11 @@ bool Combat::CombatHealthFunc(Creature* caster, Creature* target, const CombatPa
 	if(_params.element.damage && _params.element.type != COMBAT_NONE)
 		g_game.combatBlockHit(_params.element.type, caster, target, _params.element.damage, params.blockedByShield, params.blockedByArmor, params.itemId != 0, true);
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
+	if(caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
 	{
-		if(caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
-		{
-			_params.element.damage /= 2;
-			if(change < 0)
-				change /= 2;
-		}
-	}
-	else
-	{
-		if(caster && caster->getPlayer() && target->getPlayer())
-		{
-			_params.element.damage /= 2;
-			if(change < 0)
-				change /= 2;
-		}
+		_params.element.damage /= 2;
+		if(change < 0)
+			change /= 2;
 	}
 
 	if(!g_game.combatChangeHealth(_params, caster, target, change, false))
@@ -592,16 +586,8 @@ bool Combat::CombatManaFunc(Creature* caster, Creature* target, const CombatPara
 	if(g_game.combatBlockHit(COMBAT_MANADRAIN, caster, target, change, false, false, params.itemId != 0))
 		return false;
 
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-	{
-		if(change < 0 && caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
-			change /= 2;
-	}
-	else
-	{
-		if(change < 0 && caster && caster->getPlayer() && target->getPlayer())
-			change /= 2;
-	}
+	if(change < 0 && caster && caster->getPlayer() && target->getPlayer() && target->getSkull() != SKULL_BLACK)
+		change /= 2;
 
 	if(!g_game.combatChangeMana(caster, target, change))
 		return false;
@@ -799,7 +785,7 @@ void Combat::CombatFunc(Creature* caster, const Position& pos, const CombatArea*
 	}
 
 	SpectatorVec list;
-	g_game.getSpectators(list, pos, false, true, maxX + Map::maxViewportX, maxX + Map::maxViewportX,
+	g_game.getSpectators(list, pos, true, true, maxX + Map::maxViewportX, maxX + Map::maxViewportX,
 		maxY + Map::maxViewportY, maxY + Map::maxViewportY);
 
 	Tile* tile = NULL;
@@ -995,7 +981,9 @@ void Combat::doCombatDefault(Creature* caster, Creature* target, const CombatPar
 	if(params.isAggressive && (caster == target || Combat::canDoCombat(caster, target, true) != RET_NOERROR))
 		return;
 
-	const SpectatorVec& list = g_game.getSpectators(target->getTile()->getPosition());
+	SpectatorVec list;
+	g_game.getSpectators(list, target->getPosition(), true, true);
+
 	CombatNullFunc(caster, target, params, NULL);
 
 	combatTileEffects(list, caster, target->getTile(), params);
@@ -1473,16 +1461,21 @@ bool MagicField::isBlocking(const Creature* creature) const
 	return false;
 }
 
-void MagicField::onStepInField(Creature* creature)
+void MagicField::onStepInField(Creature* creature, bool purposeful/* = true*/)
 {
-	//remove magic walls/wild growth
-	if(isUnstepable() || id == ITEM_MAGICWALL || id == ITEM_WILDGROWTH || id == ITEM_MAGICWALL_SAFE || id == ITEM_WILDGROWTH_SAFE || isBlocking(creature))
+	if(!creature)
+		return;
+
+	if(isUnstepable() || isBlocking(creature))
 	{
 		if(!creature->isGhost())
 			g_game.internalRemoveItem(creature, this, 1);
 
 		return;
 	}
+
+	if(!purposeful || !creature->isAttackable())
+		return;
 
 	const ItemType& it = items[id];
 	if(!it.condition)

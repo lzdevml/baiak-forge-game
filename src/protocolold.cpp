@@ -20,6 +20,7 @@
 #include "outputmessage.h"
 #include "connection.h"
 #include "game.h"
+#include "resources.h"
 
 #if defined(WINDOWS) && !defined(_CONSOLE)
 #include "gui.h"
@@ -41,11 +42,15 @@ void ProtocolOld::deleteProtocolTask()
 #endif
 void ProtocolOld::disconnectClient(uint8_t error, const char* message)
 {
-	OutputMessage_ptr output = OutputMessagePool::getOutputMessage();
-	output->addByte(error);
-	output->addString(message);
-	send(output);
-	disconnect();
+	if(OutputMessage_ptr output = OutputMessagePool::getInstance()->getOutputMessage(this, false))
+	{
+		TRACK_MESSAGE(output);
+		output->put<char>(error);
+		output->putString(message);
+		OutputMessagePool::getInstance()->send(output);
+	}
+
+	getConnection()->close();
 }
 
 void ProtocolOld::onRecvFirstMessage(NetworkMessage& msg)
@@ -60,10 +65,10 @@ void ProtocolOld::onRecvFirstMessage(NetworkMessage& msg)
 		return;
 	}
 
-	msg.skipBytes(2);
+	msg.skip(2);
 	uint16_t version = msg.get<uint16_t>();
 
-	msg.skipBytes(12);
+	msg.skip(12);
 	if(version <= 760)
 		disconnectClient(0x0A, "Only clients with protocol " CLIENT_VERSION_STRING " allowed!");
 

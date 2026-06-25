@@ -32,10 +32,6 @@
 #include "configmanager.h"
 #include "game.h"
 
-boost::recursive_mutex AutoId::lock;
-uint32_t AutoId::count = 1000;
-AutoId::List AutoId::list;
-
 extern Game g_game;
 extern ConfigManager g_config;
 extern CreatureEvents* g_creatureEvents;
@@ -86,6 +82,7 @@ Creature::Creature()
 	walkUpdateTicks = 0;
 	checkVector = -1;
 	lastFailedFollow = 0;
+	scriptEventsBitField = 0;
 
 	onIdleStatus();
 }
@@ -274,7 +271,7 @@ void Creature::onWalk()
 		cancelNextWalk = false;
 		listWalkDir.clear();
 		onWalkAborted();
-	}
+ 	}
 
 	if(eventWalk)
 	{
@@ -543,7 +540,7 @@ void Creature::onCreatureMove(const Creature* creature, const Tile* newTile, con
 		if(!teleport)
 		{
 			if(std::abs(newPos.x - oldPos.x) >= 1 && std::abs(newPos.y - oldPos.y) >= 1)
-				lastStepCost = 2;
+				lastStepCost = 3;
 		}
 		else
 			stopEventWalk();
@@ -670,9 +667,9 @@ void Creature::onCreatureMove(const Creature* creature, const Tile* newTile, con
 	{
 		if(hasFollowPath)
 		{
-			isUpdatingPath = false;
-			
-			Dispatcher::getInstance().addTask(createTask(boost::bind(&Game::updateCreatureWalk, &g_game, getID())));
+			isUpdatingPath = true;
+			//Dispatcher::getInstance().addTask(createTask(
+			//	boost::bind(&Game::updateCreatureWalk, &g_game, getID())));
 		}
 
 		if(newPos.z != oldPos.z || !canSee(followCreature->getPosition()))
@@ -1050,10 +1047,6 @@ bool Creature::setAttackedCreature(Creature* creature)
 	for(std::list<Creature*>::iterator cit = summons.begin(); cit != summons.end(); ++cit)
 		(*cit)->setAttackedCreature(creature);
 
-	Condition* condition = getCondition(CONDITION_LOGINPROTECTION, CONDITIONID_DEFAULT);
-	if(condition)
-		removeCondition(condition);
-
 	return true;
 }
 
@@ -1069,7 +1062,7 @@ void Creature::goToFollowCreature()
 {
 	if(getPlayer() && (OTSYS_TIME() - lastFailedFollow <= g_config.getNumber(ConfigManager::FOLLOW_EXHAUST)))
 		return;
-
+	
 	if(followCreature)
 	{
 		FindPathParams fpp;
@@ -1119,7 +1112,7 @@ bool Creature::setFollowCreature(Creature* creature, bool /*fullPathSearch = fal
 		followCreature = NULL;
 	}
 
-	g_game.updateCreatureWalk(id);
+	// g_game.updateCreatureWalk(id);
 	onFollowCreature(creature);
 	return true;
 }
@@ -1358,20 +1351,16 @@ void Creature::onGainExperience(double& gainExp, Creature* target, bool multipli
 	const Position& targetPos = getPosition();
 
 	SpectatorVec list;
-	g_game.getSpectators(list, targetPos, false, false, Map::maxViewportX, Map::maxViewportX,
+	g_game.getSpectators(list, targetPos, false, true, Map::maxViewportX, Map::maxViewportX,
 		Map::maxViewportY, Map::maxViewportY);
 
 	std::stringstream ss;
 	ss << ucfirst(getNameDescription()) << " gained " << (uint64_t)gainExp << " experience points.";
 
 	SpectatorVec textList;
-	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
-	{
-		if(!(*it)->getPlayer())
-			continue;
-
-		if((*it) != this)
-			textList.push_back(*it);
+	for (Creature* spectator : list) {
+		if(spectator != this)
+			textList.insert(spectator);
 	}
 
 	MessageDetails* details = new MessageDetails((int32_t)gainExp, (Color_t)color);
@@ -1406,20 +1395,16 @@ void Creature::onGainSharedExperience(double& gainExp, Creature* target, bool mu
 	const Position& targetPos = getPosition();
 
 	SpectatorVec list;
-	g_game.getSpectators(list, targetPos, false, false, Map::maxViewportX, Map::maxViewportX,
+	g_game.getSpectators(list, targetPos, false, true, Map::maxViewportX, Map::maxViewportX,
 		Map::maxViewportY, Map::maxViewportY);
 
 	std::stringstream ss;
 	ss << ucfirst(getNameDescription()) << " gained " << (uint64_t)gainExp << " experience points.";
 
 	SpectatorVec textList;
-	for(SpectatorVec::const_iterator it = list.begin(); it != list.end(); ++it)
-	{
-		if(!(*it)->getPlayer())
-			continue;
-
-		if((*it) != this)
-			textList.push_back(*it);
+	for (Creature* spectator : list) {
+		if(spectator != this)
+			textList.insert(spectator);
 	}
 
 	MessageDetails* details = new MessageDetails((int32_t)gainExp, (Color_t)color);
@@ -1621,12 +1606,14 @@ bool Creature::hasCondition(ConditionType_t type, int32_t subId/* = 0*/, bool ch
 	if(isSuppress(type))
 		return false;
 
+	Condition* condition = NULL;
 	for(ConditionList::const_iterator it = conditions.begin(); it != conditions.end(); ++it)
 	{
-		if((*it)->getType() != type || (subId != -1 && (*it)->getSubId() != (uint32_t)subId))
+		if(!(condition = *it) || condition->getType() != type ||
+			(subId != -1 && condition->getSubId() != (uint32_t)subId))
 			continue;
 
-		if(!checkTime || !(*it)->getEndTime() || (*it)->getEndTime() >= OTSYS_TIME())
+		if(!checkTime || !condition->getEndTime() || condition->getEndTime() >= OTSYS_TIME())
 			return true;
 	}
 
@@ -1711,6 +1698,8 @@ bool Creature::registerCreatureEvent(const std::string& name)
 			return false;
 	}
 
+	scriptEventsBitField |= static_cast<uint64_t>(1) << event->getEventType();
+
 	eventsList.push_back(event);
 	return true;
 }
@@ -1721,16 +1710,33 @@ bool Creature::unregisterCreatureEvent(const std::string& name)
 	if(!event || !event->isLoaded()) //check for existance
 		return false;
 
-	for(CreatureEventList::iterator it = eventsList.begin(); it != eventsList.end(); ++it)
-	{
-		if((*it) != event)
-			continue;
-
-		eventsList.erase(it);
-		return true; // we shouldn't have a duplicate
+	CreatureEventType_t type = event->getEventType();
+	if (!hasEventRegistered(type)) {
+		return false;
 	}
 
-	return false;
+	bool resetTypeBit = true;
+	bool removed = false;
+
+	auto it = eventsList.begin(), end = eventsList.end();
+	while (it != end) {
+		CreatureEvent* curEvent = *it;
+		if (curEvent == event) {
+			it = eventsList.erase(it);
+			removed = true;
+			continue;
+		}
+
+		if (curEvent->getEventType() == type) {
+			resetTypeBit = false;
+		}
+		++it;
+	}
+
+	if (resetTypeBit) {
+		scriptEventsBitField &= ~(static_cast<uint64_t>(1) << type);
+	}
+	return removed;
 }
 
 void Creature::unregisterCreatureEvent(CreatureEventType_t type)
@@ -1740,17 +1746,19 @@ void Creature::unregisterCreatureEvent(CreatureEventType_t type)
 		if((*it)->getEventType() == type)
 			it = eventsList.erase(it);
 	}
+	scriptEventsBitField &= ~(static_cast<uint64_t>(1) << type);
 }
 
 CreatureEventList Creature::getCreatureEvents(CreatureEventType_t type)
 {
 	CreatureEventList list;
-	for(CreatureEventList::iterator it = eventsList.begin(); it != eventsList.end(); ++it)
-	{
-		if((*it)->getEventType() == type && (*it)->isLoaded())
-			list.push_back(*it);
+	if (hasEventRegistered(type)) {
+		for(CreatureEventList::iterator it = eventsList.begin(); it != eventsList.end(); ++it)
+		{
+			if((*it)->getEventType() == type && (*it)->isLoaded())
+				list.push_back(*it);
+		}
 	}
-
 	return list;
 }
 
@@ -1762,15 +1770,25 @@ FrozenPathingConditionCall::FrozenPathingConditionCall(const Position& _targetPo
 bool FrozenPathingConditionCall::isInRange(const Position& startPos, const Position& testPos,
 	const FindPathParams& fpp) const
 {
-	int32_t dxMin = ((fpp.fullPathSearch || (startPos.x - targetPos.x) <= 0) ? fpp.maxTargetDist : 0),
-	dxMax = ((fpp.fullPathSearch || (startPos.x - targetPos.x) >= 0) ? fpp.maxTargetDist : 0),
-	dyMin = ((fpp.fullPathSearch || (startPos.y - targetPos.y) <= 0) ? fpp.maxTargetDist : 0),
-	dyMax = ((fpp.fullPathSearch || (startPos.y - targetPos.y) >= 0) ? fpp.maxTargetDist : 0);
-	if(testPos.x > targetPos.x + dxMax || testPos.x < targetPos.x - dxMin)
+	int32_t dxMin = ((fpp.fullPathSearch || (startPos.x - targetPos.x) <= 0) ? fpp.maxTargetDist : 0);
+	if(testPos.x < targetPos.x - dxMin) {
 		return false;
+	}
 
-	if(testPos.y > targetPos.y + dyMax || testPos.y < targetPos.y - dyMin)
+	int32_t dxMax = ((fpp.fullPathSearch || (startPos.x - targetPos.x) >= 0) ? fpp.maxTargetDist : 0);
+	if(testPos.x > targetPos.x + dxMax) {
 		return false;
+	}
+
+	int32_t dyMin = ((fpp.fullPathSearch || (startPos.y - targetPos.y) <= 0) ? fpp.maxTargetDist : 0);
+	if(testPos.y < targetPos.y - dyMin) {
+		return false;
+	}
+
+	int32_t dyMax = ((fpp.fullPathSearch || (startPos.y - targetPos.y) >= 0) ? fpp.maxTargetDist : 0);
+	if(testPos.y > targetPos.y + dyMax) {
+		return false;
+	}
 
 	return true;
 }

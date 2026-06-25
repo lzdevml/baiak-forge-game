@@ -36,7 +36,7 @@ typedef std::map<std::string, uint32_t> DataList;
 class Spectators
 {
 	public:
-		Spectators(ProtocolGame_ptr client): owner(client)
+		Spectators(ProtocolGame* client): owner(client)
 		{
 			id = 0;
 			broadcast = false;
@@ -91,13 +91,8 @@ class Spectators
 			return false;
 		}
 
-		ProtocolGame_ptr getOwner() const {return owner;}
-		void setOwner(ProtocolGame_ptr client) {
-			owner = client;
-		}
-		void resetOwner() {
-			owner.reset();
-		}
+		ProtocolGame* getOwner() const {return owner;}
+		void setOwner(ProtocolGame* client) {owner = client;}
 
 		std::string getPassword() const {return password;}
 		void setPassword(const std::string& value) {password = value;}
@@ -141,7 +136,7 @@ class Spectators
 		StringVec mutes;
 		DataList bans;
 
-		ProtocolGame_ptr owner;
+		ProtocolGame* owner;
 		uint32_t id;
 		std::string password;
 		bool broadcast, auth;
@@ -250,18 +245,6 @@ class Spectators
 			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
 				it->first->sendPing();
 		}
-						void sendDllCheck()
-		{
-			if(!owner)
-				return;
-
-			owner->sendDllCheck();
-			for(SpectatorList::iterator it = spectators.begin(); it != spectators.end(); ++it)
-				it->first->sendDllCheck();
-		}
-		
-
-		
 		void sendCreatureTurn(const Creature* creature, int16_t stackpos)
 		{
 			if(!owner)

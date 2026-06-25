@@ -171,6 +171,7 @@ bool Item::loadContainer(xmlNodePtr parentNode, Container* parent)
 Item::Item(const uint16_t type, uint16_t amount/* = 0*/):
 	ItemAttributes(), id(type)
 {
+	duration = 0;
 	raid = NULL;
 	loadedFromMap = false;
 
@@ -237,7 +238,7 @@ void Item::copyAttributes(Item* item)
 	}
 
 	eraseAttribute("decaying");
-	eraseAttribute("duration");
+	duration = 0;
 }
 
 void Item::makeUnique(Item* parent)
@@ -281,11 +282,11 @@ void Item::setID(uint16_t newId)
 	if(!newDuration && !it.stopTime && it.decayTo == -1)
 	{
 		eraseAttribute("decaying");
-		eraseAttribute("duration");
+		duration = -1;
 	}
 
 	eraseAttribute("corpseowner");
-	if(newDuration > 0 && (!pit.stopTime || !hasIntegerAttribute("duration")))
+	if(newDuration > 0 && (!pit.stopTime || duration == 0))
 	{
 		setDecaying(DECAYING_FALSE);
 		setDuration(newDuration);
@@ -406,26 +407,6 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 				return ATTR_READ_ERROR;
 
 			setAttribute("article", article);
-			break;
-		}
-
-		case ATTR_LIFELEECH:
-		{
-			int32_t lifeLeech;
-			if(!propStream.getLong((uint32_t&)lifeLeech))
-				return ATTR_READ_ERROR;
-
-			setAttribute("lifeleech", lifeLeech);
-			break;
-		}
-
-		case ATTR_MANALEECH:
-		{
-			int32_t manaLeech;
-			if(!propStream.getLong((uint32_t&)manaLeech))
-				return ATTR_READ_ERROR;
-
-			setAttribute("manaleech", manaLeech);
 			break;
 		}
 
@@ -585,7 +566,7 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			if(!propStream.getLong((uint32_t&)duration))
 				return ATTR_READ_ERROR;
 
-			setAttribute("duration", duration);
+			this->duration = duration;
 			break;
 		}
 
@@ -669,6 +650,12 @@ Attr_ReadValue Item::readAttr(AttrTypes_t attr, PropStream& propStream)
 			if(!unique && hasIntegerAttribute("uid")) // unfortunately we have to do this
 				ScriptEnviroment::addUniqueThing(this);
 
+			bool ok;
+			int32_t dur = getIntegerAttribute("duration", ok);
+			if (ok) {
+				duration = dur;
+			}
+
 			// this attribute has a custom behavior as well
 			if(getDecaying() != DECAYING_FALSE)
 				setDecaying(DECAYING_PENDING);
@@ -711,6 +698,12 @@ bool Item::serializeAttr(PropWriteStream& propWriteStream) const
 	{
 		propWriteStream.addByte(ATTR_COUNT);
 		propWriteStream.addByte((uint8_t)getSubType());
+	}
+
+	if(duration != 0)
+	{
+		propWriteStream.addByte(ATTR_DURATION);
+		propWriteStream.addType(duration);
 	}
 
 	if(attributes && !attributes->empty())
@@ -872,25 +865,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 	}
 	else if(it.weaponType != WEAPON_NONE)
 	{
-		if(it.weaponType == WEAPON_SHIELD)
-		{
-			s << "." << std::endl << "Imbuement: (";
-			if(it.lifeLeech || (item && item->getLifeLeech()))
-				s << std::showpos << int32_t(item ? item->getLifeLeech() : it.lifeLeech) << "% Life Leech, " << std::noshowpos;
-			else
-				s << "Nenhum, ";
-
-			if(it.manaLeech || (item && item->getManaLeech()))
-				s << std::showpos << int32_t(item ? item->getManaLeech() : it.manaLeech) << "% Mana Leech)." << std::noshowpos << std::endl;
-			else
-				s << "Nenhum)." << std::endl;
-		}
 		bool begin = true;
-		if(it.weaponType == WEAPON_WAND)
-		{
-			begin = false;
-			s << " (Range:" << int32_t(item ? item->getShootRange() : it.shootRange);
-		}
 		if(it.weaponType == WEAPON_DIST && it.ammoType != AMMO_NONE)
 		{
 			begin = false;
@@ -906,7 +881,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 				s << ", Hit% " << std::showpos << (item ? item->getHitChance() : it.hitChance) << std::noshowpos;
 
 			if(it.attackSpeed || (item && item->getAttackSpeed()))
-				s << ", AtkSpeed:" << (item ? item->getAttackSpeed() : it.attackSpeed);
+				s << ", AS: " << (item ? item->getAttackSpeed() : it.attackSpeed);
 		}
 		else if(it.weaponType != WEAPON_AMMO && it.weaponType != WEAPON_WAND)
 		{
@@ -956,7 +931,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 			else
 				s << ", ";
 
-			s << "AtkSpeed:" << (item ? item->getAttackSpeed() : it.attackSpeed);
+			s << "AS: " << (item ? item->getAttackSpeed() : it.attackSpeed);
 		}
 
 		if(it.hasAbilities())
@@ -1230,17 +1205,6 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 	}
 	else if(it.armor || (item && item->getArmor()) || it.showAttributes)
 	{
-		s << "." << std::endl << "Imbuiment: (";
-		if(it.lifeLeech || (item && item->getLifeLeech()))
-			s << std::showpos << int32_t(item ? item->getLifeLeech() : it.lifeLeech) << "% Life Leech, " << std::noshowpos;
-		else
-			s << "Nenhum, ";
-		
-		if(it.manaLeech || (item && item->getManaLeech()))
-			s << std::showpos << int32_t(item ? item->getManaLeech() : it.manaLeech) << "% Mana Leech)." << std::noshowpos << std::endl;
-		else
-			s << "Nenhum)." << std::endl;
-
 		int32_t tmp = it.armor;
 		if(item)
 			tmp = item->getArmor();
@@ -1248,7 +1212,7 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 		bool begin = true;
 		if(tmp)
 		{
-			s << " (Arm: " << tmp;
+			s << " (Arm:" << tmp;
 			begin = false;
 		}
 
@@ -1527,9 +1491,9 @@ std::string Item::getDescription(const ItemType& it, int32_t lookDistance, const
 
 	if(it.showDuration)
 	{
-		if(item && item->hasIntegerAttribute("duration"))
+		int32_t duration = item ? item->getDuration() / 1000 : 0;
+		if(duration != 0)
 		{
-			int32_t duration = item->getDuration() / 1000;
 			s << " that will expire in ";
 			if(duration >= 86400)
 			{
@@ -1761,11 +1725,15 @@ bool Item::canDecay()
 	if(isRemoved())
 		return false;
 
+	const ItemType& it = Item::items[id];
+	if (it.decayTo < 0 || it.decayTime == 0) {
+		return false;
+	}
+
 	if(loadedFromMap && (getUniqueId() || (getActionId() && getContainer())))
 		return false;
 
-	const ItemType& it = Item::items[id];
-	return it.decayTo >= 0 && it.decayTime;
+	return true;
 }
 
 void Item::getLight(LightInfo& lightInfo)
@@ -1778,37 +1746,4 @@ void Item::getLight(LightInfo& lightInfo)
 void Item::__startDecaying()
 {
 	g_game.startDecay(this);
-}
-
-void Item::generateSerial()
-{
-	std::string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-	std::string serial = "";
-	for(int32_t i = 1; i < 6; i++)
-	{
-		int32_t l = rand() % (letters.length() - 1) + 1;
-		serial += letters.substr(l, 1);
-	}
-	serial += "-";
-	for(int32_t i = 1; i < 6; i++)
-	{
-		int32_t l = rand() % (letters.length() - 1) + 1;
-		serial += letters.substr(l, 1);
-	}
-	serial += "-";
-	for(int32_t i = 1; i < 6; i++)
-	{
-		int32_t l = rand() % (letters.length() - 1) + 1;
-		serial += letters.substr(l, 1);
-	}
-	serial += "-";
-	for(int32_t i = 1; i < 6; i++)
-	{
-		int32_t l = rand() % (letters.length() - 1) + 1;
-		serial += letters.substr(l, 1);
-	}
-
-	std::string key = "serial";
-	this->setAttribute(key.c_str(), serial);
-	serial = "";
 }

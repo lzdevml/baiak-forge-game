@@ -34,7 +34,6 @@
 #include "ioguild.h"
 #include "party.h"
 #include "npc.h"
-#include "mounts.h"
 
 class House;
 class Weapon;
@@ -124,7 +123,7 @@ typedef std::list<uint32_t> InvitationsList;
 typedef std::list<Party*> PartyList;
 typedef std::map<uint32_t, War_t> WarMap;
 
-#define SPEED_MAX 1000
+#define SPEED_MAX 1500
 #define SPEED_MIN 10
 #define STAMINA_MAX (42 * 60 * 60 * 1000)
 #define STAMINA_MULTIPLIER (60 * 1000)
@@ -135,15 +134,13 @@ class Player : public Creature, public Cylinder
 #ifdef __ENABLE_SERVER_DIAGNOSTIC__
 		static uint32_t playerCount;
 #endif
-		Player(const std::string& name, ProtocolGame_ptr p);
+		Player(const std::string& name, ProtocolGame* p);
 		virtual ~Player();
 
 		virtual Player* getPlayer() {return this;}
 		virtual const Player* getPlayer() const {return this;}
 		virtual CreatureType_t getType() const {return CREATURETYPE_PLAYER;}
 
-		ProtocolGame_ptr p_protocol;
-		
 		static MuteCountMap muteCountMap;
 
 		virtual const std::string& getName() const {return name;}
@@ -160,8 +157,13 @@ class Player : public Creature, public Cylinder
 		void setGUID(uint32_t _guid) {guid = _guid;}
 		uint32_t getGUID() const {return guid;}
 
+		void setID() final {
+			if (id == 0) {
+				id = playerAutoID++;
+			}
+		}
+
 		static AutoList<Player> autoList;
-		virtual uint32_t rangeId() {return PLAYER_ID_RANGE;}
 		static bool sort(Player* lhs, Player* rhs) {return lhs->getName() < rhs->getName();}
 
 		void addList();
@@ -248,14 +250,6 @@ class Player : public Creature, public Cylinder
 		void setClientVersion(uint32_t version) {clientVersion = version;}
 
 		bool hasClient() const {return (client->getOwner() != NULL);}
-		ProtocolGame_ptr getClient() const {
-			if (client) {
-				return client->getOwner();
-			}
-			return NULL;
-		}
-
-		
 		bool isVirtual() const {return (getID() == 0);}
 		uint32_t getIP() const;
 		bool canOpenCorpse(uint32_t ownerId);
@@ -496,8 +490,6 @@ class Player : public Creature, public Cylinder
 		bool addUnjustifiedKill(const Player* attacked, bool countNow);
 
 		virtual int32_t getArmor() const;
-		virtual int32_t getLifeLeech() const;
-		virtual int32_t getManaLeech() const;
 		virtual int32_t getDefense() const;
 		virtual float getAttackFactor() const;
 		virtual float getDefenseFactor() const;
@@ -731,25 +723,9 @@ class Player : public Creature, public Cylinder
 		void sendPlayerIcons(Player* player);
 		void sendStats();
 
-		uint16_t getOTCv8Version() const{
-			if (hasClient())
-				return operatingSystem >= 20;
-			return 0;
-		}
-
 		void receivePing() {lastPong = OTSYS_TIME();}
 		virtual void onThink(uint32_t interval);
 		uint32_t getAttackSpeed() const;
-		
-		uint8_t getCurrentMount() const;
-		void setCurrentMount(uint8_t mountId);
-		bool isMounted() const {return defaultOutfit.lookMount != 0;}
-		bool toggleMount(bool mount);
-		bool tameMount(uint8_t mountId);
-		bool untameMount(uint8_t mountId);
-		bool hasMount(const Mount* mount) const;
-		void dismount();
-		
 
 		void setLastMail(uint64_t v) {lastMail = v;}
 		uint16_t getMailAttempts() const {return mailAttempts;}
@@ -790,6 +766,8 @@ class Player : public Creature, public Cylinder
 		double rates[SKILL__LAST + 1];
 
 	protected:
+		static uint32_t playerAutoID;
+
 		void checkTradeState(const Item* item);
 		void internalAddDepot(Depot* depot, uint32_t depotId);
 
@@ -803,7 +781,7 @@ class Player : public Creature, public Cylinder
 		void updateBaseSpeed()
 		{
 			if(!hasFlag(PlayerFlag_SetMaxSpeed))
-				baseSpeed = vocation->getBaseSpeed() + (1 * (level - 1));
+				baseSpeed = vocation->getBaseSpeed() + (2 * (level - 1));
 			else
 				baseSpeed = SPEED_MAX;
 		}
@@ -881,7 +859,6 @@ class Player : public Creature, public Cylinder
 		bool addAttackSkillPoint;
 		bool pvpBlessing;
 		bool sentChat;
-		bool wasMounted;
 
 		OperatingSystem_t operatingSystem;
 		AccountManager_t accountManager;
@@ -952,7 +929,6 @@ class Player : public Creature, public Cylinder
 		uint64_t experience;
 		uint64_t manaSpent;
 		uint64_t lastAttack;
-		int64_t lastToggleMount;
 		uint64_t lastMail;
 		uint64_t skills[SKILL_LAST + 1][3];
 

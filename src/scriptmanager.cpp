@@ -42,6 +42,7 @@
 
 #include "configmanager.h"
 #include "luascript.h"
+#include "resources.h"
 
 #if defined(WINDOWS) && !defined(_CONSOLE)
 #include "gui.h"

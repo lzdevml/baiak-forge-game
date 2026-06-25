@@ -277,17 +277,6 @@ void Party::broadcastMessage(MessageClasses messageClass, const std::string& tex
 		(*it)->sendTextMessage(messageClass, text);
 }
 
-void Party::broadcastPartyLoot(MessageClasses messageClass, const std::string& loot)
-{
-	std::string nick;
-	PlayerVector::iterator it;
-    leader->sendChannelMessage(nick, loot, messageClass, g_config.getNumber(ConfigManager::LOOT_CHANNEL));
-    for(it = memberList.begin(); it != memberList.end(); ++it)
-	{
-        (*it)->sendChannelMessage(nick, loot, messageClass, g_config.getNumber(ConfigManager::LOOT_CHANNEL));
-    }
-}
-
 void Party::updateSharedExperience()
 {
 	if(!sharedExpActive)

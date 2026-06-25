@@ -22,10 +22,8 @@
 #include "game.h"
 #include "creature.h"
 #include "combat.h"
-#include "configmanager.h"
 
 extern Game g_game;
-extern ConfigManager g_config;
 
 Condition::Condition(ConditionId_t _id, ConditionType_t _type, int32_t _ticks, bool _buff, uint32_t _subId):
 id(_id), subId(_subId), ticks(_ticks), endTime(0), conditionType(_type), buff(_buff)
@@ -226,7 +224,6 @@ Condition* Condition::createCondition(ConditionId_t _id, ConditionType_t _type, 
 		case CONDITION_PACIFIED:
 		case CONDITION_GAMEMASTER:
 		case CONDITION_SPELLCOOLDOWN:
-		case CONDITION_LOGINPROTECTION:
 			return new ConditionGeneric(_id, _type, _ticks, _buff, _subId);
 
 		default:
@@ -1173,16 +1170,8 @@ bool ConditionDamage::doDamage(Creature* creature, int32_t damage)
 		return true;
 
 	Creature* attacker = g_game.getCreatureByID(owner);
-	if(g_config.getBool(ConfigManager::USE_BLACK_SKULL))
-	{
-		if(damage < 0 && attacker && attacker->getPlayer() && creature->getPlayer() && creature->getPlayer()->getSkull() != SKULL_BLACK)
-			damage = damage / 2;
-	}
-	else
-	{
-		if(damage < 0 && attacker && attacker->getPlayer() && creature->getPlayer())
-			damage = damage / 2;
-	}
+	if(damage < 0 && attacker && attacker->getPlayer() && creature->getPlayer() && creature->getPlayer()->getSkull() != SKULL_BLACK)
+		damage = damage / 2;
 
 	CombatType_t combatType = Combat::ConditionToDamageType(conditionType);
 	if(g_game.combatBlockHit(combatType, attacker, creature, damage, false, false, field))

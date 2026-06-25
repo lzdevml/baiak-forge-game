@@ -250,34 +250,8 @@ enum Exhaust_t
 	EXHAUST_OTHER = 0,
 	EXHAUST_HEALING = 1,
 	EXHAUST_COMBAT = 2,
-	EXHAUST_MELEE = 3,
-	EXHAUST_SPELLGROUP_NONE = 4,
-	EXHAUST_SPELLGROUP_ATTACK = 5,
-	EXHAUST_SPELLGROUP_HEALING = 6,
-	EXHAUST_SPELLGROUP_SUPPORT = 7,
-	EXHAUST_SPELLGROUP_SPECIAL = 8,
-	EXHAUST_POTION = 30,
-	EXHAUST_MACHETE = 31
+	EXHAUST_MELEE = 3
 };
-
-enum ExhaustSubId_t
-{
-	EXHAUST_DEFAULT = 1,
-	EXHAUST_TALKNPC = 2,
-	EXHAUST_PLAYERVIP = 3,
-	EXHAUST_OUTFIT = 4,
-	EXHAUST_PARTY = 5,
-	EXHAUST_PLAYERSPEAK = 6,
-	EXHAUST_PLAYERLOOK = 7,
-	EXHAUST_PLAYERTRADE = 8,
-	EXHAUST_PLAYEROPENCHANNEL = 9,
-	EXHAUST_PLAYERLOOKSHOP = 10,
-	EXHAUST_PLAYERLOOKTRADE = 11,
-	EXHAUST_PLAYERPURCHASEITEM = 12,
-	EXHAUST_PLAYERSELLITEM = 13,
-	EXHAUST_TALKACTION = 14
-};
-
 
 enum BlockType_t
 {
@@ -398,24 +372,22 @@ struct Outfit_t
 	Outfit_t()
 	{
 		lookType = lookTypeEx = 0;
-		lookMount = 0;
 		lookHead = lookBody = lookLegs = lookFeet = lookAddons = 0;
 	}
 	Outfit_t(uint16_t _lookType)
 	{
 		lookType = _lookType;
 		lookTypeEx = 0;
-		lookMount = 0;
 		lookHead = lookBody = lookLegs = lookFeet = lookAddons = 0;
 	}
 
-	uint16_t lookType, lookTypeEx, lookMount;
+	uint16_t lookType, lookTypeEx;
 	uint8_t lookHead, lookBody, lookLegs, lookFeet, lookAddons;
-	
+
 	bool operator==(const Outfit_t& o) const
-	{	
-	return (o.lookAddons == lookAddons && o.lookType == lookType
-			&& o.lookTypeEx == lookTypeEx && o.lookMount == lookMount
+	{
+		return (o.lookAddons == lookAddons
+			&& o.lookType == lookType && o.lookTypeEx == lookTypeEx
 			&& o.lookHead == lookHead && o.lookBody == lookBody
 			&& o.lookLegs == lookLegs && o.lookFeet == lookFeet);
 	}

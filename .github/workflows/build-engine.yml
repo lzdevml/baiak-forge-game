@@ -1,11 +1,7 @@
 name: build-engine
 on:
   push: { branches: [ main, master ] }
-  workflow_dispatch:
-    inputs:
-      u32:
-        description: "Aplicar patch u32 (level/hp/mana 32-bit)? so p/ cliente u32/mehah"
-        default: "false"
+  workflow_dispatch: {}
 
 jobs:
   compile:
@@ -17,28 +13,21 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends \
-            g++ make \
+            build-essential g++ make autoconf automake libtool pkg-config \
             liblua5.1-0-dev \
             libxml2-dev \
-            libboost-system-dev libboost-thread-dev libboost-filesystem-dev libboost-regex-dev \
-            libgmp-dev \
+            libboost-system-dev libboost-filesystem-dev libboost-thread-dev libboost-regex-dev libboost-date-time-dev \
             libmysqlclient-dev \
-            libssl-dev \
-            libsqlite3-dev \
-            libunwind-dev libgoogle-perftools-dev
+            libssl-dev zlib1g-dev libgmp-dev
 
-      - name: Apply u32 patch (opcional)
-        if: ${{ github.event.inputs.u32 == 'true' }}
-        run: python3 infra/u32-patch.py src/protocolgame.cpp
-
-      - name: Compile (make)
+      - name: Compile (autoconf)
         working-directory: src
         run: |
-          mkdir -p objects
-          sed -i 's/-march=native[[:space:]]*-mtune=native/-O2/' Makefile
-          sed -i 's/-D__ROOT_PERMISSION__/-D__ROOT_PERMISSION__ -DOPENSSL_API_COMPAT=0x10100000L -Wno-deprecated-declarations/' Makefile
-          make -j$(nproc) 2>&1 | tee /tmp/build.log | grep -iE "error:|fatal error" | head -60 || true
-          test -f theotxserver && echo "BINARY OK" || (echo "===BUILD FAILED==="; exit 1)
+          chmod +x autogen.sh 2>/dev/null || true
+          ./autogen.sh || autoreconf -vfi --warnings=none
+          ./configure --enable-mysql --enable-root-permission --enable-otserv-allocator CXXFLAGS="-O2 -w -fpermissive -DOPENSSL_API_COMPAT=0x10100000L"
+          make -j$(nproc) 2>&1 | tee /tmp/build.log | grep -iE "error:|fatal error|undefined reference" | head -100 || true
+          test -f theotxserver && echo "BINARY OK" || (echo "===BUILD FAILED==="; tail -40 /tmp/build.log; exit 1)
 
       - name: Upload binary
         if: success()

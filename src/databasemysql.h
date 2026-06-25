@@ -23,7 +23,11 @@
 #error "database.h should be included first."
 #endif
 
+#ifdef _MSC_VER
+#include <mysql.h>
+#else
 #include <mysql/mysql.h>
+#endif
 
 #if defined WINDOWS
 #include <winsock2.h>
@@ -34,14 +38,20 @@
 class DatabaseMySQL : public _Database
 {
 	public:
-		DatabaseMySQL():
-			m_handle(new MYSQL), m_timeoutTask(0) {}
+		DatabaseMySQL();
 		DATABASE_VIRTUAL ~DatabaseMySQL();
 
-		DATABASE_VIRTUAL bool connect();
-		DATABASE_VIRTUAL bool isMultiLine() {return true;}
+		DATABASE_VIRTUAL bool connect(bool _reconnect);
+		DATABASE_VIRTUAL bool multiLine() const {return true;}
 
-		DATABASE_VIRTUAL bool beginTransaction() {return query("BEGIN");}
+		DATABASE_VIRTUAL bool beginTransaction() {
+			if (!query("BEGIN")) {
+				return false;
+			}
+
+			databaseLock.lock();
+			return true;
+		}
 		DATABASE_VIRTUAL bool rollback();
 		DATABASE_VIRTUAL bool commit();
 
@@ -57,8 +67,9 @@ class DatabaseMySQL : public _Database
 	protected:
 		DATABASE_VIRTUAL void keepAlive();
 
-		MYSQL* m_handle;
-		uint32_t m_timeoutTask;
+		MYSQL* handle;
+		std::recursive_mutex databaseLock;
+		uint64_t maxPacketSize;
 };
 
 class MySQLResult : public _DBResult
@@ -78,10 +89,10 @@ class MySQLResult : public _DBResult
 		DATABASE_VIRTUAL ~MySQLResult();
 
 		typedef std::map<const std::string, uint32_t> listNames_t;
-		listNames_t m_listNames;
+		listNames_t listNames;
 
-		MYSQL_RES* m_handle;
-		MYSQL_ROW m_row;
+		MYSQL_RES* handle;
+		MYSQL_ROW row;
 };
 #endif
 #endif
